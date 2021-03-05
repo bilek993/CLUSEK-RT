@@ -1,4 +1,4 @@
-TODO: Add icon
+<img src="documentation/banner_logo.png" width="100%">
 
 CLUSEK-RT
 ==================================
