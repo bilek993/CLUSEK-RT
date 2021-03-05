@@ -1,5 +1,8 @@
-# IntelliJ files
+# IntelliJ
 /**/.idea/*
 
 # CMake
 cmake-build-*/
+
+# Javascript
+scripts/js/**/node_modules/*
