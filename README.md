@@ -25,11 +25,6 @@ TODO: Add documentation
 
 
 
-## License
-
-TODO: Add license
-
-
 
 ## Author
 
