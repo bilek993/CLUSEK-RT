@@ -9,9 +9,9 @@ CLUSEK-RT
 
 TODO: Add gallery
 
-## Fast download
+## Binary download
 
-TODO: Fast download
+Every CLUSEK-RT release is delivered in binary form for both operating systems. Thanks to this form it's much easier to get familiar with this engine and to check if your computer is compatible with it. The latest official version of this game engine can be downloaded from [here](https://github.com/bilek993/CLUSEK/releases/latest/).
 
 ## Documentation
 
