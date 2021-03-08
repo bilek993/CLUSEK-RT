@@ -15,7 +15,12 @@ Every CLUSEK-RT release is delivered in binary form for both operating systems. 
 
 ## Documentation
 
+* [Requirements](./documentation/requirements.md)
+* [Building from sources](./documentation/building.md)
 * [Dependencies](./documentation/dependencies.md)
+* [Scripts](./documentation/scripts.md)
+* [Coding standards](./documentation/coding_standards.md)
+* [Resources standards](./documentation/resources_standards.md)
 
 ## Author
 
