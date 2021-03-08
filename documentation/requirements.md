@@ -16,6 +16,7 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 |                   | Required                      | Recommended                                   |
 |-------------------|-------------------------------|-----------------------------------------------|
 | OS                | Windows 7                     | Windows 10                                    |
+| Source control    | Latest Git with LFS support   | -                                             |
 | Project generator | CMake 3.17                    | -                                             |
 | Vulkan SDK        | latest                        | 1.2.170.0                                     |
 | GPU Drivers       | latest stable                 | -                                             |
@@ -24,11 +25,12 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 
 ### Unix requirements
 
-|                   | Required              | Recommended                |
-|-------------------|-----------------------|----------------------------|
-| OS                | Linux                 | Linux Mint                 |
-| Project generator | CMake 3.17            | -                          |
-| Vulkan SDK        | latest                | 1.2.170.0                  |
-| GPU Drivers       | latest stable         | -                          |
-| JS Toolchain      | Latest NodeJS and npm | npm 6.14.0 & NodeJS 14.5.0 |
-| C/C++ Toolchain   | GCC & G++             | GCC & G++ v 9.3.0          |
+|                   | Required                    | Recommended                |
+|-------------------|-----------------------------|----------------------------|
+| OS                | Linux                       | Linux Mint                 |
+| Source control    | Latest Git with LFS support | -                          |
+| Project generator | CMake 3.17                  | -                          |
+| Vulkan SDK        | latest                      | 1.2.170.0                  |
+| GPU Drivers       | latest stable               | -                          |
+| JS Toolchain      | Latest NodeJS and npm       | npm 6.14.0 & NodeJS 14.5.0 |
+| C/C++ Toolchain   | GCC & G++                   | GCC & G++ v 9.3.0          |
