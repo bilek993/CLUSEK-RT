@@ -34,3 +34,11 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 | GPU Drivers       | latest stable               | -                          |
 | JS Toolchain      | Latest NodeJS and npm       | npm 6.14.0 & NodeJS 14.5.0 |
 | C/C++ Toolchain   | GCC & G++                   | GCC & G++ v 9.3.0          |
+
+Unix is very versatile and diverse platform. To work on this project you need to have installed additional dependencies. Most of them should be already installed in your OS if you correctly installed other tools mentioned in the table above, but in some cases, even if you installed everything correctly there still might be missing packages. You can easily fix that if you have `apt` available in your OS by installing everything that is necessary. Type these commands in your terminal:
+
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install libglm-dev libxcb-dri3-0 libxcb-present0 libpciaccess0 libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libx11-dev g++ gcc g++-multilib libmirclient-dev libwayland-dev libxrandr-dev libxcb-randr0-dev libxcb-ewmh-dev git python3 bison libx11-xcb-dev liblz4-dev libzstd-dev xorg-dev
+```
