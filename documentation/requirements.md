@@ -9,7 +9,7 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 | GPU  | Discrete with hardware ray-tracing | RTX 3080                |
 | CPU  | High speed and 4 thread unit       | AMD Ryzen 9 5900X       |
 | RAM  | 16 GB                              | 32 GB of 3200 MHz CL16  |
-| Disk | Enough to clone respository        | M.2 PCI Express 4.0 SSD |
+| Disk | Enough space to clone respository  | M.2 PCI Express 4.0 SSD |
 
 ### Windows requirements
 
@@ -27,7 +27,7 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 
 |                   | Required                    | Recommended                |
 |-------------------|-----------------------------|----------------------------|
-| OS                | Linux                       | Linux Mint                 |
+| OS                | Linux                       | Linux Mint 20.1            |
 | Source control    | Latest Git with LFS support | -                          |
 | Project generator | CMake 3.17                  | -                          |
 | Vulkan SDK        | latest                      | 1.2.170.0                  |
