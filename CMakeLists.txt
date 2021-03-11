@@ -20,7 +20,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 
-add_executable(CLUSEK-RT engine/main.cpp)
+add_executable(
+        CLUSEK-RT
+        engine/main.cpp
+        engine/common/debug/Logger.cpp
+        engine/common/debug/Logger.h
+        engine/common/debug/LoggerModes.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
