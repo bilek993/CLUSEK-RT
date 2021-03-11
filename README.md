@@ -1,4 +1,4 @@
-<img src="./documentation/banner_logo.png" width="100%">
+<img src="./documentation/images/banner_logo.png" width="100%">
 
 CLUSEK-RT
 ==================================

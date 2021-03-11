@@ -53,7 +53,7 @@ There are two ways: use directly CMake or IDE. Let's start with the CMake approa
 Open CMake (cmake-gui). Click "Browse source" and select the CLUSEK-RT folder. Next select where to build the project. I recommend copying the path from the previous step and adding "/path" at the end. Now you need to click the "Configure" button and in the new window select tools that you are going to be using (for example Visual Studio 15 2017) and finish the process. After that click "Generate" and "Open Project" and you are done!
 
 <p align="center">
-<img src="cmake_gui_windows.png">
+<img src="./images/cmake_gui_windows.png">
 </p>
 
 There's also a second approach without that. You can use modern IDE like for example CLion or Visual Studio and select "Open CMake project" and just select the folder. That way it should work like a charm without generating a project with CMake (cmake-gui) tool.
