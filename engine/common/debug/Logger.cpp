@@ -3,6 +3,7 @@
 //
 
 #include "Logger.h"
+#include <fmt/os.h>
 
 void Logger::Initialize(bool enableConsoleLogging, bool enableFileLogging, const std::string& filePath, int level)
 {

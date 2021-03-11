@@ -18,7 +18,6 @@ project(CLUSEK-RT)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 
 add_executable(
         CLUSEK-RT
@@ -34,4 +33,10 @@ add_executable(
 # | |____| || |_) || |   | (_| || |   | ||  __/\__ \
 # \_____/|_||_.__/ |_|    \__,_||_|   |_| \___||___/
 
-# ...
+# fmt
+
+add_subdirectory(libraries/fmt)
+
+target_link_libraries(CLUSEK-RT fmt::fmt)
+
+include_directories(libraries/fmt/include)
