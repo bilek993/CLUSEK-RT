@@ -31,6 +31,7 @@ void Logger::Free()
     if (EnabledFileLogging)
     {
         File->close();
+        File = nullptr;
     }
 
     EnabledConsoleLogging = false;
@@ -42,6 +43,12 @@ void Logger::Free()
 
 void Logger::Log(const LoggerModes level, const std::string& message)
 {
+    if (!Initialized)
+        return;
+
+    if (level < LoggingLevel)
+        return;
+
     if (EnabledConsoleLogging)
         LogToConsole(message);
 

@@ -2,7 +2,7 @@
 
 int main()
 {
-    Logger::Initialize(false, true, "logs.txt", DEBUG);
+    Logger::Initialize(true, false, "logs.txt", DEBUG);
     Logger::Log(DEBUG, "test123");
     Logger::Free();
 

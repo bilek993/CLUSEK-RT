@@ -5,11 +5,11 @@
 #ifndef CLUSEK_RT_LOGGERMODES_H
 #define CLUSEK_RT_LOGGERMODES_H
 
-enum LoggerModes
+enum LoggerModes : int
 {
-    DEBUG,
-    WARNING,
-    ERROR,
+    DEBUG = 0,
+    WARNING = 1,
+    ERROR = 2,
 };
 
 #endif //CLUSEK_RT_LOGGERMODES_H

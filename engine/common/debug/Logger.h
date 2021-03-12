@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+
 #include "LoggerModes.h"
 
 class Logger final
