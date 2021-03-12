@@ -1,3 +1,6 @@
 [submodule "libraries/fmt"]
 	path = libraries/fmt
 	url = https://github.com/fmtlib/fmt.git
+[submodule "libraries/Boxer"]
+	path = libraries/Boxer
+	url = https://github.com/aaronmjacobs/Boxer
