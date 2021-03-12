@@ -1,6 +1,10 @@
-#include <iostream>
+#include "common/debug/Logger.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
+int main()
+{
+    Logger::Initialize(true, false, "logs.txt", true, DEBUG);
+    Logger::Log(ERROR, "test123");
+    Logger::Free();
+
     return 0;
 }

@@ -9,4 +9,6 @@ This project uses external dependencies. Those dependencies are split into two c
 
 ### C++
 
-...
+* [fmt](https://github.com/fmtlib/fmt/tree/a1ea8a82c33c0adf0b6738125a504d5bd531c7aa)
+
+* [Boxer](https://github.com/aaronmjacobs/Boxer/tree/01c17f6a9cd66068f7890ea887ab3b9a673f0434)

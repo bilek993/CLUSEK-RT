@@ -18,9 +18,13 @@ project(CLUSEK-RT)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 
-add_executable(CLUSEK-RT engine/main.cpp)
+add_executable(
+        CLUSEK-RT
+        engine/main.cpp
+        engine/common/debug/Logger.cpp
+        engine/common/debug/Logger.h
+        engine/common/debug/LoggerModes.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
@@ -29,4 +33,18 @@ add_executable(CLUSEK-RT engine/main.cpp)
 # | |____| || |_) || |   | (_| || |   | ||  __/\__ \
 # \_____/|_||_.__/ |_|    \__,_||_|   |_| \___||___/
 
-# ...
+# fmt
+
+add_subdirectory(libraries/fmt)
+
+target_link_libraries(CLUSEK-RT fmt::fmt)
+
+include_directories(libraries/fmt/include)
+
+# Boxer
+
+add_subdirectory(libraries/Boxer)
+
+target_link_libraries(CLUSEK-RT Boxer)
+
+include_directories(libraries/Boxer/include)
