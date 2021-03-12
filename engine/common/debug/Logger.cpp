@@ -53,7 +53,7 @@ void Logger::Log(const LoggerModes level, const std::string& message)
         return;
 
     if (level == LoggerModes::ERROR && EnableErrorMessageBox)
-        boxer::show(message.c_str(), "TITLE HERE", boxer::Style::Error, boxer::Buttons::OK);
+        boxer::show(message.c_str(), "TITLE HERE", boxer::Style::Error, boxer::Buttons::OK); // TODO: Title as string
 
     if (EnabledConsoleLogging)
         LogToConsole(message);
