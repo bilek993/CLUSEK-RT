@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <ctime>
 
 #include "LoggerModes.h"
 
@@ -27,7 +28,10 @@ private:
     inline static bool EnabledConsoleLogging = false;
     inline static bool EnabledFileLogging = false;
     inline static bool EnableErrorMessageBox = false;
+
     inline static LoggerModes LoggingLevel;
+
+    static std::string GeneratePrefix(LoggerModes loggerLevel);
 
     static void LogToConsole(const std::string& message);
     static void LogToFile(const std::string& message);
