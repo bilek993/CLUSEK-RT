@@ -40,3 +40,11 @@ add_subdirectory(libraries/fmt)
 target_link_libraries(CLUSEK-RT fmt::fmt)
 
 include_directories(libraries/fmt/include)
+
+# Boxer
+
+add_subdirectory(libraries/Boxer)
+
+target_link_libraries(CLUSEK-RT Boxer)
+
+include_directories(libraries/Boxer/include)
