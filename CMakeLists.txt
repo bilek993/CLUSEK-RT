@@ -24,7 +24,9 @@ add_executable(
         engine/main.cpp
         engine/common/debug/Logger.cpp
         engine/common/debug/Logger.h
-        engine/common/debug/LoggerModes.h)
+        engine/common/debug/LoggerModes.h
+        engine/common/StringUtil.h
+)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
