@@ -15,7 +15,7 @@ class Logger final
 {
 public:
     static void Initialize(bool enableConsoleLogging, bool enableFileLogging, const std::string& filePath,
-                           LoggerModes loggerLevel);
+                           bool enableErrorMessageBox, LoggerModes loggerLevel);
     static void Free();
 
     static void Log(LoggerModes level, const std::string& message);
@@ -26,6 +26,7 @@ private:
 
     inline static bool EnabledConsoleLogging = false;
     inline static bool EnabledFileLogging = false;
+    inline static bool EnableErrorMessageBox = false;
     inline static LoggerModes LoggingLevel;
 
     static void LogToConsole(const std::string& message);

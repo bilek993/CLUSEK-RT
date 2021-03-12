@@ -4,16 +4,19 @@
 
 #include "Logger.h"
 
+#include <boxer/boxer.h>
+
 std::unique_ptr<std::fstream> Logger::File{};
 
 void Logger::Initialize(const bool enableConsoleLogging, const bool enableFileLogging, const std::string& filePath,
-                        const LoggerModes loggerLevel)
+                        const bool enableErrorMessageBox, const LoggerModes loggerLevel)
 {
     if (Initialized)
         return;
 
     EnabledConsoleLogging = enableConsoleLogging;
     EnabledFileLogging = enableFileLogging;
+    EnableErrorMessageBox = enableErrorMessageBox;
     LoggingLevel = loggerLevel;
 
     if (EnabledFileLogging)
@@ -48,6 +51,9 @@ void Logger::Log(const LoggerModes level, const std::string& message)
 
     if (level < LoggingLevel)
         return;
+
+    if (level == LoggerModes::ERROR && EnableErrorMessageBox)
+        boxer::show(message.c_str(), "TITLE HERE", boxer::Style::Error, boxer::Buttons::OK);
 
     if (EnabledConsoleLogging)
         LogToConsole(message);
