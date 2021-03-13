@@ -59,16 +59,19 @@ void Logger::Log(const LoggerModes level, const std::string& message, const std:
     if (level < LoggingLevel)
         return;
 
-    const auto prefix = GeneratePrefix(level);
-    const auto filename = StringUtil::FindFilename(file);
-    const auto combinedMessage = fmt::format(FMT_COMPILE("{}|{}|{}|{}|{}\n"), prefix, filename, function, line,
-                                             message);
+    if (EnabledConsoleLogging || EnabledFileLogging)
+    {
+        const auto prefix = GeneratePrefix(level);
+        const auto filename = StringUtil::FindFilename(file);
+        const auto combinedMessage = fmt::format(FMT_COMPILE("{}|{}|{}|{}|{}\n"), prefix, filename, function, line,
+                                                 message);
 
-    if (EnabledConsoleLogging)
-        LogToConsole(combinedMessage);
+        if (EnabledConsoleLogging)
+            LogToConsole(combinedMessage);
 
-    if (EnabledFileLogging)
-        LogToFile(combinedMessage);
+        if (EnabledFileLogging)
+            LogToFile(combinedMessage);
+    }
 
     if (level == LoggerModes::ERROR && EnableErrorMessageBox)
         boxer::show(message.c_str(), "TITLE HERE", boxer::Style::Error, boxer::Buttons::OK); // TODO: Title as string
