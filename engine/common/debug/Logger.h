@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <memory>
 
 #include "LoggerModes.h"
 
@@ -19,7 +20,8 @@ public:
                            bool enableErrorMessageBox, LoggerModes loggerLevel);
     static void Free();
 
-    static void Log(LoggerModes level, const std::string& message);
+    static void Log(LoggerModes level, const std::string& message, const std::string& file, const std::string& function,
+                    unsigned int line);
 private:
     inline static bool Initialized = false;
 

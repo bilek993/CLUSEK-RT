@@ -3,6 +3,7 @@
 //
 
 #include "Logger.h"
+#include "../StringUtil.h"
 
 #include <boxer/boxer.h>
 #include <fmt/os.h>
@@ -49,7 +50,8 @@ void Logger::Free()
     Initialized = false;
 }
 
-void Logger::Log(const LoggerModes level, const std::string& message)
+void Logger::Log(const LoggerModes level, const std::string& message, const std::string& file,
+                 const std::string& function, unsigned int line)
 {
     if (!Initialized)
         return;
@@ -57,7 +59,10 @@ void Logger::Log(const LoggerModes level, const std::string& message)
     if (level < LoggingLevel)
         return;
 
-    const auto combinedMessage = GeneratePrefix(level) + message + "\n";
+    const auto prefix = GeneratePrefix(level);
+    const auto filename = StringUtil::FindFilename(file);
+    const auto combinedMessage = fmt::format(FMT_COMPILE("{}|{}|{}|{}|{}\n"), prefix, filename, function, line,
+                                             message);
 
     if (EnabledConsoleLogging)
         LogToConsole(combinedMessage);
@@ -85,7 +90,7 @@ std::string Logger::GeneratePrefix(const LoggerModes loggerLevel)
         break;
     }
 
-    return fmt::format(FMT_COMPILE("{:%H:%M:%S}|{:s}|"), fmt::localtime(std::time(nullptr)), levelString);
+    return fmt::format(FMT_COMPILE("{:%H:%M:%S}|{:s}"), fmt::localtime(std::time(nullptr)), levelString);
 }
 
 void Logger::LogToConsole(const std::string& message)
