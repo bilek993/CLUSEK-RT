@@ -74,7 +74,16 @@ void Logger::Log(const LoggerModes level, const std::string& message, const std:
     }
 
     if (level == LoggerModes::ERROR && EnableErrorMessageBox)
-        boxer::show(message.c_str(), "TITLE HERE", boxer::Style::Error, boxer::Buttons::OK); // TODO: Title as string
+    {
+        const auto title = "Something terrible happened. Proceed?"; // TODO: Title as translated string
+        const auto messageWithAdditionalInfo = message; // TODO: Change this to proper value
+
+        const auto result = boxer::show(messageWithAdditionalInfo.c_str(), title, boxer::Style::Error,
+                                        boxer::Buttons::YesNo);
+
+        if (result == boxer::Selection::No)
+            exit(EXIT_FAILURE);
+    }
 }
 
 std::string Logger::GeneratePrefix(const LoggerModes loggerLevel)
