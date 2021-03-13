@@ -3,8 +3,12 @@
 int main()
 {
     Logger::Initialize(true, false, "logs.txt", true, DEBUG);
-    Logger::Log(ERROR, "This is example error 1", __FILE__, __FUNCTION__, __LINE__);
-    Logger::Log(ERROR, "This is example error 2", __FILE__, __FUNCTION__, __LINE__);
+
+    LOG_DEBUG("This is example debug 1");
+    LOG_WARNING("This is example warning 1");
+    LOG_ERROR("This is example error 1");
+    LOG_ERROR("This is example error 2");
+
     Logger::Free();
 
     return 0;
