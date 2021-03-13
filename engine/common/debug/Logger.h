@@ -24,6 +24,7 @@ public:
                            bool enableErrorMessageBox, LoggerModes loggerLevel);
     static void Free();
 
+    /// Don't call this function manually. Use proper USE_* macro instead.
     static void Log(LoggerModes level, const std::string& message, const std::string& file, const std::string& function,
                     unsigned int line);
 private:
