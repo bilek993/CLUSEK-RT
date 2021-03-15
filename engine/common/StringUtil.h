@@ -5,6 +5,7 @@
 #ifndef CLUSEK_RT_STRINGUTIL_H
 #define CLUSEK_RT_STRINGUTIL_H
 
+#include <algorithm>
 #include <string>
 #include <filesystem>
 
