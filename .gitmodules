@@ -4,3 +4,6 @@
 [submodule "libraries/Boxer"]
 	path = libraries/Boxer
 	url = https://github.com/aaronmjacobs/Boxer
+[submodule "libraries/json"]
+	path = libraries/json
+	url = https://github.com/nlohmann/json.git
