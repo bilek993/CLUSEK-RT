@@ -50,3 +50,11 @@ add_subdirectory(libraries/Boxer)
 target_link_libraries(CLUSEK-RT Boxer)
 
 include_directories(libraries/Boxer/include)
+
+# Nlohmann JSON
+
+add_subdirectory(libraries/json)
+
+target_link_libraries(CLUSEK-RT nlohmann_json::nlohmann_json)
+
+include_directories(libraries/json/include)
