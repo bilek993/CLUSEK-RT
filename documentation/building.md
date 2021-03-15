@@ -21,26 +21,32 @@ git submodule init
 git submodule update
 ```
 
-
 ### Building on Linux
 
 If you are working on Windows, then you can skip this section.
 
-Linux is a terminal oriented operating system. In this documentation, I'm going to assume that you are using a terminal too. It's quite simple and requires only two steps.
+Linux is a terminal oriented operating system. In this documentation, I'm going to assume that you are using a terminal too. If you don't like this terminal approach, then you can easily apply knowledge from this section with GUI tools like the IDE of your choice.
 
-First, run CMake to generate Make a project with this command:
+Let's begin by creating a directory for storing toolchain data that is used to build this project. Let's name this directory `cmake-build` and  navigate to that directory by typing in the terminal this:
 
 ```
-cmake .
+mkdir cmake-build
+cd cmake-build
 ```
 
-If you get any error then you are probably missing building tools. You can download them using a package manager tool (like apt). If it finished with success then just call Make like this:
+Next, ask CMake to prepare our project:
+
+```
+cmake ..
+```
+
+If it finished with success then just call Make like this:
 
 ```
 make
 ```
 
-That's all! You are ready to use the CLUSEK-RT engine on Linux!
+That's all! You are ready to use the CLUSEK-RT engine on Linux! If you get any error when calling `cmake ..` or `make` then you are probably missing building tools or an important library. You can download them using a package manager tool (like apt). For more information, I recommend [the requirements section](./requirements.md).
 
 ### Building on Windows
 
