@@ -3,8 +3,12 @@
 //
 
 #include "Logger.h"
+#include "../StringUtil.h"
 
 #include <boxer/boxer.h>
+#include <fmt/os.h>
+#include <fmt/compile.h>
+#include <fmt/chrono.h>
 
 std::unique_ptr<std::fstream> Logger::File{};
 
@@ -17,6 +21,7 @@ void Logger::Initialize(const bool enableConsoleLogging, const bool enableFileLo
     EnabledConsoleLogging = enableConsoleLogging;
     EnabledFileLogging = enableFileLogging;
     EnableErrorMessageBox = enableErrorMessageBox;
+
     LoggingLevel = loggerLevel;
 
     if (EnabledFileLogging)
@@ -39,12 +44,14 @@ void Logger::Free()
 
     EnabledConsoleLogging = false;
     EnabledFileLogging = false;
+
     LoggingLevel = DEBUG;
 
     Initialized = false;
 }
 
-void Logger::Log(const LoggerModes level, const std::string& message)
+void Logger::Log(const LoggerModes level, const std::string& message, const std::string& file,
+                 const std::string& function, unsigned int line)
 {
     if (!Initialized)
         return;
@@ -52,14 +59,50 @@ void Logger::Log(const LoggerModes level, const std::string& message)
     if (level < LoggingLevel)
         return;
 
+    if (EnabledConsoleLogging || EnabledFileLogging)
+    {
+        const auto prefix = GeneratePrefix(level);
+        const auto filename = StringUtil::FindFilename(file);
+        const auto combinedMessage = fmt::format(FMT_COMPILE("{}|{}|{}|{}|{}\n"), prefix, filename, function, line,
+                                                 message);
+
+        if (EnabledConsoleLogging)
+            LogToConsole(combinedMessage);
+
+        if (EnabledFileLogging)
+            LogToFile(combinedMessage);
+    }
+
     if (level == LoggerModes::ERROR && EnableErrorMessageBox)
-        boxer::show(message.c_str(), "TITLE HERE", boxer::Style::Error, boxer::Buttons::OK); // TODO: Title as string
+    {
+        const auto title = "Something terrible happened. Proceed?"; // TODO: Title as translated string
+        const auto messageWithAdditionalInfo = message; // TODO: Change this to proper value
 
-    if (EnabledConsoleLogging)
-        LogToConsole(message);
+        const auto result = boxer::show(messageWithAdditionalInfo.c_str(), title, boxer::Style::Error,
+                                        boxer::Buttons::YesNo);
 
-    if (EnabledFileLogging)
-        LogToFile(message);
+        if (result == boxer::Selection::No)
+            exit(EXIT_FAILURE);
+    }
+}
+
+std::string Logger::GeneratePrefix(const LoggerModes loggerLevel)
+{
+    std::string levelString;
+    switch (loggerLevel)
+    {
+    case DEBUG:
+        levelString = "DBG";
+        break;
+    case WARNING:
+        levelString = "WRN";
+        break;
+    case ERROR:
+        levelString = "ERR";
+        break;
+    }
+
+    return fmt::format(FMT_COMPILE("{:%H:%M:%S}|{:s}"), fmt::localtime(std::time(nullptr)), levelString);
 }
 
 void Logger::LogToConsole(const std::string& message)
