@@ -3,6 +3,7 @@
 
 # CMake
 cmake-build-*/
+cmake-build/
 
 # Javascript
 scripts/js/**/node_modules/*
