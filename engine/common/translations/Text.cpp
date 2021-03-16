@@ -12,7 +12,7 @@
 
 std::unordered_map<std::string, std::string> Text::TranslatedStrings{};
 
-void Text::Initialize(const std::vector<std::pair<std::string, std::string>>& languagesWithPaths)
+void Text::Initialize(const std::vector<std::pair<Language, std::string>>& languagesWithPaths)
 {
     LOG_DEBUG("Preparing to initialize Text module...");
 
@@ -52,7 +52,7 @@ void Text::Free()
     Initialized = false;
 }
 
-void Text::SetLanguage(const std::string& language)
+void Text::SetLanguage(const Language language)
 {
     if (!Initialized)
         LOG_ERROR("Text module is not initialized!");
@@ -75,7 +75,7 @@ std::string Text::Get(const std::string& id)
     return item != TranslatedStrings.end() ? item->second : std::string();
 }
 
-void Text::LoadFileIntoMap(const std::string& language, const std::string& path)
+void Text::LoadFileIntoMap(const Language language, const std::string& path)
 {
     std::ifstream inputFile(path);
     nlohmann::json json;
@@ -90,7 +90,7 @@ void Text::LoadFileIntoMap(const std::string& language, const std::string& path)
     }
 }
 
-std::string Text::GenerateKey(const std::string& language, const std::string& id)
+std::string Text::GenerateKey(const Language language, const std::string& id)
 {
     return fmt::format(FMT_COMPILE("{}___{}"), language, id);
 }
