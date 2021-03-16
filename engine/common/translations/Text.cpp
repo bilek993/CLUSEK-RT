@@ -6,8 +6,11 @@
 
 #include <fmt/os.h>
 #include <fmt/compile.h>
+#include <nlohmann/json.hpp>
 
 #include "../debug/Logger.h"
+
+std::unordered_map<std::string, std::string> Text::TranslatedStrings{};
 
 void Text::Initialize(const std::vector<std::pair<std::string, std::string>>& languagesWithPaths)
 {
@@ -31,12 +34,11 @@ void Text::Initialize(const std::vector<std::pair<std::string, std::string>>& la
         }
         catch (const std::exception& e)
         {
-            LOG_WARNING(fmt::format(FMT_COMPILE("Loading data from '{}' failed!"), path));
-            LOG_WARNING(e.what());
+            LOG_ERROR(e.what());
         }
         catch (...)
         {
-            LOG_WARNING(fmt::format(FMT_COMPILE("An unknown exception happened when loading data from '{}'!"), path));
+            LOG_ERROR(fmt::format(FMT_COMPILE("An unknown exception happened when loading data from '{}'!"), path));
         }
     }
 
@@ -55,11 +57,11 @@ void Text::SetLanguage(const std::string& language)
     if (!Initialized)
         LOG_ERROR("Text module is not initialized!");
 
-    Language = language;
-    LOG_DEBUG(fmt::format(FMT_COMPILE("Language has been set to '{}'."), Language));
+    CurrentLanguage = language;
+    LOG_DEBUG(fmt::format(FMT_COMPILE("Language has been set to '{}'."), CurrentLanguage));
 }
 
-std::string Text::Get()
+std::string Text::Get(const std::string& id)
 {
     if (!Initialized)
     {
@@ -67,10 +69,28 @@ std::string Text::Get()
         return std::string();
     }
 
-    return std::string(); // TODO: Change this
+    const auto key = GenerateKey(CurrentLanguage, id);
+    const auto item = TranslatedStrings.find(key);
+
+    return item != TranslatedStrings.end() ? item->second : std::string();
 }
 
 void Text::LoadFileIntoMap(const std::string& language, const std::string& path)
 {
+    std::ifstream inputFile(path);
+    nlohmann::json json;
+    inputFile >> json;
 
+    for (auto& item : json.items())
+    {
+        const auto key = GenerateKey(language, item.key());
+        const auto value = item.value();
+
+        TranslatedStrings[key] = value;
+    }
+}
+
+std::string Text::GenerateKey(const std::string& language, const std::string& id)
+{
+    return fmt::format(FMT_COMPILE("{}___{}"), language, id);
 }

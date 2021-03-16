@@ -15,15 +15,18 @@ public:
     static void Free();
 
     static void SetLanguage(const std::string& language);
-    static std::string Get();
+
+    static std::string Get(const std::string& id);
 
 private:
     inline static bool Initialized = false;
-    inline static std::string Language;
+    inline static std::string CurrentLanguage;
 
     static std::unordered_map<std::string, std::string> TranslatedStrings;
 
     static void LoadFileIntoMap(const std::string& language, const std::string& path);
+
+    static std::string GenerateKey(const std::string& language, const std::string& id);
 };
 
 
