@@ -27,7 +27,8 @@ add_executable(
         engine/common/debug/LoggerModes.h
         engine/common/StringUtil.h
         engine/common/translations/Text.cpp
-        engine/common/translations/Text.h)
+        engine/common/translations/Text.h
+        engine/common/translations/Language.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)

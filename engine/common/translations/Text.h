@@ -8,25 +8,27 @@
 #include <string>
 #include <unordered_map>
 
+#include "Language.h"
+
 class Text final
 {
 public:
-    static void Initialize(const std::vector<std::pair<std::string, std::string>>& languagesWithPaths);
+    static void Initialize(const std::vector<std::pair<Language, std::string>>& languagesWithPaths);
     static void Free();
 
-    static void SetLanguage(const std::string& language);
+    static void SetLanguage(Language language);
 
     static std::string Get(const std::string& id);
 
 private:
     inline static bool Initialized = false;
-    inline static std::string CurrentLanguage;
+    inline static Language CurrentLanguage;
 
     static std::unordered_map<std::string, std::string> TranslatedStrings;
 
-    static void LoadFileIntoMap(const std::string& language, const std::string& path);
+    static void LoadFileIntoMap(Language language, const std::string& path);
 
-    static std::string GenerateKey(const std::string& language, const std::string& id);
+    static std::string GenerateKey(Language language, const std::string& id);
 };
 
 
