@@ -26,7 +26,8 @@ add_executable(
         engine/common/debug/Logger.h
         engine/common/debug/LoggerModes.h
         engine/common/StringUtil.h
-)
+        engine/common/translations/Text.cpp
+        engine/common/translations/Text.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
@@ -50,3 +51,11 @@ add_subdirectory(libraries/Boxer)
 target_link_libraries(CLUSEK-RT Boxer)
 
 include_directories(libraries/Boxer/include)
+
+# Nlohmann JSON
+
+add_subdirectory(libraries/json)
+
+target_link_libraries(CLUSEK-RT nlohmann_json::nlohmann_json)
+
+include_directories(libraries/json/include)

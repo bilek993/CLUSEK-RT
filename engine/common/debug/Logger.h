@@ -8,7 +8,6 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <ctime>
 #include <memory>
 
 #include "LoggerModes.h"

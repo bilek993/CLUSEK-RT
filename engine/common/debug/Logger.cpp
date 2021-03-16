@@ -3,12 +3,13 @@
 //
 
 #include "Logger.h"
-#include "../StringUtil.h"
 
 #include <boxer/boxer.h>
 #include <fmt/os.h>
 #include <fmt/compile.h>
 #include <fmt/chrono.h>
+
+#include "../StringUtil.h"
 
 std::unique_ptr<std::fstream> Logger::File{};
 
