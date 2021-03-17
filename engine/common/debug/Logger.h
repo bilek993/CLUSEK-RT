@@ -10,11 +10,18 @@
 #include <iostream>
 #include <memory>
 
+#ifdef _WIN32
+
+#include <cassert>
+#include <windows.h>
+
+#endif
+
 #include "LoggerModes.h"
 
-#define LOG_DEBUG(message) Logger::Log(DEBUG, message, __FILE__, __FUNCTION__, __LINE__)
-#define LOG_WARNING(message) Logger::Log(WARNING, message, __FILE__, __FUNCTION__, __LINE__)
-#define LOG_ERROR(message) Logger::Log(ERROR, message, __FILE__, __FUNCTION__, __LINE__)
+#define LOG_DEBUG(message) Logger::Log(DEBUG_MODE, message, __FILE__, __FUNCTION__, __LINE__)
+#define LOG_WARNING(message) Logger::Log(WARNING_MODE, message, __FILE__, __FUNCTION__, __LINE__)
+#define LOG_ERROR(message) Logger::Log(ERROR_MODE, message, __FILE__, __FUNCTION__, __LINE__)
 
 class Logger final
 {
@@ -37,9 +44,13 @@ private:
 
     inline static LoggerModes LoggingLevel;
 
+#ifdef _WIN32
+    static HANDLE ConsoleHandle;
+#endif
+
     static std::string GeneratePrefix(LoggerModes loggerLevel);
 
-    static void LogToConsole(const std::string& message);
+    static void LogToConsole(const std::string& message, LoggerModes level);
     static void LogToFile(const std::string& message);
 };
 
