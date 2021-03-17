@@ -6,6 +6,7 @@
 #define CLUSEK_RT_TEXT_H
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 
 #include "Language.h"
