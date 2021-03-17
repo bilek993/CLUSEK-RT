@@ -11,6 +11,7 @@
 #include <fmt/color.h>
 
 #include "../StringUtil.h"
+#include "../translations/Text.h"
 
 std::unique_ptr<std::fstream> Logger::File{};
 
@@ -85,10 +86,10 @@ void Logger::Log(const LoggerModes level, const std::string& message, const std:
 
     if (level == LoggerModes::ERROR_MODE && EnableErrorMessageBox)
     {
-        const auto title = "Something terrible happened. Proceed?"; // TODO: Title as translated string
-        const auto messageWithAdditionalInfo = message; // TODO: Change this to proper value
+        const auto title = Text::Get("logger_error_box_title");
+        const auto messageWithAdditionalInfo = fmt::format("{}{}", Text::Get("logger_error_prefix_message"), message);
 
-        const auto result = boxer::show(messageWithAdditionalInfo.c_str(), title, boxer::Style::Error,
+        const auto result = boxer::show(messageWithAdditionalInfo.c_str(), title.c_str(), boxer::Style::Error,
                                         boxer::Buttons::YesNo);
 
         if (result == boxer::Selection::No)

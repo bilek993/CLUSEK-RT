@@ -1,3 +1,4 @@
 {
-   "example":"Polski przykład"
+   "logger_error_box_title":"Wydarzyło się coś strasznego! Kontynuować?",
+   "logger_error_prefix_message":"Podczas wykonywania kodu, wydarzyło się coś strasznego. Możesz kontynuować działanie aplikacji, ale może to prowadzić do nieprzewidywalnego zachowania, które nie zostało celowo zaimplementowane. Czy mimo to chcesz kontynuować?\n\nSzczegółowe informacje:\n"
 }
