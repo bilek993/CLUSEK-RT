@@ -7,9 +7,9 @@
 
 enum LoggerModes : int
 {
-    DEBUG = 0,
-    WARNING = 1,
-    ERROR = 2,
+    DEBUG_MODE = 0,
+    WARNING_MODE = 1,
+    ERROR_MODE = 2,
 };
 
 #endif //CLUSEK_RT_LOGGERMODES_H

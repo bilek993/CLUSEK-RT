@@ -8,10 +8,16 @@
 #include <fmt/os.h>
 #include <fmt/compile.h>
 #include <fmt/chrono.h>
+#include <fmt/color.h>
 
 #include "../StringUtil.h"
+#include "../translations/Text.h"
 
 std::unique_ptr<std::fstream> Logger::File{};
+
+#ifdef _WIN32
+HANDLE Logger::ConsoleHandle{};
+#endif
 
 void Logger::Initialize(const bool enableConsoleLogging, const bool enableFileLogging, const std::string& filePath,
                         const bool enableErrorMessageBox, const LoggerModes loggerLevel)
@@ -32,6 +38,10 @@ void Logger::Initialize(const bool enableConsoleLogging, const bool enableFileLo
             return;
     }
 
+#ifdef _WIN32
+    ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
+
     Initialized = true;
 }
 
@@ -46,7 +56,7 @@ void Logger::Free()
     EnabledConsoleLogging = false;
     EnabledFileLogging = false;
 
-    LoggingLevel = DEBUG;
+    LoggingLevel = DEBUG_MODE;
 
     Initialized = false;
 }
@@ -68,18 +78,18 @@ void Logger::Log(const LoggerModes level, const std::string& message, const std:
                                                  message);
 
         if (EnabledConsoleLogging)
-            LogToConsole(combinedMessage);
+            LogToConsole(combinedMessage, level);
 
         if (EnabledFileLogging)
             LogToFile(combinedMessage);
     }
 
-    if (level == LoggerModes::ERROR && EnableErrorMessageBox)
+    if (level == LoggerModes::ERROR_MODE && EnableErrorMessageBox)
     {
-        const auto title = "Something terrible happened. Proceed?"; // TODO: Title as translated string
-        const auto messageWithAdditionalInfo = message; // TODO: Change this to proper value
+        const auto title = Text::Get("logger_error_box_title");
+        const auto messageWithAdditionalInfo = fmt::format("{}{}", Text::Get("logger_error_prefix_message"), message);
 
-        const auto result = boxer::show(messageWithAdditionalInfo.c_str(), title, boxer::Style::Error,
+        const auto result = boxer::show(messageWithAdditionalInfo.c_str(), title.c_str(), boxer::Style::Error,
                                         boxer::Buttons::YesNo);
 
         if (result == boxer::Selection::No)
@@ -92,13 +102,13 @@ std::string Logger::GeneratePrefix(const LoggerModes loggerLevel)
     std::string levelString;
     switch (loggerLevel)
     {
-    case DEBUG:
+    case DEBUG_MODE:
         levelString = "DBG";
         break;
-    case WARNING:
+    case WARNING_MODE:
         levelString = "WRN";
         break;
-    case ERROR:
+    case ERROR_MODE:
         levelString = "ERR";
         break;
     }
@@ -106,9 +116,39 @@ std::string Logger::GeneratePrefix(const LoggerModes loggerLevel)
     return fmt::format(FMT_COMPILE("{:%H:%M:%S}|{:s}"), fmt::localtime(std::time(nullptr)), levelString);
 }
 
-void Logger::LogToConsole(const std::string& message)
+void Logger::LogToConsole(const std::string& message, const LoggerModes level)
 {
+#ifdef _WIN32
+    switch (level)
+    {
+    case DEBUG_MODE:
+        assert(SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_GREEN));
+        break;
+    case WARNING_MODE:
+        assert(SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_BLUE));
+        break;
+    case ERROR_MODE:
+        assert(SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_RED));
+        break;
+    }
     std::cout << message;
+#else
+    fmt::text_style style;
+    switch (level)
+    {
+    case DEBUG_MODE:
+        style = fg(fmt::color::green);
+        break;
+    case WARNING_MODE:
+        style = fmt::emphasis::underline | fg(fmt::color::yellow);
+        break;
+    case ERROR_MODE:
+        style = fmt::emphasis::bold | fg(fmt::color::red);
+        break;
+    }
+
+    fmt::print(style, message);
+#endif
 }
 
 void Logger::LogToFile(const std::string& message)

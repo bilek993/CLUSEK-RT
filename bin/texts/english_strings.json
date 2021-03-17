@@ -1,3 +1,4 @@
 {
-   "example":"English example"
+   "logger_error_box_title":"Something terrible happened! Proceed?",
+   "logger_error_prefix_message":"During code execution, something terrible happened. You can continue the application, but it can lead to unexpected behaviour that is not intended by the developer. Would you like to continue?\n\nMore information:\n"
 }

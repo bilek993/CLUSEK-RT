@@ -3,16 +3,12 @@
 
 int main()
 {
-    Logger::Initialize(true, false, "logs.txt", true, DEBUG); // TODO: Make configurable
+    Logger::Initialize(true, false, "logs.txt", true, DEBUG_MODE); // TODO: Make configurable
     Text::Initialize({
                              std::make_pair(ENGLISH, "./texts/english_strings.json"),
                              std::make_pair(POLISH, "./texts/polish_strings.json"),
                      }); // TODO: Make configurable
-    Text::SetLanguage(POLISH); // TODO: Make configurable
-
-    LOG_DEBUG("------------------"); // TODO: Remove this!
-    LOG_DEBUG(Text::Get("example")); // TODO: Remove this!
-    LOG_DEBUG("------------------"); // TODO: Remove this!
+    Text::SetLanguage(ENGLISH); // TODO: Make configurable
 
     Text::Free();
     Logger::Free();
