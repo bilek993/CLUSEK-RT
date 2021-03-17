@@ -15,6 +15,8 @@ async function* getFiles(dir) {
 }
 
 (async () => {
+    console.log('Starting formatter...');
+
     const searchPath = process.argv[2] ?? '.';
 
     for await (const filePath of getFiles(searchPath)) {
