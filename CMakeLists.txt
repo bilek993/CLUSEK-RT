@@ -21,9 +21,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
 
-execute_process(COMMAND node ./scripts/js/format_json_files.js ./bin/
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-
 add_executable(
         ${PROJECT_NAME}
         engine/main.cpp
@@ -34,6 +31,11 @@ add_executable(
         engine/common/translations/Text.cpp
         engine/common/translations/Text.h
         engine/common/translations/Language.h)
+
+add_custom_command(
+        TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND node ./scripts/js/format_json_files.js ./bin/
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
