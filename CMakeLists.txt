@@ -25,7 +25,7 @@ execute_process(COMMAND node ./scripts/js/format_json_files.js ./bin/
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(
-        CLUSEK-RT
+        ${PROJECT_NAME}
         engine/main.cpp
         engine/common/debug/Logger.cpp
         engine/common/debug/Logger.h
@@ -46,7 +46,7 @@ add_executable(
 
 add_subdirectory(libraries/fmt)
 
-target_link_libraries(CLUSEK-RT fmt::fmt)
+target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
 include_directories(libraries/fmt/include)
 
@@ -54,7 +54,7 @@ include_directories(libraries/fmt/include)
 
 add_subdirectory(libraries/Boxer)
 
-target_link_libraries(CLUSEK-RT Boxer)
+target_link_libraries(${PROJECT_NAME} Boxer)
 
 include_directories(libraries/Boxer/include)
 
@@ -62,6 +62,6 @@ include_directories(libraries/Boxer/include)
 
 add_subdirectory(libraries/json)
 
-target_link_libraries(CLUSEK-RT nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
 
 include_directories(libraries/json/include)
