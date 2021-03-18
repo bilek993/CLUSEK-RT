@@ -21,6 +21,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
 
+execute_process(COMMAND node ./scripts/js/format_json_files.js ./bin/
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(
         CLUSEK-RT
         engine/main.cpp
