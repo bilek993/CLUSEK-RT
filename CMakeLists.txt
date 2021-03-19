@@ -69,3 +69,11 @@ add_subdirectory(libraries/json)
 target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
 
 include_directories(libraries/json/include)
+
+# EnTT
+
+add_subdirectory(libraries/entt)
+
+target_link_libraries(${PROJECT_NAME} EnTT)
+
+include_directories(libraries/entt/single_include)
