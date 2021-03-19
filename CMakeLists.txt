@@ -32,7 +32,9 @@ add_executable(
         engine/common/translations/Text.h
         engine/common/translations/Language.h
         engine/Engine.cpp
-        engine/Engine.h)
+        engine/Engine.h
+        engine/configuration/ConfigData.h
+        engine/configuration/ConfigMacros.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
