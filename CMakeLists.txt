@@ -30,7 +30,9 @@ add_executable(
         engine/common/StringUtil.h
         engine/common/translations/Text.cpp
         engine/common/translations/Text.h
-        engine/common/translations/Language.h)
+        engine/common/translations/Language.h
+        engine/Engine.cpp
+        engine/Engine.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
@@ -67,3 +69,11 @@ add_subdirectory(libraries/json)
 target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
 
 include_directories(libraries/json/include)
+
+# EnTT
+
+add_subdirectory(libraries/entt)
+
+target_link_libraries(${PROJECT_NAME} EnTT)
+
+include_directories(libraries/entt/single_include)

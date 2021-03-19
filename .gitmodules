@@ -7,3 +7,6 @@
 [submodule "libraries/json"]
 	path = libraries/json
 	url = https://github.com/nlohmann/json.git
+[submodule "libraries/entt"]
+	path = libraries/entt
+	url = https://github.com/skypjack/entt.git
