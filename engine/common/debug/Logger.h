@@ -42,6 +42,8 @@ private:
     inline static bool EnabledFileLogging = false;
     inline static bool EnableErrorMessageBox = false;
 
+    inline static bool ColorsDisabledDueToError = false;
+
     inline static LoggerModes LoggingLevel;
 
 #ifdef _WIN32
