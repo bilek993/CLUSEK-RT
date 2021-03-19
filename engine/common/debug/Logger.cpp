@@ -29,6 +29,8 @@ void Logger::Initialize(const bool enableConsoleLogging, const bool enableFileLo
     EnabledFileLogging = enableFileLogging;
     EnableErrorMessageBox = enableErrorMessageBox;
 
+    ColorsDisabledDueToError = false;
+
     LoggingLevel = loggerLevel;
 
     if (EnabledFileLogging)
@@ -55,6 +57,8 @@ void Logger::Free()
 
     EnabledConsoleLogging = false;
     EnabledFileLogging = false;
+
+    ColorsDisabledDueToError = false;
 
     LoggingLevel = DEBUG_MODE;
 
@@ -119,18 +123,25 @@ std::string Logger::GeneratePrefix(const LoggerModes loggerLevel)
 void Logger::LogToConsole(const std::string& message, const LoggerModes level)
 {
 #ifdef _WIN32
-    switch (level)
+    if (!ColorsDisabledDueToError)
     {
-    case DEBUG_MODE:
-        assert(SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_GREEN));
-        break;
-    case WARNING_MODE:
-        assert(SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_BLUE));
-        break;
-    case ERROR_MODE:
-        assert(SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_RED));
-        break;
+        switch (level)
+        {
+        case DEBUG_MODE:
+            ColorsDisabledDueToError = !SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_GREEN);
+            break;
+        case WARNING_MODE:
+            ColorsDisabledDueToError = !SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_BLUE);
+            break;
+        case ERROR_MODE:
+            ColorsDisabledDueToError = !SetConsoleTextAttribute(ConsoleHandle, FOREGROUND_RED);
+            break;
+        }
+
+        if (ColorsDisabledDueToError)
+            std::cout << "Logger colors disabled due to unknown error!" << std::endl;
     }
+
     std::cout << message;
 #else
     fmt::text_style style;
