@@ -5,6 +5,7 @@ This project uses external dependencies. Those dependencies are split into two c
 ### JavaScript
 
 * [ascii-art](https://www.npmjs.com/package/ascii-art/v/2.5.0)
+* [mustache.js](https://www.npmjs.com/package/mustache/v/4.1.0)
 
 ### C++
 

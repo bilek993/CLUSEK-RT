@@ -8,6 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ascii-art": "^2.5.0"
+    "ascii-art": "2.5.0",
+    "mustache": "4.1.0"
   }
 }
