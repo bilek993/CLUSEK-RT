@@ -17,5 +17,5 @@ const SEARCHED_EXTENSTION = '.json';
           writeFileSync(filePath, formattedData);
       }
     }
-  })()
+  })();
   
