@@ -1,0 +1,10 @@
+//
+// Created by jbili on 20.03.2021.
+//
+
+#ifndef CLUSEK_RT_COMMONMACROS_H
+#define CLUSEK_RT_COMMONMACROS_H
+
+#define GENERATOR_SKIP_THIS_FILE()
+
+#endif //CLUSEK_RT_COMMONMACROS_H

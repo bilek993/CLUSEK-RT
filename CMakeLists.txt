@@ -34,7 +34,8 @@ add_executable(
         engine/Engine.cpp
         engine/Engine.h
         engine/configuration/ConfigData.h
-        engine/configuration/ConfigMacros.h)
+        engine/configuration/ConfigMacros.h
+        engine/common/CommonMacros.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
