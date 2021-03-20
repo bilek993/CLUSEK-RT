@@ -1,18 +1,5 @@
-const { resolve } = require('path');
-const { readdir } = require('fs').promises;
+const { getFiles } = require('./user_modules/files_helper');
 const { readFileSync, writeFileSync } = require('fs');
-
-async function* getFiles(dir) {
-  const dirents = await readdir(dir, { withFileTypes: true });
-  for (const dirent of dirents) {
-    const res = resolve(dir, dirent.name);
-    if (dirent.isDirectory()) {
-      yield* getFiles(res);
-    } else {
-      yield res;
-    }
-  }
-}
 
 (async () => {
     console.log('Starting formatter...');
