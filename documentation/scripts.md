@@ -26,7 +26,7 @@ That comand will result in output:
 This tool has been designed to format JSON files into the standardized form described [here](./resources_standards.md). This tool can be used manually, but it's also connected to the build process and called automatically.  Manual usage example:
 
 ```
-node ./format_json_files.js ../../
+node ./format_json_files.js ../../bin/
 ```
 
 ### generate_config_parser.js
