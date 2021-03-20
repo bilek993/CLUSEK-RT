@@ -7,7 +7,7 @@ Scripts are dedicated tools written in JavaScript. With those tools, developers 
 This tool can be used to generate good looking comments or logs that are easy to find. Example usage:
 
 ```
-node .\generate_ascii_text.js 'CLUSEK-RT`
+node ./generate_ascii_text.js 'CLUSEK-RT`
 ```
 
 That comand will result in output:
@@ -26,5 +26,13 @@ That comand will result in output:
 This tool has been designed to format JSON files into the standardized form described [here](./resources_standards.md). This tool can be used manually, but it's also connected to the build process and called automatically.  Manual usage example:
 
 ```
-node .\format_json_files.js ../../
+node ./format_json_files.js ../../
+```
+
+### generate_config_parser.js
+
+This tool has been designed to generate config loader files due to a lack of reflection mechanism in C++. This tool can be used manually, but it's also connected to the build process and called automatically. Manual usage example:
+
+```
+node ./enerate_config_parser.js ./engine/generated/ ./engine/
 ```
