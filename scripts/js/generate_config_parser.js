@@ -6,14 +6,21 @@ const mustache = require('mustache');
 const TEMPLATE_HEADER_PATH = '/templates/ConfigGeneratorTemplate.h';
 const SKIP_FILE_DECORATOR = 'GENERATOR_SKIP_THIS_FILE';
 const CONFIG_FILE_DECORATOR = 'CONFIG_OBJECT';
+const GUARD_PREFIX = 'CLUSEK_RT_';
 
 function checkIfIsConfigFile(data) {
   return data.includes(CONFIG_FILE_DECORATOR) && !data.includes(SKIP_FILE_DECORATOR);
 }
 
 function generateData(data) {
+  let className = 'TestClass';
+
+  view = {
+    className: className,
+    guardName: GUARD_PREFIX + className.toUpperCase(),
+  };
+
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
-  view = {};
 
   return mustache.render(template, view);
 }
