@@ -6,7 +6,7 @@
 #define CLUSEK_RT_ENGINE_H
 
 
-class Engine
+class Engine final
 {
 public:
     void Initialize();

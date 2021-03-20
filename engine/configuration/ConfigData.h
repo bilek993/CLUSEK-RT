@@ -8,7 +8,7 @@
 #include "ConfigMacros.h"
 
 CONFIG_OBJECT(NAME = ConfigData)
-struct ConfigData
+struct ConfigData final
 {
     CONFIG_PARAMETER(NAME = FilePath, TYPE = std::string)
     std::string FilePath{};
