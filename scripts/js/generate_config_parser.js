@@ -3,7 +3,7 @@ const { standarizePath, STANDARIZED_SPLIT_CHARACTER } = require('./user_modules/
 const { readFileSync, writeFileSync } = require('fs');
 const mustache = require('mustache');
 
-const TEMPLATE_HEADER_PATH = './templates/ConfigGeneratorTemplate.h';
+const TEMPLATE_HEADER_PATH = '/templates/ConfigGeneratorTemplate.h';
 const SKIP_FILE_DECORATOR = 'GENERATOR_SKIP_THIS_FILE';
 const CONFIG_FILE_DECORATOR = 'CONFIG_OBJECT';
 
@@ -12,7 +12,7 @@ function checkIfIsConfigFile(data) {
 }
 
 function generateData(data) {
-  template = readFileSync(TEMPLATE_HEADER_PATH).toString();
+  template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
   view = {};
 
   return mustache.render(template, view);
