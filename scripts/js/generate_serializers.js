@@ -12,10 +12,10 @@ function checkIfIsSerializable(data) {
   return data.includes(SERIALIZER_FILE_DECORATOR) && !data.includes(SKIP_FILE_DECORATOR);
 }
 
-function generateOutputFileData(className) {
+function generateOutputFileData(namespace) {
   view = {
-    className: className,
-    guardName: GUARD_PREFIX + className.toUpperCase() + '_H',
+    namespace: namespace,
+    guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
   };
 
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
@@ -23,11 +23,11 @@ function generateOutputFileData(className) {
   return mustache.render(template, view);
 }
 
-function generateOutputFile(className, outputDir) {
+function generateOutputFile(namespace, outputDir) {
   console.log('Generating output file...');
 
-  let path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + className + '.h';
-  let data = generateOutputFileData(className);
+  let path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + namespace + '.h';
+  let data = generateOutputFileData(namespace);
 
   writeFileSync(path, data);
 
@@ -38,7 +38,7 @@ function generateOutputFile(className, outputDir) {
     console.log('Starting serializer generator...');
 
     const serializerPath = process.argv[2];
-    const serializerClassName = process.argv[3];
+    const serializerNamespace = process.argv[3];
     const searchPath = process.argv[4];
 
     for await (const filePath of getFiles(searchPath)) {
@@ -51,7 +51,7 @@ function generateOutputFile(className, outputDir) {
       }
     }
 
-    generateOutputFile(serializerClassName, serializerPath);
+    generateOutputFile(serializerNamespace, serializerPath);
 
     console.log('Finishing serializer generator...');
   })();
