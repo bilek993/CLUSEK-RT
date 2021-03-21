@@ -35,7 +35,8 @@ add_executable(
         engine/Engine.h
         engine/common/ConfigData.h
         engine/common/generators/SerializationMacros.h
-        engine/common/generators/CommonMacros.h)
+        engine/common/generators/CommonMacros.h
+        engine/generated/ObjectSerializers.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
