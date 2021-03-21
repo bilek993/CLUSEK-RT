@@ -12,11 +12,11 @@ function checkIfIsSerializable(data) {
   return data.includes(SERIALIZER_FILE_DECORATOR) && !data.includes(SKIP_FILE_DECORATOR);
 }
 
-function generateOutputFileData(namespace) {
+function generateOutputFileData(namespace, serializableObjectsData) {
   view = {
     namespace: namespace,
     guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
-    serializableObjects: { objectName: 'ConfigData', includeObjectPath: '..\\common\\ConfigData.h' }, // TODO: Make this configurable and function parameter
+    serializableObjects: serializableObjectsData,
   };
 
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
@@ -24,15 +24,19 @@ function generateOutputFileData(namespace) {
   return mustache.render(template, view);
 }
 
-function generateOutputFile(namespace, outputDir) {
+function generateOutputFile(namespace, outputDir, serializableObjectsData) {
   console.log('Generating output file...');
 
   let path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + namespace + '.h';
-  let data = generateOutputFileData(namespace);
+  let data = generateOutputFileData(namespace, serializableObjectsData);
 
   writeFileSync(path, data);
 
   console.log("Generated new file`" + path + "`!");
+}
+
+function generateObjectData() {
+  return { objectName: 'ConfigData', includeObjectPath: '..\\common\\ConfigData.h' }; // TODO: Change this
 }
 
 (async () => {
@@ -42,17 +46,22 @@ function generateOutputFile(namespace, outputDir) {
   const serializerNamespace = process.argv[3];
   const searchPath = process.argv[4];
 
+  let serializableObjectsData = [];
+
   for await (const filePath of getFiles(searchPath)) {
     if (filePath.toLowerCase().endsWith('.h')) {
       let readFileData = readFileSync(filePath);
 
       if (checkIfIsSerializable(readFileData)) {
         console.log("Found compatible object at '" + filePath + "'...");
+
+        let objectData = generateObjectData();
+        serializableObjectsData.push(objectData);
       }
     }
   }
 
-  generateOutputFile(serializerNamespace, serializerPath);
+  generateOutputFile(serializerNamespace, serializerPath, serializableObjectsData);
 
   console.log('Finishing serializer generator...');
 })();
