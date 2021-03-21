@@ -23,17 +23,17 @@
 namespace {{ namespace }}
 {
 // DESERIALIZERS
-{{ #deserializers }}
+{{ #serializableObjects }}
     void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
     {
         nlohmann::json json;
         fileStream >> json;
     }
-{{ /deserializers }}
+{{ /serializableObjects }}
 
 // SERIALIZERS
-{{ #serializers }}
-{{ /serializers }}
+{{ #serializableObjects }}
+{{ /serializableObjects }}
 };
 
 #endif //{{ guardName }}

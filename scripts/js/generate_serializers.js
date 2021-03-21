@@ -16,8 +16,7 @@ function generateOutputFileData(namespace) {
   view = {
     namespace: namespace,
     guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
-    deserializers: {objectName: 'ConfigData'},
-    serializers: {objectName: 'ConfigData'},
+    serializableObjects: {objectName: 'ConfigData'}, // TODO: Make this configurable and function parameter
   };
 
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
