@@ -36,8 +36,10 @@ function generateOutputFile(namespace, outputDir, serializableObjectsData) {
 }
 
 function generateObjectData(readData, filePath) {
+  const objectName = readData.toString().match(/SERIALIZE_OBJECT\s*\(\s*(\w+)\s*\)/)[1];
+
   return {
-    objectName: 'ConfigData',
+    objectName: objectName,
     includeObjectPath: '..\\common\\ConfigData.h'
   };
 }
