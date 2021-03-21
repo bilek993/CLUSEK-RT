@@ -15,11 +15,25 @@
 #ifndef {{ guardName }}
 #define {{ guardName }}
 
+#include <nlohmann/json.hpp>
+#include <string>
+
 #define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
 
 namespace {{ namespace }}
 {
+// DESERIALIZERS
+{{ #deserializers }}
+    void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
+    {
+        nlohmann::json json;
+        fileStream >> json;
+    }
+{{ /deserializers }}
 
+// SERIALIZERS
+{{ #serializers }}
+{{ /serializers }}
 };
 
 #endif //{{ guardName }}
