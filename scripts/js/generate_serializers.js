@@ -16,7 +16,7 @@ function generateOutputFileData(namespace) {
   view = {
     namespace: namespace,
     guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
-    serializableObjects: {objectName: 'ConfigData'}, // TODO: Make this configurable and function parameter
+    serializableObjects: {objectName: 'ConfigData', includeObjectPath: '..\\common\\ConfigData.h'}, // TODO: Make this configurable and function parameter
   };
 
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
