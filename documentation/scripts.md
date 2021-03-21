@@ -34,5 +34,5 @@ node ./format_json_files.js ../../bin/
 This tool has been designed to generate serializers due to a lack of reflection mechanism in C++. This tool can be used manually, but it's also connected to the build process and called automatically. Manual usage example:
 
 ```
-node ./generate_serializers.js ./engine/generated/ ./engine/
+node ./generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
 ```

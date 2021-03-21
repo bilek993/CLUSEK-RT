@@ -12,12 +12,12 @@
 //
 // ---------------------------------------------------------------------------------------------------------------------
 
-#ifndef CLUSEK_RT_TESTCLASS
-#define CLUSEK_RT_TESTCLASS
+#ifndef CLUSEK_RT_OBJECTSERIALIZERS_H
+#define CLUSEK_RT_OBJECTSERIALIZERS_H
 
-class TestClass final
+class ObjectSerializers final
 {
 
 };
 
-#endif //CLUSEK_RT_TESTCLASS
+#endif //CLUSEK_RT_OBJECTSERIALIZERS_H

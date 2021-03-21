@@ -5,19 +5,17 @@ const mustache = require('mustache');
 
 const TEMPLATE_HEADER_PATH = '/templates/ConfigGeneratorTemplate.h';
 const SKIP_FILE_DECORATOR = 'GENERATOR_SKIP_THIS_FILE';
-const CONFIG_FILE_DECORATOR = 'CONFIG_OBJECT';
+const SERIALIZER_FILE_DECORATOR = 'SERIALIZE_OBJECT';
 const GUARD_PREFIX = 'CLUSEK_RT_';
 
-function checkIfIsConfigFile(data) {
-  return data.includes(CONFIG_FILE_DECORATOR) && !data.includes(SKIP_FILE_DECORATOR);
+function checkIfIsSerializable(data) {
+  return data.includes(SERIALIZER_FILE_DECORATOR) && !data.includes(SKIP_FILE_DECORATOR);
 }
 
-function generateData(data) {
-  let className = 'TestClass';
-
+function generateOutputFileData(className) {
   view = {
     className: className,
-    guardName: GUARD_PREFIX + className.toUpperCase(),
+    guardName: GUARD_PREFIX + className.toUpperCase() + '_H',
   };
 
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
@@ -25,38 +23,36 @@ function generateData(data) {
   return mustache.render(template, view);
 }
 
-function generateOutputPath(filePath, generatorPath) {
-  let standarizedFilePath = standarizePath(filePath);
-  let splittedStandarizedFilePath = standarizedFilePath.split(STANDARIZED_SPLIT_CHARACTER);
-  
-  let standarizedGeneratorPath = standarizePath(generatorPath);
+function generateOutputFile(className, outputDir) {
+  console.log('Generating output file...');
 
-  return standarizedGeneratorPath + splittedStandarizedFilePath[splittedStandarizedFilePath.length - 1];
+  let path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + className + '.h';
+  let data = generateOutputFileData(className);
+
+  writeFileSync(path, data);
+
+  console.log("Generated new file`" + path + "`!");
 }
 
 (async () => {
-    console.log('Starting config generator...');
+    console.log('Starting serializer generator...');
 
-    const generatorPath = process.argv[2];
-    const searchPath = process.argv[3];
+    const serializerPath = process.argv[2];
+    const serializerClassName = process.argv[3];
+    const searchPath = process.argv[4];
 
     for await (const filePath of getFiles(searchPath)) {
       if (filePath.toLowerCase().endsWith('.h')) {
-          let data = readFileSync(filePath);
+          let readFileData = readFileSync(filePath);
 
-          if (checkIfIsConfigFile(data)) {
-              console.log("Found config file at path '" + filePath + "'...");
-
-              let generatedData = generateData(data);
-              let generatedPath = generateOutputPath(filePath, generatorPath);
-
-              writeFileSync(generatedPath, generatedData);
-
-              console.log("Generated new file '" + generatedPath + "' with parser!");
+          if (checkIfIsSerializable(readFileData)) {
+            console.log("Found compatible object at '" + filePath + "'...");
           }
       }
     }
 
-    console.log('Finishing config generator...');
+    generateOutputFile(serializerClassName, serializerPath);
+
+    console.log('Finishing serializer generator...');
   })();
   
