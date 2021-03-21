@@ -15,9 +15,12 @@
 #ifndef {{ guardName }}
 #define {{ guardName }}
 
+#define LOAD_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
+
 class {{ className }} final
 {
-
+public:
+private:
 };
 
 #endif //{{ guardName }}
