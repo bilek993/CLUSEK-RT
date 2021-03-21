@@ -35,8 +35,11 @@ function generateOutputFile(namespace, outputDir, serializableObjectsData) {
   console.log("Generated new file`" + path + "`!");
 }
 
-function generateObjectData() {
-  return { objectName: 'ConfigData', includeObjectPath: '..\\common\\ConfigData.h' }; // TODO: Change this
+function generateObjectData(readData, filePath) {
+  return {
+    objectName: 'ConfigData',
+    includeObjectPath: '..\\common\\ConfigData.h'
+  };
 }
 
 (async () => {
@@ -55,7 +58,7 @@ function generateObjectData() {
       if (checkIfIsSerializable(readFileData)) {
         console.log("Found compatible object at '" + filePath + "'...");
 
-        let objectData = generateObjectData();
+        let objectData = generateObjectData(readFileData, filePath);
         serializableObjectsData.push(objectData);
       }
     }

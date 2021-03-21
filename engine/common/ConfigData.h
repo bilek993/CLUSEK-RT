@@ -7,7 +7,7 @@
 
 #include "generators/SerializationMacros.h"
 
-SERIALIZE_OBJECT(NAME = ConfigData)
+SERIALIZE_OBJECT(ConfigData)
 struct ConfigData final
 {
     SERIALIZE_PARAMETER(FilePath, std::string)
