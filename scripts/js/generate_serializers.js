@@ -16,7 +16,7 @@ function generateOutputFileData(namespace) {
   view = {
     namespace: namespace,
     guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
-    serializableObjects: {objectName: 'ConfigData', includeObjectPath: '..\\common\\ConfigData.h'}, // TODO: Make this configurable and function parameter
+    serializableObjects: { objectName: 'ConfigData', includeObjectPath: '..\\common\\ConfigData.h' }, // TODO: Make this configurable and function parameter
   };
 
   template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
@@ -36,24 +36,23 @@ function generateOutputFile(namespace, outputDir) {
 }
 
 (async () => {
-    console.log('Starting serializer generator...');
+  console.log('Starting serializer generator...');
 
-    const serializerPath = process.argv[2];
-    const serializerNamespace = process.argv[3];
-    const searchPath = process.argv[4];
+  const serializerPath = process.argv[2];
+  const serializerNamespace = process.argv[3];
+  const searchPath = process.argv[4];
 
-    for await (const filePath of getFiles(searchPath)) {
-      if (filePath.toLowerCase().endsWith('.h')) {
-          let readFileData = readFileSync(filePath);
+  for await (const filePath of getFiles(searchPath)) {
+    if (filePath.toLowerCase().endsWith('.h')) {
+      let readFileData = readFileSync(filePath);
 
-          if (checkIfIsSerializable(readFileData)) {
-            console.log("Found compatible object at '" + filePath + "'...");
-          }
+      if (checkIfIsSerializable(readFileData)) {
+        console.log("Found compatible object at '" + filePath + "'...");
       }
     }
+  }
 
-    generateOutputFile(serializerNamespace, serializerPath);
+  generateOutputFile(serializerNamespace, serializerPath);
 
-    console.log('Finishing serializer generator...');
-  })();
-  
+  console.log('Finishing serializer generator...');
+})();
