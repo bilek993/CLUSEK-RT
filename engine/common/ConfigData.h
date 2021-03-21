@@ -5,12 +5,12 @@
 #ifndef CLUSEK_RT_CONFIGDATA_H
 #define CLUSEK_RT_CONFIGDATA_H
 
-#include "ConfigMacros.h"
+#include "generators/SerializationMacros.h"
 
-CONFIG_OBJECT(NAME = ConfigData)
+SERIALIZE_OBJECT(NAME = ConfigData)
 struct ConfigData final
 {
-    CONFIG_PARAMETER(NAME = FilePath, TYPE = std::string)
+    SERIALIZE_PARAMETER(FilePath, std::string)
     std::string FilePath{};
 };
 

@@ -29,10 +29,10 @@ This tool has been designed to format JSON files into the standardized form desc
 node ./format_json_files.js ../../bin/
 ```
 
-### generate_config_parser.js
+### generate_serializers.js
 
-This tool has been designed to generate config loader files due to a lack of reflection mechanism in C++. This tool can be used manually, but it's also connected to the build process and called automatically. Manual usage example:
+This tool has been designed to generate serializers due to a lack of reflection mechanism in C++. This tool can be used manually, but it's also connected to the build process and called automatically. Manual usage example:
 
 ```
-node ./generate_config_parser.js ./engine/generated/ ./engine/
+node ./generate_serializers.js ./engine/generated/ ./engine/
 ```

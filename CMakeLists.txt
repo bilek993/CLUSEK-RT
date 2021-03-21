@@ -33,9 +33,9 @@ add_executable(
         engine/common/translations/Language.h
         engine/Engine.cpp
         engine/Engine.h
-        engine/configuration/ConfigData.h
-        engine/configuration/ConfigMacros.h
-        engine/common/CommonMacros.h)
+        engine/common/ConfigData.h
+        engine/common/generators/SerializationMacros.h
+        engine/common/generators/CommonMacros.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
