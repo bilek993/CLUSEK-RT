@@ -13,13 +13,13 @@ function checkIfIsSerializable(data) {
 }
 
 function generateOutputFileData(namespace, serializableObjectsData) {
-  view = {
+  const view = {
     namespace: namespace,
     guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
     serializableObjects: serializableObjectsData,
   };
 
-  template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
+  const template = readFileSync(__dirname + TEMPLATE_HEADER_PATH).toString();
 
   return mustache.render(template, view);
 }
@@ -27,8 +27,8 @@ function generateOutputFileData(namespace, serializableObjectsData) {
 function generateOutputFile(namespace, outputDir, serializableObjectsData) {
   console.log('Generating output file...');
 
-  let path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + namespace + '.h';
-  let data = generateOutputFileData(namespace, serializableObjectsData);
+  const path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + namespace + '.h';
+  const data = generateOutputFileData(namespace, serializableObjectsData);
 
   writeFileSync(path, data);
 
@@ -53,12 +53,12 @@ function generateObjectData(readData, filePath) {
 
   for await (const filePath of getFiles(searchPath)) {
     if (filePath.toLowerCase().endsWith('.h')) {
-      let readFileData = readFileSync(filePath);
+      const readFileData = readFileSync(filePath);
 
       if (checkIfIsSerializable(readFileData)) {
         console.log("Found compatible object at '" + filePath + "'...");
 
-        let objectData = generateObjectData(readFileData, filePath);
+        const objectData = generateObjectData(readFileData, filePath);
         serializableObjectsData.push(objectData);
       }
     }
