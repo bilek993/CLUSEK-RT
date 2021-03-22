@@ -38,10 +38,19 @@ function generateOutputFile(namespace, outputDir, serializableObjectsData) {
 function generateObjectData(readData, filePath) {
   const objectName = readData.toString().match(/SERIALIZE_OBJECT\s*\(\s*(\w+)\s*\)/)[1];
 
+  const serializableFieldsRegex = /SERIALIZE_PARAMETER\s*\(\s*(\w+)\s*\,\s*([a-zA-Z0-9:]+)\s*\)/g;
+
+  let match, serializableFields = [];
+  while (match = serializableFieldsRegex.exec(readData.toString())) {
+    serializableFields.push({field: match[1], type: match[2]});
+  }
+
   return {
     objectName: objectName,
-    includeObjectPath: '..\\common\\ConfigData.h'
+    includeObjectPath: '..\\common\\ConfigData.h',
+    serializableFields: serializableFields,
   };
+
 }
 
 (async () => {

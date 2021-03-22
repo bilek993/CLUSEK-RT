@@ -32,6 +32,10 @@ namespace {{ namespace }}
     {
         nlohmann::json json;
         fileStream >> json;
+
+        {{ #serializableFields }}
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, {{ field }}, {{ type }});
+        {{ /serializableFields }}
     }
 {{ /serializableObjects }}
 
