@@ -10,7 +10,7 @@
 SERIALIZE_OBJECT(ConfigData)
 struct ConfigData final
 {
-    SERIALIZE_PARAMETER(FilePath, std::string)
+    SERIALIZE_FIELD(FilePath, std::string)
     std::string FilePath{};
 };
 
