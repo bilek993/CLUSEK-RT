@@ -30,7 +30,7 @@
 
 namespace {{ namespace }}
 {
-// DESERIALIZERS
+    // DESERIALIZERS
 {{ #serializableObjects }}
     void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
     {
@@ -43,7 +43,7 @@ namespace {{ namespace }}
     }
 {{ /serializableObjects }}
 
-// SERIALIZERS
+    // SERIALIZERS
 {{ #serializableObjects }}
     void Serialize(std::ofstream& fileStream, const {{ objectName }}& object)
     {
