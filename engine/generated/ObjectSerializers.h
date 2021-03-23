@@ -34,7 +34,14 @@ namespace ObjectSerializers
         nlohmann::json json;
         fileStream >> json;
 
-        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, FilePath, std::string);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, LoggerPath, std::string);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, LoggerLevel, int);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, EnableLoggingToConsole, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, EnableLoggingToFile, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, ShowMessageBoxOnError, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, TextEnglishPath, std::string);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, TextPolishPath, std::string);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, TextDefaultLanguageId, std::string);
     }
 
     // SERIALIZERS
@@ -42,7 +49,14 @@ namespace ObjectSerializers
     {
         nlohmann::json json;
 
-        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, FilePath);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, LoggerPath);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, LoggerLevel);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, EnableLoggingToConsole);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, EnableLoggingToFile);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, ShowMessageBoxOnError);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, TextEnglishPath);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, TextPolishPath);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, TextDefaultLanguageId);
 
         fileStream << std::setw(3) << json;
     }

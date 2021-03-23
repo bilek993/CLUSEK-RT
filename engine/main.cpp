@@ -1,15 +1,26 @@
 #include "common/debug/Logger.h"
 #include "common/translations/Text.h"
 #include "Engine.h"
+#include "common/ConfigData.h"
+#include "generated/ObjectSerializers.h"
 
 int main()
 {
-    Logger::Initialize(true, false, "logs.txt", true, DEBUG_MODE); // TODO: Make configurable
+    ConfigData configurationData{};
+    std::ifstream configurationFile("./configuration.json");
+    ObjectSerializers::Deserialize(configurationFile, configurationData);
+
+    Logger::Initialize(configurationData.EnableLoggingToConsole,
+                       configurationData.EnableLoggingToFile,
+                       configurationData.LoggerPath,
+                       configurationData.ShowMessageBoxOnError,
+                       static_cast<LoggerModes>(configurationData.LoggerLevel));
+
     Text::Initialize({
-                             std::make_pair(ENGLISH, "./texts/english_strings.json"),
-                             std::make_pair(POLISH, "./texts/polish_strings.json"),
-                     }); // TODO: Make configurable
-    Text::SetLanguage(ENGLISH); // TODO: Make configurable
+                             std::make_pair(ENGLISH, configurationData.TextEnglishPath),
+                             std::make_pair(POLISH, configurationData.TextPolishPath),
+                     });
+    Text::SetLanguage(static_cast<Language>(configurationData.TextDefaultLanguageId[0]));
 
     try
     {
