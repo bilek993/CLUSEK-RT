@@ -15,9 +15,37 @@
 #ifndef CLUSEK_RT_OBJECTSERIALIZERS_H
 #define CLUSEK_RT_OBJECTSERIALIZERS_H
 
-class ObjectSerializers final
-{
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <ostream>
+#include <string>
+#include <iomanip>
 
+#include "..\common\ConfigData.h"
+
+#define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
+#define SAVE_PRIMITIVE_DATA_TO_JSON(JSON, OBJECT, FIELD) JSON[#FIELD] = OBJECT.FIELD;
+
+namespace ObjectSerializers
+{
+    // DESERIALIZERS
+    void Deserialize(std::ifstream& fileStream, ConfigData& object)
+    {
+        nlohmann::json json;
+        fileStream >> json;
+
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, FilePath, std::string);
+    }
+
+    // SERIALIZERS
+    void Serialize(std::ofstream& fileStream, const ConfigData& object)
+    {
+        nlohmann::json json;
+
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, FilePath);
+
+        fileStream << std::setw(3) << json;
+    }
 };
 
 #endif //CLUSEK_RT_OBJECTSERIALIZERS_H
