@@ -2,6 +2,7 @@ const { getFiles } = require('./user_modules/files_helper');
 const { standarizePath, STANDARIZED_SPLIT_CHARACTER } = require('./user_modules/standarization');
 const { readFileSync, writeFileSync } = require('fs');
 const mustache = require('mustache');
+const path = require('path');
 
 const TEMPLATE_HEADER_PATH = '/templates/ConfigGeneratorTemplate.h';
 const SKIP_FILE_DECORATOR = 'GENERATOR_SKIP_THIS_FILE';
@@ -35,8 +36,9 @@ function generateOutputFile(namespace, outputDir, serializableObjectsData) {
   console.log("Generated new file`" + path + "`!");
 }
 
-function generateObjectData(readData, filePath) {
+function generateObjectData(readData, pathToSerializer, pathToSerializedObject) {
   const objectName = readData.toString().match(/SERIALIZE_OBJECT\s*\(\s*(\w+)\s*\)/)[1];
+  const includeObjectPath = path.relative(pathToSerializer, pathToSerializedObject);
 
   const serializableFieldsRegex = /SERIALIZE_FIELD\s*\(\s*(\w+)\s*\,\s*([a-zA-Z0-9:]+)\s*\)/g;
 
@@ -47,7 +49,7 @@ function generateObjectData(readData, filePath) {
 
   return {
     objectName: objectName,
-    includeObjectPath: '..\\common\\ConfigData.h',
+    includeObjectPath: includeObjectPath,
     serializableFields: serializableFields,
   };
 
@@ -69,7 +71,7 @@ function generateObjectData(readData, filePath) {
       if (checkIfIsSerializable(readFileData)) {
         console.log("Found compatible object at '" + filePath + "'...");
 
-        const objectData = generateObjectData(readFileData, filePath);
+        const objectData = generateObjectData(readFileData, serializerPath, filePath);
         serializableObjectsData.push(objectData);
       }
     }
