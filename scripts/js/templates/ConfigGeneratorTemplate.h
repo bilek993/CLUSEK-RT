@@ -15,14 +15,18 @@
 #ifndef {{ guardName }}
 #define {{ guardName }}
 
+#include <fstream>
 #include <nlohmann/json.hpp>
+#include <ostream>
 #include <string>
+#include <iomanip>
 
 {{ #serializableObjects }}
 #include "{{ includeObjectPath }}"
 {{ /serializableObjects }}
 
 #define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
+#define SAVE_PRIMITIVE_DATA_TO_JSON(JSON, OBJECT, FIELD) JSON[#FIELD] = OBJECT.FIELD;
 
 namespace {{ namespace }}
 {
@@ -41,6 +45,16 @@ namespace {{ namespace }}
 
 // SERIALIZERS
 {{ #serializableObjects }}
+    void Serialize(std::ofstream& fileStream, const {{ objectName }}& object)
+    {
+        nlohmann::json json;
+
+        {{ #serializableFields }}
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, {{ field }});
+        {{ /serializableFields }}
+
+        fileStream << std::setw(3) << json;
+    }
 {{ /serializableObjects }}
 };
 
