@@ -1,5 +1,4 @@
 const { getFiles } = require('./user_modules/files_helper');
-const { standarizePath, STANDARIZED_SPLIT_CHARACTER } = require('./user_modules/standarization');
 const { readFileSync, writeFileSync } = require('fs');
 const mustache = require('mustache');
 const path = require('path');
@@ -28,12 +27,12 @@ function generateOutputFileData(namespace, serializableObjectsData) {
 function generateOutputFile(namespace, outputDir, serializableObjectsData) {
   console.log('Generating output file...');
 
-  const path = standarizePath(outputDir) + STANDARIZED_SPLIT_CHARACTER + namespace + '.h';
+  const pathToOutputFile = path.join(outputDir, (namespace + '.h'));
   const data = generateOutputFileData(namespace, serializableObjectsData);
 
-  writeFileSync(path, data);
+  writeFileSync(pathToOutputFile, data);
 
-  console.log("Generated new file`" + path + "`!");
+  console.log("Generated new file`" + pathToOutputFile + "`!");
 }
 
 function generateObjectData(readData, pathToSerializer, pathToSerializedObject) {
