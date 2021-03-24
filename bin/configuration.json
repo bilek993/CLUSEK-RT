@@ -1,0 +1,10 @@
+{
+   "LoggerPath": "./logs.txt",
+   "LoggerLevel": 0,
+   "EnableLoggingToConsole": true,
+   "EnableLoggingToFile": false,
+   "ShowMessageBoxOnError": true,
+   "TextEnglishPath": "./texts/english_strings.json",
+   "TextPolishPath": "./texts/polish_strings.json",
+   "TextDefaultLanguageId": "E"
+}

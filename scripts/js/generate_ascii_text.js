@@ -1,4 +1,7 @@
 const art = require('ascii-art');
+const { STANDARIZED_NEW_LINE_CHARACTER } = require('./user_modules/standarization');
+
+const DEFAULT_FONT = 'Doom';
 
 if (process.argv.length < 3) {
     console.error('\x1b[31m%s\x1b[0m', 'Failed!');
@@ -17,8 +20,8 @@ const inputString = process.argv[2].replace(' ', '   ');
 const opening = process.argv[3] ?? '';
 const closing = process.argv[4] ?? '';
 
-art.font(inputString, 'Doom', function (error, rendered) {
-    let splittedText = rendered.split('\n');
+art.font(inputString, DEFAULT_FONT, function (error, rendered) {
+    let splittedText = rendered.split(STANDARIZED_NEW_LINE_CHARACTER);
     splittedText.forEach((value) => {
         if (value.trim().length != 0) {
             console.log(opening + value + closing);

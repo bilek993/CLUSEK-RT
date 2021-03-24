@@ -32,12 +32,21 @@ add_executable(
         engine/common/translations/Text.h
         engine/common/translations/Language.h
         engine/Engine.cpp
-        engine/Engine.h)
+        engine/Engine.h
+        engine/common/ConfigData.h
+        engine/common/generators/SerializationMacros.h
+        engine/common/generators/CommonMacros.h
+        engine/generated/ObjectSerializers.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND node ./scripts/js/format_json_files.js ./bin/
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_command(
+        OUTPUT ./engine/generated/ObjectSerializers.h
+        COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
