@@ -22,7 +22,7 @@
 #include <iomanip>
 
 {{ #serializableObjects }}
-#include "{{ includeObjectPath }}"
+#include "{{{ includeObjectPath }}}"
 {{ /serializableObjects }}
 
 #define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
