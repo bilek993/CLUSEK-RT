@@ -41,12 +41,12 @@ add_executable(
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND node ./scripts/js/format_json_files.js ./bin/
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_custom_command(
         OUTPUT ./engine/generated/ObjectSerializers.h
         COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
