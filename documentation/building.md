@@ -21,6 +21,22 @@ git submodule init
 git submodule update
 ```
 
+### Acquiring script dependencies
+
+This project uses dedicated scripts written in JavaScript for a better development experience. Those scripts can be downloaded from the external dependencies using the `npm` tool.
+
+We need to start by moving opening the terminal and change the directory to the main scripts directory. If you are already in the main project folder then you can just type:
+
+```
+cd ./scripts/js/
+```
+
+Next install all dependencies like this:
+
+```
+npm install
+```
+
 ### Building on Linux
 
 If you are working on Windows, then you can skip this section.
