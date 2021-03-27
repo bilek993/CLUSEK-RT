@@ -2,28 +2,40 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 
-console.log('Preparing CLUSEK-RT to redistribution...');
+function addExecutableFile(archive, binPath, projectName) {
+    let inputFileName = process.platform == 'win32' ? 'CLUSEK-RT.exe' : 'CLUSEK-RT';
+    let outputFileName = projectName + (process.platform == 'win32' ? '.exe' : '');
 
-if (process.argv.length < 3) {
-    console.error('\x1b[31m%s\x1b[0m', 'Failed! Path to bin folder not provided!');
-    return;
+    archive.file(binPath + '/' + inputFileName, { prefix: projectName, name: outputFileName });
 }
 
-const binPath = process.argv[2];
-const projectVersion = process.argv[3] ?? '1.0.0';
-const projectName = process.argv[4] ?? 'CLUSEK-RT';
+function tryPack() {
+    console.log('Preparing CLUSEK-RT to redistribution...');
 
-const output = fs.createWriteStream(projectName + '-' + projectVersion + '.zip');
-const archive = archiver('zip', {
-    zlib: { level: 9 }
-});
+    if (process.argv.length < 3) {
+        console.error('\x1b[31m%s\x1b[0m', 'Failed! Path to bin folder not provided!');
+        return;
+    }
 
-archive.on('warning', (err) => console.log(err));
-archive.on('error', (err) => { throw err });
-output.on('close', () => console.log('Finished with saving ' + archive.pointer() + ' total bytes.'));
+    const binPath = process.argv[2];
+    const projectVersion = process.argv[3] ?? '1.0.0';
+    const projectName = process.argv[4] ?? 'CLUSEK-RT';
 
-archive.pipe(output);
+    const output = fs.createWriteStream(projectName + '-' + projectVersion + '.zip');
+    const archive = archiver('zip', {
+        zlib: { level: 9 }
+    });
 
-archive.directory(binPath, projectName);
+    archive.on('warning', (err) => console.log(err));
+    archive.on('error', (err) => { throw err });
+    output.on('close', () => console.log('Finished with saving ' + archive.pointer() + ' total bytes.'));
 
-archive.finalize();
+    archive.pipe(output);
+
+    archive.directory(binPath + '/data/', projectName + '/data/');
+    addExecutableFile(archive, binPath, projectName);
+
+    archive.finalize();
+}
+
+tryPack();
