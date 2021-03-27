@@ -24,6 +24,6 @@ output.on('close', () => console.log('Finished with saving ' + archive.pointer()
 
 archive.pipe(output);
 
-archive.directory(binPath, false);
+archive.directory(binPath, projectName);
 
 archive.finalize();
