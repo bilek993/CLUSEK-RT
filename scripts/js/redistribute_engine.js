@@ -2,6 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 
+function addDataDirectory(archive, binPath, projectName) {
+    archive.directory(binPath + '/data/', projectName + '/data/');
+}
+
 function addExecutableFile(archive, binPath, projectName) {
     let inputFileName = process.platform == 'win32' ? 'CLUSEK-RT.exe' : 'CLUSEK-RT';
     let outputFileName = projectName + (process.platform == 'win32' ? '.exe' : '');
@@ -32,7 +36,7 @@ function tryPack() {
 
     archive.pipe(output);
 
-    archive.directory(binPath + '/data/', projectName + '/data/');
+    addDataDirectory(archive, binPath, projectName);
     addExecutableFile(archive, binPath, projectName);
 
     archive.finalize();
