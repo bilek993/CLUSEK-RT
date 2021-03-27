@@ -4,7 +4,7 @@
    "EnableLoggingToConsole": true,
    "EnableLoggingToFile": false,
    "ShowMessageBoxOnError": true,
-   "TextEnglishPath": "./texts/english_strings.json",
-   "TextPolishPath": "./texts/polish_strings.json",
+   "TextEnglishPath": "./data/texts/english_strings.json",
+   "TextPolishPath": "./data/texts/polish_strings.json",
    "TextDefaultLanguageId": "E"
 }
