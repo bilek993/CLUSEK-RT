@@ -78,7 +78,7 @@ void Logger::Log(const LoggerModes level, const std::string& message, const std:
     {
         const auto prefix = GeneratePrefix(level);
         const auto filename = StringUtil::FindFilename(file);
-        const auto combinedMessage = fmt::format(FMT_COMPILE("{}|{}|{}|{}|{}\n"), prefix, filename, function, line,
+        const auto combinedMessage = fmt::format(FMT_COMPILE("{}|{}|{}|{}|{}"), prefix, filename, function, line,
                                                  message);
 
         if (EnabledConsoleLogging)
@@ -142,7 +142,7 @@ void Logger::LogToConsole(const std::string& message, const LoggerModes level)
             std::cout << "Logger colors disabled due to unknown error!" << std::endl;
     }
 
-    std::cout << message;
+    std::cout << message << std::endl;
 #else
     fmt::text_style style;
     switch (level)
@@ -164,5 +164,5 @@ void Logger::LogToConsole(const std::string& message, const LoggerModes level)
 
 void Logger::LogToFile(const std::string& message)
 {
-    *File << message;
+    *File << message << std::endl;
 }
