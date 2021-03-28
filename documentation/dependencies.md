@@ -6,6 +6,7 @@ This project uses external dependencies. Those dependencies are split into two c
 
 * [ascii-art](https://www.npmjs.com/package/ascii-art/v/2.5.0)
 * [mustache.js](https://www.npmjs.com/package/mustache/v/4.1.0)
+* [archiver](https://www.npmjs.com/package/archiver/v/5.3.0)
 
 ### C++
 

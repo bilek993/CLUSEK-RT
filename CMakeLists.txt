@@ -1,12 +1,3 @@
-#  _____ ___  ___        _
-# /  __ \|  \/  |       | |
-# | /  \/| .  . |  __ _ | | __  ___
-# | |    | |\/| | / _` || |/ / / _ \
-# | \__/\| |  | || (_| ||   < |  __/
-#  \____/\_|  |_/ \__,_||_|\_\ \___|
-
-cmake_minimum_required(VERSION 3.17)
-
 #  _____  _      _   _  _____  _____  _   __        ______  _____
 # /  __ \| |    | | | |/  ___||  ___|| | / /        | ___ \|_   _|
 # | /  \/| |    | | | |\ `--. | |__  | |/ /  ______ | |_/ /  | |
@@ -14,10 +5,15 @@ cmake_minimum_required(VERSION 3.17)
 # | \__/\| |____| |_| |/\__/ /| |___ | |\  \        | |\ \   | |
 #  \____/\_____/ \___/ \____/ \____/ \_| \_/        \_| \_|  \_/
 
+cmake_minimum_required(VERSION 3.17)
+
 project(CLUSEK-RT)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
 

@@ -8,6 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^5.3.0",
     "ascii-art": "2.5.0",
     "mustache": "4.1.0"
   }

@@ -7,7 +7,7 @@
 int main()
 {
     ConfigData configurationData{};
-    std::ifstream configurationFile("./configuration.json");
+    std::ifstream configurationFile("./data/configuration.json");
     ObjectSerializers::Deserialize(configurationFile, configurationData);
 
     Logger::Initialize(configurationData.EnableLoggingToConsole,

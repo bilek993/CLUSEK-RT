@@ -7,3 +7,7 @@ cmake-build/
 
 # Javascript
 scripts/js/**/node_modules/*
+
+# CLUSEK-RT
+bin/CLUSEK-RT.*
+bin/CLUSEK-RT
