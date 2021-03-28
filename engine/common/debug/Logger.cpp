@@ -159,6 +159,7 @@ void Logger::LogToConsole(const std::string& message, const LoggerModes level)
     }
 
     fmt::print(style, message);
+    std::putc('\n', stdout);
 #endif
 }
 
