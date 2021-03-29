@@ -25,7 +25,7 @@ git submodule update
 
 This project uses dedicated scripts written in JavaScript for a better development experience. Those scripts can be downloaded from the external dependencies using the `npm` tool.
 
-We need to start by moving opening the terminal and change the directory to the main scripts directory. If you are already in the main project folder then you can just type:
+We need to start by opening the terminal and changing the directory to the main scripts folder. If you are already in the main project folder then you can just type:
 
 ```
 cd ./scripts/js/
