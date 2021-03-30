@@ -27,7 +27,7 @@ int main()
         LOG_DEBUG("Preparing CLUSEK-RT engine...");
 
         Engine engine{};
-        engine.Initialize();
+        engine.Initialize(configurationData);
 
         while (engine.ShouldUpdate())
             engine.Update();

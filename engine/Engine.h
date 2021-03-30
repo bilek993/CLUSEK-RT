@@ -10,11 +10,12 @@
 
 #include "ecs/systems/BaseSystem.h"
 #include "common/Timer.h"
+#include "common/ConfigData.h"
 
 class Engine final
 {
 public:
-    void Initialize();
+    void Initialize(const ConfigData& configData);
     bool ShouldUpdate();
     void Update();
 
@@ -30,6 +31,8 @@ private:
     void PrepareTimer();
 
     Timer UpdateTimer{};
+
+    ConfigData ConfigurationData;
 
     std::vector<std::pair<std::shared_ptr<BaseSystem>, std::string>> Systems{};
 };

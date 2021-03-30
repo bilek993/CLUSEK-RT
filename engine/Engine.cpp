@@ -7,9 +7,11 @@
 #include "ecs/systems/RenderSystem.h"
 #include "common/debug/Logger.h"
 
-void Engine::Initialize()
+void Engine::Initialize(const ConfigData& configData)
 {
     LOG_DEBUG("Staring engine initialization process...");
+
+    ConfigurationData = configData;
 
     CreateSystems();
     StartSystems();
