@@ -4,9 +4,17 @@
 
 #include "Engine.h"
 
+#include "ecs/systems/RenderSystem.h"
+#include "common/debug/Logger.h"
+
 void Engine::Initialize()
 {
-    // TODO: Add proper logic here
+    LOG_DEBUG("Staring engine initialization process...");
+
+    CreateSystems();
+    StartSystems();
+
+    LOG_DEBUG("Engine initialization finished!");
 }
 
 bool Engine::ShouldUpdate()
@@ -16,5 +24,19 @@ bool Engine::ShouldUpdate()
 
 void Engine::Update()
 {
-    // TODO: Add proper logic here
+    for (auto& system : Systems)
+        system.first->Update(0.0F); // TODO: Add delta time passing
+}
+
+void Engine::CreateSystems()
+{
+    Systems = {
+            std::make_pair(std::make_unique<RenderSystem>(), "RenderSystem"),
+    };
+}
+
+void Engine::StartSystems()
+{
+    for (auto& system : Systems)
+        system.first->Start();
 }
