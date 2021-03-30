@@ -11,5 +11,21 @@ void BaseSystem::Start()
 
 void BaseSystem::Update(float deltaTime)
 {
-    UpdateSystem(deltaTime);
+    if (Enabled)
+        UpdateSystem(deltaTime);
+}
+
+void BaseSystem::Enable()
+{
+    Enabled = true;
+}
+
+void BaseSystem::Disable()
+{
+    Enabled = false;
+}
+
+bool BaseSystem::IsEnabled() const
+{
+    return Enabled;
 }

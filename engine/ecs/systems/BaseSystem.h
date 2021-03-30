@@ -13,11 +13,18 @@ public:
     void Start();
     void Update(float deltaTime);
 
+    void Enable();
+    void Disable();
+    [[nodiscard]] bool IsEnabled() const;
+
     virtual std::string GetName() = 0;
 
 protected:
     virtual void StartSystem() = 0;
     virtual void UpdateSystem(float deltaTime) = 0;
+
+private:
+    bool Enabled = true;
 };
 
 
