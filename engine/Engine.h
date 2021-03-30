@@ -24,6 +24,9 @@ private:
 
     void UpdateSystems(float deltaTime);
 
+    template<class T>
+    void RegisterNewSystem(const std::string& name);
+
     void PrepareTimer();
 
     Timer UpdateTimer{};
