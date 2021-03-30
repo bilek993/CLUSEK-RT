@@ -3,3 +3,13 @@
 //
 
 #include "RenderSystem.h"
+
+void RenderSystem::StartSystem()
+{
+
+}
+
+void RenderSystem::UpdateSystem(float deltaTime)
+{
+
+}

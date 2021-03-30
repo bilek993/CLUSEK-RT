@@ -8,7 +8,13 @@
 
 class BaseSystem
 {
+public:
+    void Start();
+    void Update(float deltaTime);
 
+protected:
+    virtual void StartSystem() = 0;
+    virtual void UpdateSystem(float deltaTime) = 0;
 };
 
 

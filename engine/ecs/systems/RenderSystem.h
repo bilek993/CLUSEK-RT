@@ -9,7 +9,9 @@
 
 class RenderSystem : public BaseSystem
 {
-
+protected:
+    void StartSystem() override;
+    void UpdateSystem(float deltaTime) override;
 };
 
 

@@ -3,3 +3,15 @@
 //
 
 #include "BaseSystem.h"
+
+void BaseSystem::Start()
+{
+    StartSystem();
+}
+
+void BaseSystem::Update(float deltaTime)
+{
+    UpdateSystem(deltaTime);
+}
+
+
