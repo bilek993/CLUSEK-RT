@@ -4,6 +4,11 @@
 
 #include "RenderSystem.h"
 
+std::string RenderSystem::GetName()
+{
+    return "Render System";
+}
+
 void RenderSystem::StartSystem()
 {
 
@@ -12,9 +17,4 @@ void RenderSystem::StartSystem()
 void RenderSystem::UpdateSystem(float deltaTime)
 {
 
-}
-
-std::string RenderSystem::GetName()
-{
-    return "Render System";
 }
