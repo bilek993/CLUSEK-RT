@@ -26,8 +26,7 @@ bool Engine::ShouldUpdate()
 
 void Engine::Update()
 {
-    for (auto& system : Systems)
-        system.first->Update(0.0F); // TODO: Add delta time passing
+    UpdateSystems(UpdateTimer.GetDeltaTimeAndRestart());
 }
 
 void Engine::CreateSystems()
@@ -39,13 +38,14 @@ void Engine::CreateSystems()
 
 void Engine::StartSystems()
 {
-    UpdateSystems(UpdateTimer.GetDeltaTimeAndRestart());
+    for (auto& system : Systems)
+        system.first->Start();
 }
 
 void Engine::UpdateSystems(float deltaTime)
 {
     for (auto& system : Systems)
-        system.first->Start();
+        system.first->Update(deltaTime);
 }
 
 void Engine::PrepareTimer()
