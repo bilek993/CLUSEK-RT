@@ -33,26 +33,21 @@ void Engine::Update()
 
 void Engine::CreateSystems()
 {
-    RegisterNewSystem<RenderSystem>("Render System");
+    Systems = {
+            std::make_shared<RenderSystem>(),
+    };
 }
 
 void Engine::StartSystems()
 {
     for (auto& system : Systems)
-        system.first->Start();
+        system->Start();
 }
 
 void Engine::UpdateSystems(float deltaTime)
 {
     for (auto& system : Systems)
-        system.first->Update(deltaTime);
-}
-
-template<class T>
-void Engine::RegisterNewSystem(const std::string& name)
-{
-    std::pair<std::shared_ptr<BaseSystem>, std::string> system = std::make_pair(std::make_unique<T>(), name);
-    Systems.emplace_back(system);
+        system->Update(deltaTime);
 }
 
 void Engine::PrepareTimer()

@@ -9,6 +9,9 @@
 
 class RenderSystem : public BaseSystem
 {
+public:
+    std::string GetName() override;
+
 protected:
     void StartSystem() override;
     void UpdateSystem(float deltaTime) override;

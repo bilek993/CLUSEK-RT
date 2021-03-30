@@ -13,3 +13,8 @@ void RenderSystem::UpdateSystem(float deltaTime)
 {
 
 }
+
+std::string RenderSystem::GetName()
+{
+    return "Render System";
+}

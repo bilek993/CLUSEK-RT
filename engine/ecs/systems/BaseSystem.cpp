@@ -13,5 +13,3 @@ void BaseSystem::Update(float deltaTime)
 {
     UpdateSystem(deltaTime);
 }
-
-

@@ -25,16 +25,13 @@ private:
 
     void UpdateSystems(float deltaTime);
 
-    template<class T>
-    void RegisterNewSystem(const std::string& name);
-
     void PrepareTimer();
 
     Timer UpdateTimer{};
 
-    ConfigData ConfigurationData;
+    ConfigData ConfigurationData{};
 
-    std::vector<std::pair<std::shared_ptr<BaseSystem>, std::string>> Systems{};
+    std::vector<std::shared_ptr<BaseSystem>> Systems{};
 };
 
 
