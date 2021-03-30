@@ -36,7 +36,9 @@ add_executable(
         engine/ecs/systems/RenderSystem.cpp
         engine/ecs/systems/RenderSystem.h
         engine/ecs/systems/BaseSystem.cpp
-        engine/ecs/systems/BaseSystem.h)
+        engine/ecs/systems/BaseSystem.h
+        engine/common/Timer.cpp
+        engine/common/Timer.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
