@@ -27,7 +27,7 @@ private:
 
     void PrepareTimer();
 
-    Timer UpdateTimer{};
+    Timer DeltaTimer{};
 
     ConfigData ConfigurationData{};
 

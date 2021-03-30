@@ -28,7 +28,7 @@ bool Engine::ShouldUpdate()
 
 void Engine::Update()
 {
-    UpdateSystems(UpdateTimer.GetDeltaTimeAndRestart());
+    UpdateSystems(DeltaTimer.GetDeltaTimeAndRestart());
 }
 
 void Engine::CreateSystems()
@@ -52,7 +52,7 @@ void Engine::UpdateSystems(float deltaTime)
 
 void Engine::PrepareTimer()
 {
-    LOG_DEBUG("Preparing timer for updating systems...");
-    UpdateTimer.Restart();
+    LOG_DEBUG("Preparing delta timer to be used in systems...");
+    DeltaTimer.Restart();
 }
 
