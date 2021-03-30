@@ -14,6 +14,8 @@ void Engine::Initialize()
     CreateSystems();
     StartSystems();
 
+    PrepareTimer();
+
     LOG_DEBUG("Engine initialization finished!");
 }
 
@@ -37,6 +39,17 @@ void Engine::CreateSystems()
 
 void Engine::StartSystems()
 {
+    UpdateSystems(UpdateTimer.GetDeltaTimeAndRestart());
+}
+
+void Engine::UpdateSystems(float deltaTime)
+{
     for (auto& system : Systems)
         system.first->Start();
+}
+
+void Engine::PrepareTimer()
+{
+    LOG_DEBUG("Preparing timer for updating systems...");
+    UpdateTimer.Restart();
 }

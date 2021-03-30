@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "ecs/systems/BaseSystem.h"
+#include "common/Timer.h"
 
 class Engine final
 {
@@ -20,6 +21,12 @@ public:
 private:
     void CreateSystems();
     void StartSystems();
+
+    void UpdateSystems(float deltaTime);
+
+    void PrepareTimer();
+
+    Timer UpdateTimer{};
 
     std::vector<std::pair<std::shared_ptr<BaseSystem>, std::string>> Systems{};
 };
