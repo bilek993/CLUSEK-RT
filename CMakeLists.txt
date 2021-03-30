@@ -32,7 +32,11 @@ add_executable(
         engine/common/ConfigData.h
         engine/common/generators/SerializationMacros.h
         engine/common/generators/CommonMacros.h
-        engine/generated/ObjectSerializers.h)
+        engine/generated/ObjectSerializers.h
+        engine/ecs/systems/RenderSystem.cpp
+        engine/ecs/systems/RenderSystem.h
+        engine/ecs/systems/BaseSystem.cpp
+        engine/ecs/systems/BaseSystem.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
