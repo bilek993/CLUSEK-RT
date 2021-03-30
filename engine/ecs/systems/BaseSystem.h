@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "../../common/Timer.h"
+
 class BaseSystem
 {
 public:
@@ -17,6 +19,8 @@ public:
     void Disable();
     [[nodiscard]] bool IsEnabled() const;
 
+    [[nodiscard]] float GetSingleDeltaTime() const;
+
     virtual std::string GetName() = 0;
 
 protected:
@@ -25,6 +29,9 @@ protected:
 
 private:
     bool Enabled = true;
+
+    Timer UpdateTimer{};
+    float SingleDeltaTime;
 };
 
 

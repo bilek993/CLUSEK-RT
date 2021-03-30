@@ -11,8 +11,12 @@ void BaseSystem::Start()
 
 void BaseSystem::Update(float deltaTime)
 {
+    UpdateTimer.Restart();
+
     if (Enabled)
         UpdateSystem(deltaTime);
+
+    SingleDeltaTime = UpdateTimer.GetDeltaTime();
 }
 
 void BaseSystem::Enable()
@@ -28,4 +32,9 @@ void BaseSystem::Disable()
 bool BaseSystem::IsEnabled() const
 {
     return Enabled;
+}
+
+float BaseSystem::GetSingleDeltaTime() const
+{
+    return SingleDeltaTime;
 }
