@@ -25,7 +25,7 @@ function tryPack() {
     const projectVersion = process.argv[3] ?? '1.0.0';
     const projectName = process.argv[4] ?? 'CLUSEK-RT';
 
-    const output = fs.createWriteStream(projectName + '-' + projectVersion + '.zip');
+    const output = fs.createWriteStream(projectName + '-' + projectVersion + '-' + process.platform + '.zip');
     const archive = archiver('zip', {
         zlib: { level: 9 }
     });
