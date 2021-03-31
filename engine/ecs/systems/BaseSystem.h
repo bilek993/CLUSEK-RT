@@ -24,8 +24,8 @@ public:
     virtual std::string GetName() = 0;
 
 protected:
-    virtual void StartSystem() = 0;
-    virtual void UpdateSystem(float deltaTime) = 0;
+    virtual void OnStart() = 0;
+    virtual void OnUpdate(float deltaTime) = 0;
 
 private:
     bool Enabled = true;

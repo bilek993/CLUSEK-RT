@@ -13,7 +13,7 @@ void BaseSystem::Start()
 {
     LOG_DEBUG(fmt::format(FMT_COMPILE("Starting '{}'..."), GetName()));
 
-    StartSystem();
+    OnStart();
 
     LOG_DEBUG(fmt::format(FMT_COMPILE("Successfully started '{}'..."), GetName()));
 }
@@ -23,7 +23,7 @@ void BaseSystem::Update(float deltaTime)
     UpdateTimer.Restart();
 
     if (Enabled)
-        UpdateSystem(deltaTime);
+        OnUpdate(deltaTime);
 
     SingleDeltaTime = UpdateTimer.GetDeltaTime();
 }

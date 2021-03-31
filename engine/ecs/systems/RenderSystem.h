@@ -13,8 +13,8 @@ public:
     std::string GetName() override;
 
 protected:
-    void StartSystem() override;
-    void UpdateSystem(float deltaTime) override;
+    void OnStart() override;
+    void OnUpdate(float deltaTime) override;
 };
 
 

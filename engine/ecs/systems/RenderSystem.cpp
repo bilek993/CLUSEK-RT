@@ -9,12 +9,12 @@ std::string RenderSystem::GetName()
     return "Render System";
 }
 
-void RenderSystem::StartSystem()
+void RenderSystem::OnStart()
 {
 
 }
 
-void RenderSystem::UpdateSystem(float deltaTime)
+void RenderSystem::OnUpdate(float deltaTime)
 {
 
 }
