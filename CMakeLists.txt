@@ -7,7 +7,12 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-project(CLUSEK-RT)
+project(CLUSEK-RT VERSION 1.0.0)
+
+if (NOT CMAKE_BUILD_TYPE)
+    message("Build type is not defined! Falling back to the 'Debug' mode.")
+    set(CMAKE_BUILD_TYPE Debug)
+endif ()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -43,6 +48,13 @@ add_custom_command(
         OUTPUT ./engine/generated/ObjectSerializers.h
         COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ ${CMAKE_PROJECT_VERSION} ${CMAKE_PROJECT_NAME}
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+endif ()
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)

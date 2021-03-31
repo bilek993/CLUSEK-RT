@@ -50,10 +50,10 @@ mkdir cmake-build
 cd cmake-build
 ```
 
-Next, ask CMake to prepare our project:
+Next, ask CMake to prepare our project. If we don't provide build type into the CMake (`cmake ..`), then it will be prepared for debugging purposes only. Let's prepare the project in release mode:
 
 ```
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
 
 If it finished with success then just call Make like this:
@@ -62,7 +62,7 @@ If it finished with success then just call Make like this:
 make
 ```
 
-That's all! You are ready to use the CLUSEK-RT engine on Linux! If you get any error when calling `cmake ..` or `make` then you are probably missing building tools or an important library. You can download them using a package manager tool (like apt). For more information, I recommend [the requirements section](./requirements.md).
+That's all! You are ready to use the CLUSEK-RT engine on Linux! If you get any error when calling `cmake` or `make` then you are probably missing building tools or an important library. You can download them using a package manager tool (like apt). For more information, I recommend [the requirements section](./requirements.md).
 
 ### Building on Windows
 
