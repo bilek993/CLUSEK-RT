@@ -47,7 +47,7 @@ add_custom_command(
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
     add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ ${CMAKE_PROJECT_VERSION}
+            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ ${CMAKE_PROJECT_VERSION} ${CMAKE_PROJECT_NAME}
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endif ()
 
