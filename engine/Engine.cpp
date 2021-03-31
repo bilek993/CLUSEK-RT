@@ -33,6 +33,8 @@ void Engine::Update()
 
 void Engine::CreateSystems()
 {
+    LOG_DEBUG("Creating systems...");
+
     Systems = {
             std::make_shared<RenderSystem>(),
     };
@@ -40,6 +42,8 @@ void Engine::CreateSystems()
 
 void Engine::StartSystems()
 {
+    LOG_DEBUG("Starting systems...");
+
     for (auto& system : Systems)
         system->Start();
 }

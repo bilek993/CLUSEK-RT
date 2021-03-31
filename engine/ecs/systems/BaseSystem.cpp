@@ -4,9 +4,18 @@
 
 #include "BaseSystem.h"
 
+#include <fmt/format.h>
+#include <fmt/compile.h>
+
+#include "../../common/debug/Logger.h"
+
 void BaseSystem::Start()
 {
+    LOG_DEBUG(fmt::format(FMT_COMPILE("Starting '{}'..."), GetName()));
+
     StartSystem();
+
+    LOG_DEBUG(fmt::format(FMT_COMPILE("Successfully started '{}'..."), GetName()));
 }
 
 void BaseSystem::Update(float deltaTime)
