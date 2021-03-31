@@ -7,7 +7,7 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-project(CLUSEK-RT)
+project(CLUSEK-RT VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -47,7 +47,7 @@ add_custom_command(
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
     add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ 1.0.0
+            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ ${CMAKE_PROJECT_VERSION}
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endif ()
 
