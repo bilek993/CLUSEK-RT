@@ -44,6 +44,13 @@ add_custom_command(
         COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
+if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ 1.0.0
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+endif ()
+
 #  _      _  _                         _
 # | |    (_)| |                       (_)
 # | |     _ | |__   _ __   __ _  _ __  _   ___  ___
