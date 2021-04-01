@@ -13,3 +13,6 @@
 [submodule "libraries/glfw"]
 	path = libraries/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "libraries/glm"]
+	path = libraries/glm
+	url = https://github.com/g-truc/glm.git
