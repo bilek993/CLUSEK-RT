@@ -4,9 +4,23 @@
 
 #include "Engine.h"
 
-void Engine::Initialize()
+#include <utility>
+
+#include "ecs/systems/RenderSystem.h"
+#include "common/debug/Logger.h"
+
+void Engine::Initialize(std::shared_ptr<ConfigData> configData)
 {
-    // TODO: Add proper logic here
+    LOG_DEBUG("Staring engine initialization process...");
+
+    ConfigurationData = std::move(configData);
+
+    CreateSystems();
+    StartSystems();
+
+    PrepareTimer();
+
+    LOG_DEBUG("Engine initialization finished!");
 }
 
 bool Engine::ShouldUpdate()
@@ -16,5 +30,35 @@ bool Engine::ShouldUpdate()
 
 void Engine::Update()
 {
-    // TODO: Add proper logic here
+    UpdateSystems(DeltaTimer.GetDeltaTimeAndRestart());
 }
+
+void Engine::CreateSystems()
+{
+    LOG_DEBUG("Creating systems...");
+
+    Systems = {
+            std::make_shared<RenderSystem>(),
+    };
+}
+
+void Engine::StartSystems()
+{
+    LOG_DEBUG("Starting systems...");
+
+    for (auto& system : Systems)
+        system->Start(ConfigurationData);
+}
+
+void Engine::UpdateSystems(float deltaTime)
+{
+    for (auto& system : Systems)
+        system->Update(deltaTime);
+}
+
+void Engine::PrepareTimer()
+{
+    LOG_DEBUG("Preparing delta timer to be used in systems...");
+    DeltaTimer.Restart();
+}
+

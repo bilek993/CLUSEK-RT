@@ -6,28 +6,28 @@
 
 int main()
 {
-    ConfigData configurationData{};
+    const auto configurationData = std::make_shared<ConfigData>();
     std::ifstream configurationFile("./data/configuration.json");
-    ObjectSerializers::Deserialize(configurationFile, configurationData);
+    ObjectSerializers::Deserialize(configurationFile, *configurationData);
 
-    Logger::Initialize(configurationData.EnableLoggingToConsole,
-                       configurationData.EnableLoggingToFile,
-                       configurationData.LoggerPath,
-                       configurationData.ShowMessageBoxOnError,
-                       static_cast<LoggerModes>(configurationData.LoggerLevel));
+    Logger::Initialize(configurationData->EnableLoggingToConsole,
+                       configurationData->EnableLoggingToFile,
+                       configurationData->LoggerPath,
+                       configurationData->ShowMessageBoxOnError,
+                       static_cast<LoggerModes>(configurationData->LoggerLevel));
 
     Text::Initialize({
-                             std::make_pair(ENGLISH, configurationData.TextEnglishPath),
-                             std::make_pair(POLISH, configurationData.TextPolishPath),
+                             std::make_pair(ENGLISH, configurationData->TextEnglishPath),
+                             std::make_pair(POLISH, configurationData->TextPolishPath),
                      });
-    Text::SetLanguage(static_cast<Language>(configurationData.TextDefaultLanguageId[0]));
+    Text::SetLanguage(static_cast<Language>(configurationData->TextDefaultLanguageId[0]));
 
     try
     {
         LOG_DEBUG("Preparing CLUSEK-RT engine...");
 
         Engine engine{};
-        engine.Initialize();
+        engine.Initialize(configurationData);
 
         while (engine.ShouldUpdate())
             engine.Update();
