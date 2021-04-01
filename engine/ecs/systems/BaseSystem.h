@@ -6,6 +6,7 @@
 #define CLUSEK_RT_BASESYSTEM_H
 
 #include <string>
+#include <memory>
 
 #include "../../common/Timer.h"
 #include "../../common/ConfigData.h"

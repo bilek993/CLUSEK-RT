@@ -11,13 +11,13 @@ Timer::Timer()
 
 void Timer::Restart()
 {
-    PreviousTimePoint = std::chrono::high_resolution_clock::now();
+    PreviousTimePoint = std::chrono::steady_clock::now();
 }
 
 float Timer::GetDeltaTime() const
 {
     const auto elapsed = std::chrono::duration<float, std::milli>(
-            std::chrono::high_resolution_clock::now() - PreviousTimePoint);
+            std::chrono::steady_clock::now() - PreviousTimePoint);
     return elapsed.count();
 }
 
