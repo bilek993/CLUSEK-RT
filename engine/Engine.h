@@ -15,7 +15,7 @@
 class Engine final
 {
 public:
-    void Initialize(const ConfigData& configData);
+    void Initialize(std::shared_ptr<ConfigData> configData);
     bool ShouldUpdate();
     void Update();
 
@@ -29,7 +29,7 @@ private:
 
     Timer DeltaTimer{};
 
-    ConfigData ConfigurationData{};
+    std::shared_ptr<ConfigData> ConfigurationData;
 
     std::vector<std::shared_ptr<BaseSystem>> Systems{};
 };

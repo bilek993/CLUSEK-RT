@@ -8,11 +8,12 @@
 #include <string>
 
 #include "../../common/Timer.h"
+#include "../../common/ConfigData.h"
 
 class BaseSystem
 {
 public:
-    void Start();
+    void Start(std::shared_ptr<ConfigData> configurationData);
     void Update(float deltaTime);
 
     void Enable();
@@ -26,6 +27,8 @@ public:
 protected:
     virtual void OnStart() = 0;
     virtual void OnUpdate(float deltaTime) = 0;
+
+    std::shared_ptr<ConfigData> ConfigurationData;
 
 private:
     bool Enabled = true;

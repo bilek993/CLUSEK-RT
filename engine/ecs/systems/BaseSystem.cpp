@@ -9,9 +9,11 @@
 
 #include "../../common/debug/Logger.h"
 
-void BaseSystem::Start()
+void BaseSystem::Start(std::shared_ptr<ConfigData> configurationData)
 {
     LOG_DEBUG(fmt::format(FMT_COMPILE("Starting '{}'..."), GetName()));
+
+    ConfigurationData = std::move(configurationData);
 
     OnStart();
 

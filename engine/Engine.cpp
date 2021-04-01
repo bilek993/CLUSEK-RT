@@ -4,14 +4,16 @@
 
 #include "Engine.h"
 
+#include <utility>
+
 #include "ecs/systems/RenderSystem.h"
 #include "common/debug/Logger.h"
 
-void Engine::Initialize(const ConfigData& configData)
+void Engine::Initialize(std::shared_ptr<ConfigData> configData)
 {
     LOG_DEBUG("Staring engine initialization process...");
 
-    ConfigurationData = configData;
+    ConfigurationData = std::move(configData);
 
     CreateSystems();
     StartSystems();
@@ -45,7 +47,7 @@ void Engine::StartSystems()
     LOG_DEBUG("Starting systems...");
 
     for (auto& system : Systems)
-        system->Start();
+        system->Start(ConfigurationData);
 }
 
 void Engine::UpdateSystems(float deltaTime)
