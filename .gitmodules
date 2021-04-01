@@ -10,3 +10,6 @@
 [submodule "libraries/entt"]
 	path = libraries/entt
 	url = https://github.com/skypjack/entt.git
+[submodule "libraries/glfw"]
+	path = libraries/glfw
+	url = https://github.com/glfw/glfw.git
