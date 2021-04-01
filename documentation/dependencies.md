@@ -15,6 +15,6 @@ This project uses external dependencies. Those dependencies are split into two c
 * [Nlohmann JSON](https://github.com/nlohmann/json/tree/176d8e261a00dc27bfbf334e12d50572bf43fc4c)
 * [EnTT](https://github.com/skypjack/entt/tree/9d72ffb9fe0ce4a15bab3729b52fcb0adace4d7f)
 * [GLFW](https://github.com/glfw/glfw/tree/33cd8b865d9289cfbcf3d95e6e68e4050b94fcd3)
-* [GML](https://github.com/g-truc/glm/tree/ace16e47780dcef815294715237f51e9129b6eb3)
+* [GLM](https://github.com/g-truc/glm/tree/ace16e47780dcef815294715237f51e9129b6eb3)
 * [Vulkan Memory Allocator](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/tree/d1851f0ded5e7d5555be3c839a47f057d6952131)
 
