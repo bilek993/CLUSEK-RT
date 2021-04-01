@@ -100,3 +100,31 @@ add_subdirectory(libraries/entt)
 target_link_libraries(${PROJECT_NAME} EnTT)
 
 include_directories(libraries/entt/single_include)
+
+# Vulkan
+
+find_package(Vulkan)
+
+target_link_libraries(${PROJECT_NAME} ${Vulkan_LIBRARY})
+
+include_directories(${Vulkan_INCLUDE_DIR})
+
+# Vulkan Memory Allocator
+
+include_directories(libraries/VulkanMemoryAllocator/src)
+
+# GLFW
+
+add_subdirectory(libraries/glfw)
+
+target_link_libraries(${PROJECT_NAME} GLFW)
+
+include_directories(libraries/glfw/include)
+
+# GLM
+
+add_subdirectory(libraries/glm)
+
+target_link_libraries(${PROJECT_NAME} glm)
+
+include_directories(libraries/glm)
