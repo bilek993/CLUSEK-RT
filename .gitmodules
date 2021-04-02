@@ -10,3 +10,12 @@
 [submodule "libraries/entt"]
 	path = libraries/entt
 	url = https://github.com/skypjack/entt.git
+[submodule "libraries/glfw"]
+	path = libraries/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "libraries/glm"]
+	path = libraries/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "libraries/VulkanMemoryAllocator"]
+	path = libraries/VulkanMemoryAllocator
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
