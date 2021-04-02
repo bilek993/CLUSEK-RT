@@ -15,6 +15,13 @@
 class BaseSystem
 {
 public:
+    BaseSystem() = default;
+    ~BaseSystem() = default;
+    BaseSystem(const BaseSystem& other) = delete;
+    BaseSystem(BaseSystem&& other) noexcept = delete;
+    BaseSystem& operator=(const BaseSystem& other) = delete;
+    BaseSystem& operator=(BaseSystem&& other) noexcept = delete;
+
     void Start(std::shared_ptr<ConfigData> configurationData,
                std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems);
     void Update(float deltaTime);
@@ -38,7 +45,7 @@ private:
     bool Enabled = true;
 
     Timer UpdateTimer{};
-    float SingleDeltaTime;
+    float SingleDeltaTime{};
 };
 
 
