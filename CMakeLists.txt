@@ -43,7 +43,9 @@ add_executable(
         engine/ecs/systems/BaseSystem.cpp
         engine/ecs/systems/BaseSystem.h
         engine/common/Timer.cpp
-        engine/common/Timer.h)
+        engine/common/Timer.h
+        engine/window/Window.cpp
+        engine/window/Window.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
