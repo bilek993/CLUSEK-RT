@@ -24,6 +24,7 @@ Window::Window(const int width, const int height, const bool resizable, const bo
 
     WindowWidth = width;
     WindowHeight = height;
+    CanBeClosed = canBeClosed;
 
     LOG_DEBUG("Window has been constructed!");
 }
@@ -36,4 +37,20 @@ Window::~Window()
     glfwTerminate();
 
     LOG_DEBUG("Window has been destroyed!");
+}
+
+bool Window::IsClosingRequested() const
+{
+    if (!CanBeClosed)
+        return false;
+
+    return glfwWindowShouldClose(InternalWindow);
+}
+
+void Window::Update() const
+{
+    if (IsClosingRequested())
+        return;
+
+    glfwPollEvents();
 }

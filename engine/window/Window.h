@@ -19,11 +19,14 @@ public:
     Window& operator=(const Window& other) = delete;
     Window& operator=(Window&& other) noexcept = delete;
 
+    void Update() const;
+    [[nodiscard]] bool IsClosingRequested() const;
 private:
     GLFWwindow* InternalWindow;
 
     int WindowWidth;
     int WindowHeight;
+    bool CanBeClosed;
 };
 
 

@@ -30,13 +30,14 @@ void Engine::Initialize(std::shared_ptr<ConfigData> configData)
     LOG_DEBUG("Engine initialization finished!");
 }
 
-bool Engine::ShouldUpdate()
+bool Engine::ShouldUpdate() const
 {
-    return true; // TODO: Add proper logic here
+    return !MainWindow->IsClosingRequested();
 }
 
 void Engine::Update()
 {
+    MainWindow->Update();
     UpdateSystems(DeltaTimer.GetDeltaTimeAndRestart());
 }
 
