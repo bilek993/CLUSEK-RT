@@ -47,7 +47,7 @@ void Engine::StartSystems()
     LOG_DEBUG("Starting systems...");
 
     for (const auto& system : *Systems)
-        system->Start(ConfigurationData);
+        system->Start(ConfigurationData, Systems);
 }
 
 void Engine::UpdateSystems(float deltaTime)
