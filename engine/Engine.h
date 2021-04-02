@@ -15,6 +15,13 @@
 class Engine final
 {
 public:
+    Engine() = default;
+    ~Engine() = default;
+    Engine(const Engine& other) = delete;
+    Engine(Engine&& other) noexcept = delete;
+    Engine& operator=(const Engine& other) = delete;
+    Engine& operator=(Engine&& other) noexcept = delete;
+
     void Initialize(std::shared_ptr<ConfigData> configData);
     bool ShouldUpdate();
     void Update();
