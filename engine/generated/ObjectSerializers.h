@@ -42,6 +42,12 @@ namespace ObjectSerializers
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, TextEnglishPath, std::string);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, TextPolishPath, std::string);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, TextDefaultLanguageId, std::string);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowName, std::string);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowResizable, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowClosableWithX, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowedMode, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowWidth, int);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowHeight, int);
     }
 
     // SERIALIZERS
@@ -57,6 +63,12 @@ namespace ObjectSerializers
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, TextEnglishPath);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, TextPolishPath);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, TextDefaultLanguageId);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowName);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowResizable);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowClosableWithX);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowedMode);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowWidth);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowHeight);
 
         fileStream << std::setw(3) << json;
     }

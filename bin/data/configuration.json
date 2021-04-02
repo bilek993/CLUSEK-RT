@@ -6,5 +6,11 @@
    "ShowMessageBoxOnError": true,
    "TextEnglishPath": "./data/texts/english_strings.json",
    "TextPolishPath": "./data/texts/polish_strings.json",
-   "TextDefaultLanguageId": "E"
+   "TextDefaultLanguageId": "E",
+   "WindowName": "CLUSEK-RT",
+   "WindowResizable": true,
+   "WindowClosableWithX": true,
+   "WindowedMode": true,
+   "WindowWidth": 1280,
+   "WindowHeight": 720
 }
