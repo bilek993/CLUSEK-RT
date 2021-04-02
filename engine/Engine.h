@@ -31,7 +31,7 @@ private:
 
     std::shared_ptr<ConfigData> ConfigurationData;
 
-    std::vector<std::shared_ptr<BaseSystem>> Systems{};
+    std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> Systems{};
 };
 
 

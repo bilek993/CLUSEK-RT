@@ -37,22 +37,22 @@ void Engine::CreateSystems()
 {
     LOG_DEBUG("Creating systems...");
 
-    Systems = {
-            std::make_shared<RenderSystem>(),
-    };
+    Systems = std::make_shared<std::vector<std::shared_ptr<BaseSystem>>>(std::vector<std::shared_ptr<BaseSystem>>{
+            std::make_shared<RenderSystem>()
+    });
 }
 
 void Engine::StartSystems()
 {
     LOG_DEBUG("Starting systems...");
 
-    for (auto& system : Systems)
-        system->Start(ConfigurationData);
+    for (const auto& system : *Systems)
+        system->Start(ConfigurationData, Systems);
 }
 
 void Engine::UpdateSystems(float deltaTime)
 {
-    for (auto& system : Systems)
+    for (const auto& system : *Systems)
         system->Update(deltaTime);
 }
 

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "../../common/Timer.h"
 #include "../../common/ConfigData.h"
@@ -14,7 +15,15 @@
 class BaseSystem
 {
 public:
-    void Start(std::shared_ptr<ConfigData> configurationData);
+    BaseSystem() = default;
+    ~BaseSystem() = default;
+    BaseSystem(const BaseSystem& other) = delete;
+    BaseSystem(BaseSystem&& other) noexcept = delete;
+    BaseSystem& operator=(const BaseSystem& other) = delete;
+    BaseSystem& operator=(BaseSystem&& other) noexcept = delete;
+
+    void Start(std::shared_ptr<ConfigData> configurationData,
+               std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems);
     void Update(float deltaTime);
 
     void Enable();
@@ -30,12 +39,13 @@ protected:
     virtual void OnUpdate(float deltaTime) = 0;
 
     std::shared_ptr<ConfigData> ConfigurationData;
+    std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> Systems;
 
 private:
     bool Enabled = true;
 
     Timer UpdateTimer{};
-    float SingleDeltaTime;
+    float SingleDeltaTime{};
 };
 
 

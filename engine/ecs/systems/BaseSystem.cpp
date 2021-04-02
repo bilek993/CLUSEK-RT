@@ -7,13 +7,17 @@
 #include <fmt/format.h>
 #include <fmt/compile.h>
 
+#include <utility>
+
 #include "../../common/debug/Logger.h"
 
-void BaseSystem::Start(std::shared_ptr<ConfigData> configurationData)
+void BaseSystem::Start(std::shared_ptr<ConfigData> configurationData,
+                       std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems)
 {
     LOG_DEBUG(fmt::format(FMT_COMPILE("Starting '{}'..."), GetName()));
 
     ConfigurationData = std::move(configurationData);
+    Systems = std::move(systems);
 
     OnStart();
 
