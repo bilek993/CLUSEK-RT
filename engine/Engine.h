@@ -11,6 +11,7 @@
 #include "ecs/systems/BaseSystem.h"
 #include "common/Timer.h"
 #include "common/ConfigData.h"
+#include "window/Window.h"
 
 class Engine final
 {
@@ -37,7 +38,7 @@ private:
     Timer DeltaTimer{};
 
     std::shared_ptr<ConfigData> ConfigurationData;
-
+    std::shared_ptr<Window> MainWindow;
     std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> Systems{};
 };
 

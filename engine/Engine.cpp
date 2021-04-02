@@ -15,6 +15,8 @@ void Engine::Initialize(std::shared_ptr<ConfigData> configData)
 
     ConfigurationData = std::move(configData);
 
+    MainWindow = std::make_shared<Window>();
+
     CreateSystems();
     StartSystems();
 

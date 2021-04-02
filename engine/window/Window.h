@@ -8,6 +8,7 @@
 
 class Window
 {
+public:
     Window() = default;
     ~Window() = default;
     Window(const Window& other) = delete;
