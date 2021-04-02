@@ -15,7 +15,12 @@ void Engine::Initialize(std::shared_ptr<ConfigData> configData)
 
     ConfigurationData = std::move(configData);
 
-    MainWindow = std::make_shared<Window>();
+    MainWindow = std::make_shared<Window>(ConfigurationData->WindowWidth,
+                                          ConfigurationData->WindowHeight,
+                                          ConfigurationData->WindowResizable,
+                                          !ConfigurationData->WindowedMode,
+                                          ConfigurationData->WindowClosableWithX,
+                                          ConfigurationData->WindowName);
 
     CreateSystems();
     StartSystems();
