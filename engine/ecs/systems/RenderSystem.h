@@ -6,6 +6,7 @@
 #define CLUSEK_RT_RENDERSYSTEM_H
 
 #include "BaseSystem.h"
+#include "../../renderer/allocator/VulkanMemoryAllocatorImplementation.h"
 
 class RenderSystem : public BaseSystem
 {

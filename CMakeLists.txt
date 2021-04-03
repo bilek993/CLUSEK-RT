@@ -45,7 +45,9 @@ add_executable(
         engine/common/Timer.cpp
         engine/common/Timer.h
         engine/window/Window.cpp
-        engine/window/Window.h)
+        engine/window/Window.h
+        engine/renderer/allocator/VulkanMemoryAllocatorImplementation.h
+        engine/renderer/allocator/VulkanMemoryAllocatorImplementation.cpp)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
