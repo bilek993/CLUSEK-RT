@@ -77,12 +77,16 @@ void Window::UpdateSize()
     } while (WindowWidth == 0 || WindowHeight == 0);
 }
 
-bool Window::HasBeenResized()
+bool Window::HasBeenResized() const
 {
-    const auto result = Resized;
-    Resized = false; // Resetting value
-    return result;
+    return Resized;
 }
+
+void Window::ResetResized()
+{
+    Resized = false;
+}
+
 
 void Window::GlfwCallbackResizeFunction(GLFWwindow* window, const int width, const int height)
 {
