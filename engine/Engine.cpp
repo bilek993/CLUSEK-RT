@@ -15,6 +15,13 @@ void Engine::Initialize(std::shared_ptr<ConfigData> configData)
 
     ConfigurationData = std::move(configData);
 
+    MainWindow = std::make_shared<Window>(ConfigurationData->WindowWidth,
+                                          ConfigurationData->WindowHeight,
+                                          ConfigurationData->WindowResizable,
+                                          !ConfigurationData->WindowedMode,
+                                          ConfigurationData->WindowClosableWithX,
+                                          ConfigurationData->WindowName);
+
     CreateSystems();
     StartSystems();
 
@@ -23,14 +30,18 @@ void Engine::Initialize(std::shared_ptr<ConfigData> configData)
     LOG_DEBUG("Engine initialization finished!");
 }
 
-bool Engine::ShouldUpdate()
+bool Engine::ShouldUpdate() const
 {
-    return true; // TODO: Add proper logic here
+    return !MainWindow->IsClosingRequested();
 }
 
 void Engine::Update()
 {
+    MainWindow->Update();
+
     UpdateSystems(DeltaTimer.GetDeltaTimeAndRestart());
+
+    MainWindow->ResetResized();
 }
 
 void Engine::CreateSystems()
@@ -47,7 +58,11 @@ void Engine::StartSystems()
     LOG_DEBUG("Starting systems...");
 
     for (const auto& system : *Systems)
-        system->Start(ConfigurationData, Systems);
+    {
+        system->Start(ConfigurationData,
+                      MainWindow,
+                      Systems);
+    }
 }
 
 void Engine::UpdateSystems(float deltaTime)

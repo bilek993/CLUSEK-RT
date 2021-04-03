@@ -11,6 +11,7 @@
 
 #include "../../common/Timer.h"
 #include "../../common/ConfigData.h"
+#include "../../window/Window.h"
 
 class BaseSystem
 {
@@ -23,6 +24,7 @@ public:
     BaseSystem& operator=(BaseSystem&& other) noexcept = delete;
 
     void Start(std::shared_ptr<ConfigData> configurationData,
+               std::shared_ptr<Window> mainWindow,
                std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems);
     void Update(float deltaTime);
 
@@ -39,6 +41,7 @@ protected:
     virtual void OnUpdate(float deltaTime) = 0;
 
     std::shared_ptr<ConfigData> ConfigurationData;
+    std::shared_ptr<Window> MainWindow;
     std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> Systems;
 
 private:

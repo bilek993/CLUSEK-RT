@@ -33,6 +33,24 @@ struct ConfigData final
 
     SERIALIZE_FIELD(TextDefaultLanguageId, std::string)
     std::string TextDefaultLanguageId = "E";
+
+    SERIALIZE_FIELD(WindowName, std::string)
+    std::string WindowName = "Unnamed Project";
+
+    SERIALIZE_FIELD(WindowResizable, bool)
+    bool WindowResizable = false;
+
+    SERIALIZE_FIELD(WindowClosableWithX, bool)
+    bool WindowClosableWithX = true;
+
+    SERIALIZE_FIELD(WindowedMode, bool)
+    bool WindowedMode = true;
+
+    SERIALIZE_FIELD(WindowWidth, int)
+    int WindowWidth = 800;
+
+    SERIALIZE_FIELD(WindowHeight, int)
+    int WindowHeight = 600;
 };
 
 #endif //CLUSEK_RT_CONFIGDATA_H
