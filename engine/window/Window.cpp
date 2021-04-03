@@ -26,6 +26,9 @@ Window::Window(const int width, const int height, const bool resizable, const bo
     WindowHeight = height;
     CanBeClosed = canBeClosed;
 
+    glfwSetWindowUserPointer(InternalWindow, this);
+    glfwSetFramebufferSizeCallback(InternalWindow, GlfwCallbackResizeFunction);
+
     LOG_DEBUG("Window has been constructed!");
 }
 
@@ -71,5 +74,18 @@ void Window::UpdateSize()
     {
         glfwGetFramebufferSize(InternalWindow, &WindowWidth, &WindowHeight);
         glfwWaitEvents();
-    } while (WindowWidth == 0 || WindowHeight == 0)
+    } while (WindowWidth == 0 || WindowHeight == 0);
+}
+
+bool Window::HasBeenResized()
+{
+    const auto result = Resized;
+    Resized = false; // Resetting value
+    return result;
+}
+
+void Window::GlfwCallbackResizeFunction(GLFWwindow* window, const int width, const int height)
+{
+    auto thisWindow = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+    thisWindow->Resized = true;
 }

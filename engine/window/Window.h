@@ -25,8 +25,13 @@ public:
     [[nodiscard]] int GetWidth() const;
     [[nodiscard]] int GetHeight() const;
     void UpdateSize();
+    bool HasBeenResized();
 private:
+    static void GlfwCallbackResizeFunction(GLFWwindow* window, int width, int height);
+
     GLFWwindow* InternalWindow;
+
+    bool Resized;
 
     int WindowWidth;
     int WindowHeight;
