@@ -38,7 +38,10 @@ bool Engine::ShouldUpdate() const
 void Engine::Update()
 {
     MainWindow->Update();
+
     UpdateSystems(DeltaTimer.GetDeltaTimeAndRestart());
+
+    MainWindow->ResetResized();
 }
 
 void Engine::CreateSystems()
