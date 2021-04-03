@@ -54,3 +54,22 @@ void Window::Update() const
 
     glfwPollEvents();
 }
+
+int Window::GetWidth() const
+{
+    return WindowWidth;
+}
+
+int Window::GetHeight() const
+{
+    return WindowHeight;
+}
+
+void Window::UpdateSize()
+{
+    do
+    {
+        glfwGetFramebufferSize(InternalWindow, &WindowWidth, &WindowHeight);
+        glfwWaitEvents();
+    } while (WindowWidth == 0 || WindowHeight == 0)
+}

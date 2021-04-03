@@ -21,6 +21,10 @@ public:
 
     void Update() const;
     [[nodiscard]] bool IsClosingRequested() const;
+
+    [[nodiscard]] int GetWidth() const;
+    [[nodiscard]] int GetHeight() const;
+    void UpdateSize();
 private:
     GLFWwindow* InternalWindow;
 
