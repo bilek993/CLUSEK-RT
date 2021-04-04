@@ -49,7 +49,9 @@ add_executable(
         engine/renderer/allocator/VulkanMemoryAllocatorImplementation.h
         engine/renderer/allocator/VulkanMemoryAllocatorImplementation.cpp
         engine/renderer/core/VulkanInstance.cpp
-        engine/renderer/core/VulkanInstance.h)
+        engine/renderer/core/VulkanInstance.h
+        engine/renderer/helpers/VulkanVersion.h
+        engine/renderer/helpers/VulkanVersion.cpp)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
