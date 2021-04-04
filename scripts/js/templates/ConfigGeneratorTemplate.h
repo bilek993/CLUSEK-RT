@@ -32,7 +32,7 @@ namespace {{ namespace }}
 {
     // DESERIALIZERS
 {{ #serializableObjects }}
-    void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
+    static void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
     {
         nlohmann::json json;
         fileStream >> json;
@@ -45,7 +45,7 @@ namespace {{ namespace }}
 
     // SERIALIZERS
 {{ #serializableObjects }}
-    void Serialize(std::ofstream& fileStream, const {{ objectName }}& object)
+    static void Serialize(std::ofstream& fileStream, const {{ objectName }}& object)
     {
         nlohmann::json json;
 
