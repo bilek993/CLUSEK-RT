@@ -25,14 +25,14 @@
 #include "{{{ includeObjectPath }}}"
 {{ /serializableObjects }}
 
-#define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
-#define SAVE_PRIMITIVE_DATA_TO_JSON(JSON, OBJECT, FIELD) JSON[#FIELD] = OBJECT.FIELD;
+#define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>()
+#define SAVE_PRIMITIVE_DATA_TO_JSON(JSON, OBJECT, FIELD) JSON[#FIELD] = OBJECT.FIELD
 
 namespace {{ namespace }}
 {
     // DESERIALIZERS
 {{ #serializableObjects }}
-    void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
+    static void Deserialize(std::ifstream& fileStream, {{ objectName }}& object)
     {
         nlohmann::json json;
         fileStream >> json;
@@ -45,7 +45,7 @@ namespace {{ namespace }}
 
     // SERIALIZERS
 {{ #serializableObjects }}
-    void Serialize(std::ofstream& fileStream, const {{ objectName }}& object)
+    static void Serialize(std::ofstream& fileStream, const {{ objectName }}& object)
     {
         nlohmann::json json;
 

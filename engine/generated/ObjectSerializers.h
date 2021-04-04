@@ -23,13 +23,13 @@
 
 #include "..\common\ConfigData.h"
 
-#define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>();
-#define SAVE_PRIMITIVE_DATA_TO_JSON(JSON, OBJECT, FIELD) JSON[#FIELD] = OBJECT.FIELD;
+#define LOAD_PRIMITIVE_DATA_TO_FIELD(JSON, OBJECT, FIELD, TYPE) if (!JSON[#FIELD].is_null()) OBJECT.FIELD = JSON[#FIELD].get<TYPE>()
+#define SAVE_PRIMITIVE_DATA_TO_JSON(JSON, OBJECT, FIELD) JSON[#FIELD] = OBJECT.FIELD
 
 namespace ObjectSerializers
 {
     // DESERIALIZERS
-    void Deserialize(std::ifstream& fileStream, ConfigData& object)
+    static void Deserialize(std::ifstream& fileStream, ConfigData& object)
     {
         nlohmann::json json;
         fileStream >> json;
@@ -51,7 +51,7 @@ namespace ObjectSerializers
     }
 
     // SERIALIZERS
-    void Serialize(std::ofstream& fileStream, const ConfigData& object)
+    static void Serialize(std::ofstream& fileStream, const ConfigData& object)
     {
         nlohmann::json json;
 
