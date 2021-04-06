@@ -21,6 +21,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
+add_compile_definitions(ENGINE_VERSION="${CMAKE_PROJECT_VERSION}")
 
 add_executable(
         ${PROJECT_NAME}
