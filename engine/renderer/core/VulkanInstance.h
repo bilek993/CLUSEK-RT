@@ -6,17 +6,21 @@
 #define CLUSEK_RT_VULKANINSTANCE_H
 
 #include <vulkan/vulkan.h>
+#include <string>
 
 class VulkanInstance
 {
 public:
-    VulkanInstance();
+    VulkanInstance(bool debugMode,
+                   const std::string& applicationName,
+                   const std::string& applicationVersion);
     ~VulkanInstance();
     VulkanInstance(const VulkanInstance& other) = delete;
     VulkanInstance(VulkanInstance&& other) noexcept = delete;
     VulkanInstance& operator=(const VulkanInstance& other) = delete;
     VulkanInstance& operator=(VulkanInstance&& other) noexcept = delete;
 
+    [[nodiscard]] VkInstance GetRaw() const;
 private:
     VkInstance InternalInstance;
 };

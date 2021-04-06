@@ -5,8 +5,11 @@
 #ifndef CLUSEK_RT_RENDERSYSTEM_H
 #define CLUSEK_RT_RENDERSYSTEM_H
 
+#include <memory>
+
 #include "BaseSystem.h"
 #include "../../renderer/allocator/VulkanMemoryAllocatorImplementation.h"
+#include "../../renderer/core/VulkanInstance.h"
 
 class RenderSystem : public BaseSystem
 {
@@ -16,6 +19,9 @@ public:
 protected:
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
+
+private:
+    std::unique_ptr<VulkanInstance> Instance;
 };
 
 
