@@ -14,7 +14,11 @@ std::string RenderSystem::GetName()
 void RenderSystem::OnStart()
 {
     LOG_DEBUG("Preparing to create Vulkan Instance...");
-    Instance = std::make_unique<VulkanInstance>(true, "Name", "1.0.0"); // TODO: Change this
+    const auto vulkanInstanceRequiredExtensions = MainWindow->GetRequiredExtensions();
+    Instance = std::make_unique<VulkanInstance>(true, // TODO: Change this
+                                                "Name", // TODO: Change this
+                                                "1.0.0", // TODO: Change this
+                                                vulkanInstanceRequiredExtensions);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

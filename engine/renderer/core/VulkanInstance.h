@@ -7,13 +7,15 @@
 
 #include <vulkan/vulkan.h>
 #include <string>
+#include <vector>
 
 class VulkanInstance
 {
 public:
     VulkanInstance(bool debugMode,
                    const std::string& applicationName,
-                   const std::string& applicationVersion);
+                   const std::string& applicationVersion,
+                   const std::vector<const char*>& requiredExtensions);
     ~VulkanInstance();
     VulkanInstance(const VulkanInstance& other) = delete;
     VulkanInstance(VulkanInstance&& other) noexcept = delete;
