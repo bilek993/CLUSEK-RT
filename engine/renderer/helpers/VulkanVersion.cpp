@@ -21,10 +21,10 @@ uint32_t VulkanVersion::GenerateVersion(const std::string& version)
             }
         }
 
-        if (item.length() < 3)
+        if (items.size() < 3)
             throw std::runtime_error("Corrupted version input string!");
 
-        return VK_MAKE_VERSION(item[0], item[1], item[2]);
+        return VK_MAKE_VERSION(items[0], items[1], items[2]);
     }
     catch (const std::exception& e)
     {
