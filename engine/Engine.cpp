@@ -20,7 +20,7 @@ void Engine::Initialize(std::shared_ptr<ConfigData> configData)
                                           ConfigurationData->WindowResizable,
                                           !ConfigurationData->WindowedMode,
                                           ConfigurationData->WindowClosableWithX,
-                                          ConfigurationData->WindowName);
+                                          ConfigurationData->ApplicationName);
 
     CreateSystems();
     StartSystems();

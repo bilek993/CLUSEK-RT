@@ -7,10 +7,12 @@
    "TextEnglishPath": "./data/texts/english_strings.json",
    "TextPolishPath": "./data/texts/polish_strings.json",
    "TextDefaultLanguageId": "E",
-   "WindowName": "CLUSEK-RT",
+   "ApplicationName": "CLUSEK-RT Game",
+   "ApplicationVersion": "1.0.0",
    "WindowResizable": true,
    "WindowClosableWithX": true,
    "WindowedMode": true,
    "WindowWidth": 1280,
-   "WindowHeight": 720
+   "WindowHeight": 720,
+   "EnableVulkanValidationLayers": true
 }

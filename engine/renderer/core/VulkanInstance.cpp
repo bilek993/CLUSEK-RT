@@ -33,6 +33,7 @@ VkInstance VulkanInstance::GetRaw() const
 void VulkanInstance::InitializeValidation(bool enableValidationLayers, std::vector<const char*>& requiredExtensions)
 {
     UseValidationLayers = enableValidationLayers;
+
     if (enableValidationLayers && CheckValidationLayersSupport())
     {
         LOG_DEBUG("Validation layers are not supported!");
@@ -51,7 +52,7 @@ void VulkanInstance::InitializeInstance(const std::string& applicationName,
     applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     applicationInfo.pApplicationName = applicationName.c_str();
     applicationInfo.applicationVersion = VulkanVersion::GenerateVersion(applicationVersion);
-    applicationInfo.pEngineName = "CLUSEK-RT";
+    applicationInfo.pEngineName = "CLUSEK-RT Engine";
     applicationInfo.engineVersion = VulkanVersion::GenerateVersion(ENGINE_VERSION);
     applicationInfo.apiVersion = VK_API_VERSION_1_2;
 

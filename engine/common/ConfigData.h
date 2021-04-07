@@ -34,8 +34,11 @@ struct ConfigData final
     SERIALIZE_FIELD(TextDefaultLanguageId, std::string)
     std::string TextDefaultLanguageId = "E";
 
-    SERIALIZE_FIELD(WindowName, std::string)
-    std::string WindowName = "Unnamed Project";
+    SERIALIZE_FIELD(ApplicationName, std::string)
+    std::string ApplicationName = "Unnamed Project";
+
+    SERIALIZE_FIELD(ApplicationVersion, std::string)
+    std::string ApplicationVersion = "1.0.0";
 
     SERIALIZE_FIELD(WindowResizable, bool)
     bool WindowResizable = false;
@@ -51,6 +54,9 @@ struct ConfigData final
 
     SERIALIZE_FIELD(WindowHeight, int)
     int WindowHeight = 600;
+
+    SERIALIZE_FIELD(EnableVulkanValidationLayers, bool)
+    bool EnableVulkanValidationLayers = true;
 };
 
 #endif //CLUSEK_RT_CONFIGDATA_H
