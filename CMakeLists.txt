@@ -55,7 +55,9 @@ add_executable(
         engine/renderer/helpers/VulkanVersion.h
         engine/renderer/helpers/VulkanVersion.cpp
         engine/renderer/helpers/DebuggerCallback.h
-        engine/renderer/helpers/DebuggerCallback.cpp)
+        engine/renderer/helpers/DebuggerCallback.cpp
+        engine/renderer/core/VulkanPhysicalDevice.cpp
+        engine/renderer/core/VulkanPhysicalDevice.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
