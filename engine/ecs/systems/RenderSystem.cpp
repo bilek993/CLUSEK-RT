@@ -15,7 +15,7 @@ void RenderSystem::OnStart()
 {
     LOG_DEBUG("Preparing to create Vulkan Instance...");
     const auto vulkanInstanceRequiredExtensions = MainWindow->GetRequiredExtensions();
-    Instance = std::make_unique<VulkanInstance>(ConfigurationData->EnableVulkanValidationLayers,
+    Instance = std::make_shared<VulkanInstance>(ConfigurationData->EnableVulkanValidationLayers,
                                                 ConfigurationData->ApplicationName,
                                                 ConfigurationData->ApplicationVersion,
                                                 vulkanInstanceRequiredExtensions);

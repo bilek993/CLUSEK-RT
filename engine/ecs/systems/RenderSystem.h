@@ -21,7 +21,7 @@ protected:
     void OnUpdate(float deltaTime) override;
 
 private:
-    std::unique_ptr<VulkanInstance> Instance;
+    std::shared_ptr<VulkanInstance> Instance;
 };
 
 
