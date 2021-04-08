@@ -10,7 +10,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
-class Window
+class Window final
 {
 public:
     Window(int width, int height, bool resizable, bool fullscreen, bool canBeClosed, const std::string& name);
