@@ -19,6 +19,9 @@ void RenderSystem::OnStart()
                                                 ConfigurationData->ApplicationName,
                                                 ConfigurationData->ApplicationVersion,
                                                 vulkanInstanceRequiredExtensions);
+
+    LOG_DEBUG("Preparing to create Vulkan Physical Device...");
+    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
