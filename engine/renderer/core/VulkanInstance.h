@@ -46,10 +46,10 @@ private:
 
     inline static const std::vector<const char*> ValidationLayers = { VK_EXT_DEBUG_UTILS_EXTENSION_NAME };
 
-    bool UseValidationLayers;
+    bool UseValidationLayers = false;
 
-    VkInstance InternalInstance;
-    VkDebugUtilsMessengerEXT InternalDebugUtilsMessenger;
+    VkInstance InternalInstance = VK_NULL_HANDLE;
+    VkDebugUtilsMessengerEXT InternalDebugUtilsMessenger = VK_NULL_HANDLE;
 };
 
 
