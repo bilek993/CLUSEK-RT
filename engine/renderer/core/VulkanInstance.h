@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-class VulkanInstance
+class VulkanInstance final
 {
 public:
     VulkanInstance(bool enableValidationLayers,

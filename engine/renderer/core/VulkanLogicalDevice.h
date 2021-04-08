@@ -6,7 +6,7 @@
 #define CLUSEK_RT_VULKANLOGICALDEVICE_H
 
 
-class VulkanLogicalDevice
+class VulkanLogicalDevice final
 {
 
 };

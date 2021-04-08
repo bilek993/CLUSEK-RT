@@ -10,8 +10,9 @@
 #include "BaseSystem.h"
 #include "../../renderer/allocator/VulkanMemoryAllocatorImplementation.h"
 #include "../../renderer/core/VulkanInstance.h"
+#include "../../renderer/core/VulkanPhysicalDevice.h"
 
-class RenderSystem : public BaseSystem
+class RenderSystem final : public BaseSystem
 {
 public:
     std::string GetName() override;
@@ -22,6 +23,7 @@ protected:
 
 private:
     std::shared_ptr<VulkanInstance> Instance;
+    std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice;
 };
 
 

@@ -6,9 +6,11 @@
 #define CLUSEK_RT_VULKANPHYSICALDEVICE_H
 
 
-class VulkanPhysicalDevice
+class VulkanPhysicalDevice final
 {
+public:
 
+private:
 };
 
 
