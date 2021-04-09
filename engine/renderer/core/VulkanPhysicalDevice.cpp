@@ -33,24 +33,38 @@ VkPhysicalDevice VulkanPhysicalDevice::GetRaw() const
     return InternalPhysicalDevice;
 }
 
-std::pair<VkPhysicalDeviceProperties, VkPhysicalDeviceFeatures> VulkanPhysicalDevice::GetDeviceInfo()
+VkPhysicalDeviceProperties VulkanPhysicalDevice::GetProperties() const
 {
-    return std::make_pair(InternalPhysicalDeviceProperties, InternalVkPhysicalDeviceFeatures);
+    return InternalPhysicalDeviceProperties;
+}
+
+VkPhysicalDeviceFeatures VulkanPhysicalDevice::GetFeatures() const
+{
+    return InternalPhysicalDeviceFeatures;
+}
+
+VkPhysicalDeviceMemoryProperties VulkanPhysicalDevice::GetMemoryProperties() const
+{
+    return InternalPhysicalDeviceMemoryProperties;
 }
 
 void VulkanPhysicalDevice::PickDevice(const std::vector<VkPhysicalDevice>& devices,
                                       bool requireDiscretePhysicalDevice,
                                       const VkPhysicalDeviceFeatures& requiredFeatures)
 {
-    int bestVRamSize = 0;
     VkPhysicalDevice bestPhysicalDevice = VK_NULL_HANDLE;
+    VkDeviceSize bestDeviceSize = 0;
     VkPhysicalDeviceProperties bestProperties{};
     VkPhysicalDeviceFeatures bestFeatures{};
+    VkPhysicalDeviceMemoryProperties bestMemoryProperties{};
 
     for (const auto& device : devices)
     {
+
         VkPhysicalDeviceProperties deviceProperties{};
         VkPhysicalDeviceFeatures deviceFeatures{};
+        VkPhysicalDeviceMemoryProperties memoryProperties{};
+
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
         vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
@@ -113,12 +127,25 @@ void VulkanPhysicalDevice::PickDevice(const std::vector<VkPhysicalDevice>& devic
         CHECK_FEATURE(variableMultisampleRate);
         CHECK_FEATURE(inheritedQueries);
 
-        bestProperties = deviceProperties;
-        bestFeatures = deviceFeatures;
+        auto heaps = std::vector<VkMemoryHeap>(memoryProperties.memoryHeaps,
+                                               memoryProperties.memoryHeaps + memoryProperties.memoryHeapCount);
+        for (const auto& heap : heaps)
+        {
+            if (heap.flags & VkMemoryHeapFlagBits::VK_MEMORY_HEAP_DEVICE_LOCAL_BIT && heap.size > bestDeviceSize)
+            {
+                bestDeviceSize = heap.size;
+
+                bestProperties = deviceProperties;
+                bestFeatures = deviceFeatures;
+                bestMemoryProperties = memoryProperties;
+
+                break;
+            }
+        }
     }
 
     InternalPhysicalDevice = bestPhysicalDevice;
     InternalPhysicalDeviceProperties = bestProperties;
-    InternalVkPhysicalDeviceFeatures = bestFeatures;
+    InternalPhysicalDeviceFeatures = bestFeatures;
+    InternalPhysicalDeviceMemoryProperties = bestMemoryProperties;
 }
-

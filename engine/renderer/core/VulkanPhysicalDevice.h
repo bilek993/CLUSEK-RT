@@ -24,14 +24,17 @@ public:
     VulkanPhysicalDevice& operator=(const VulkanPhysicalDevice& other) = delete;
     VulkanPhysicalDevice& operator=(VulkanPhysicalDevice&& other) noexcept = delete;
 
-    std::pair<VkPhysicalDeviceProperties, VkPhysicalDeviceFeatures> GetDeviceInfo();
+    [[nodiscard]] VkPhysicalDeviceProperties GetProperties() const;
+    [[nodiscard]] VkPhysicalDeviceFeatures GetFeatures() const;
+    [[nodiscard]] VkPhysicalDeviceMemoryProperties GetMemoryProperties() const;
 
     [[nodiscard]] VkPhysicalDevice GetRaw() const;
 
 private:
     VkPhysicalDevice InternalPhysicalDevice = VK_NULL_HANDLE;
     VkPhysicalDeviceProperties InternalPhysicalDeviceProperties{};
-    VkPhysicalDeviceFeatures InternalVkPhysicalDeviceFeatures{};
+    VkPhysicalDeviceFeatures InternalPhysicalDeviceFeatures{};
+    VkPhysicalDeviceMemoryProperties InternalPhysicalDeviceMemoryProperties{};
 
     void PickDevice(const std::vector<VkPhysicalDevice>& devices,
                     bool requireDiscretePhysicalDevice,
