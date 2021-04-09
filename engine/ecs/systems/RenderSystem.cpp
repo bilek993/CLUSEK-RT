@@ -21,7 +21,7 @@ void RenderSystem::OnStart()
                                                 vulkanInstanceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
-    VkPhysicalDeviceFeatures requiredFeatures{};
+    VkPhysicalDeviceFeatures requiredFeatures{}; // TODO: Add setting this parameters
     PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance, true, requiredFeatures);
 }
 
