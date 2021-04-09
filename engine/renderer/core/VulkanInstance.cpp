@@ -105,7 +105,7 @@ bool VulkanInstance::CheckValidationLayersSupport()
 
         for (const auto& layerProperties : availableLayers)
         {
-            if (strcmp(layerName, layerProperties.layerName) == 0)
+            if (layerName == layerProperties.layerName)
             {
                 layerFound = true;
                 break;
