@@ -19,9 +19,9 @@
 
 #include "LoggerModes.h"
 
-#define LOG_DEBUG(message) Logger::Log(DEBUG_MODE, message, __FILE__, __FUNCTION__, __LINE__)
-#define LOG_WARNING(message) Logger::Log(WARNING_MODE, message, __FILE__, __FUNCTION__, __LINE__)
-#define LOG_ERROR(message) Logger::Log(ERROR_MODE, message, __FILE__, __FUNCTION__, __LINE__)
+#define LOG_DEBUG(MESSAGE) Logger::Log(DEBUG_MODE, MESSAGE, __FILE__, __FUNCTION__, __LINE__)
+#define LOG_WARNING(MESSAGE) Logger::Log(WARNING_MODE, MESSAGE, __FILE__, __FUNCTION__, __LINE__)
+#define LOG_ERROR(MESSAGE) Logger::Log(ERROR_MODE, MESSAGE, __FILE__, __FUNCTION__, __LINE__)
 
 class Logger final
 {
