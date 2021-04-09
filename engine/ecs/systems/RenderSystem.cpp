@@ -21,7 +21,8 @@ void RenderSystem::OnStart()
                                                 vulkanInstanceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
-    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance);
+    VkPhysicalDeviceFeatures requiredFeatures{};
+    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance, true, requiredFeatures);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
