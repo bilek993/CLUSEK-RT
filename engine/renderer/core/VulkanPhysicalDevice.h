@@ -10,7 +10,7 @@
 
 #include "VulkanInstance.h"
 
-#define CHECK_FEATURE(TYPE) if (requiredFeatures.TYPE && deviceFeatures.TYPE) continue
+#define CHECK_FEATURE(TYPE) if (requiredFeatures.TYPE && !deviceFeatures.TYPE) continue
 
 class VulkanPhysicalDevice final
 {

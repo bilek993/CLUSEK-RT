@@ -68,7 +68,7 @@ void VulkanPhysicalDevice::PickDevice(const std::vector<VkPhysicalDevice>& devic
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
         vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
-        if (requireDiscretePhysicalDevice && deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+        if (requireDiscretePhysicalDevice && deviceProperties.deviceType != VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
             continue;
 
         CHECK_FEATURE(robustBufferAccess);
