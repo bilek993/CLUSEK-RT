@@ -67,6 +67,7 @@ void VulkanPhysicalDevice::PickDevice(const std::vector<VkPhysicalDevice>& devic
 
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
         vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
+        vkGetPhysicalDeviceMemoryProperties(device, &memoryProperties);
 
         if (requireDiscretePhysicalDevice && deviceProperties.deviceType != VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
             continue;
@@ -135,6 +136,7 @@ void VulkanPhysicalDevice::PickDevice(const std::vector<VkPhysicalDevice>& devic
             {
                 bestDeviceSize = heap.size;
 
+                bestPhysicalDevice = device;
                 bestProperties = deviceProperties;
                 bestFeatures = deviceFeatures;
                 bestMemoryProperties = memoryProperties;
