@@ -57,6 +57,9 @@ struct ConfigData final
 
     SERIALIZE_FIELD(EnableVulkanValidationLayers, bool)
     bool EnableVulkanValidationLayers = true;
+
+    SERIALIZE_FIELD(VulkanRequireDiscreteDevice, bool)
+    bool VulkanRequireDiscreteDevice = true;
 };
 
 #endif //CLUSEK_RT_CONFIGDATA_H

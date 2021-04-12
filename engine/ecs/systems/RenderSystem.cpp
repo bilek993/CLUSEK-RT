@@ -22,7 +22,9 @@ void RenderSystem::OnStart()
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
     VkPhysicalDeviceFeatures requiredFeatures{}; // TODO: Add setting this parameters
-    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance, true, requiredFeatures);
+    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance,
+                                                            ConfigurationData->VulkanRequireDiscreteDevice,
+                                                            requiredFeatures);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

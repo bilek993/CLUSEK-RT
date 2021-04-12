@@ -14,5 +14,6 @@
    "WindowedMode": true,
    "WindowWidth": 1280,
    "WindowHeight": 720,
-   "EnableVulkanValidationLayers": true
+   "EnableVulkanValidationLayers": true,
+   "VulkanRequireDiscreteDevice": true
 }
