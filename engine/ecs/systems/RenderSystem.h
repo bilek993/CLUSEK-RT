@@ -6,6 +6,7 @@
 #define CLUSEK_RT_RENDERSYSTEM_H
 
 #include <memory>
+#include <vulkan/vulkan.h>
 
 #include "BaseSystem.h"
 #include "../../renderer/allocator/VulkanMemoryAllocatorImplementation.h"
@@ -22,6 +23,8 @@ protected:
     void OnUpdate(float deltaTime) override;
 
 private:
+    [[nodiscard]] VkPhysicalDeviceFeatures GeneratePhysicalDeviceRequiredFeatures() const;
+
     std::shared_ptr<VulkanInstance> Instance;
     std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice;
 };
