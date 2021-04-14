@@ -17,7 +17,7 @@ class BaseSystem
 {
 public:
     BaseSystem() = default;
-    ~BaseSystem() = default;
+    virtual ~BaseSystem() = default;
     BaseSystem(const BaseSystem& other) = delete;
     BaseSystem(BaseSystem&& other) noexcept = delete;
     BaseSystem& operator=(const BaseSystem& other) = delete;
