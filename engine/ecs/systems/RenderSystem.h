@@ -23,8 +23,6 @@ protected:
     void OnUpdate(float deltaTime) override;
 
 private:
-    [[nodiscard]] VkPhysicalDeviceFeatures GeneratePhysicalDeviceRequiredFeatures() const;
-
     std::shared_ptr<VulkanInstance> Instance;
     std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice;
 };

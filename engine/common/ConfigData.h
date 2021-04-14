@@ -5,6 +5,8 @@
 #ifndef CLUSEK_RT_CONFIGDATA_H
 #define CLUSEK_RT_CONFIGDATA_H
 
+#include <string>
+
 #include "generators/SerializationMacros.h"
 
 SERIALIZE_OBJECT(ConfigData)
