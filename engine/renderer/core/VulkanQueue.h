@@ -9,7 +9,7 @@
 
 struct VulkanQueue final
 {
-    uint32_t Index = -1;
+    uint32_t FamilyIndex = 0;
     VkQueue Queue = VK_NULL_HANDLE;
 };
 
