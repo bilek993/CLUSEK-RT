@@ -61,7 +61,10 @@ add_executable(
         engine/renderer/core/VulkanLogicalDevice.cpp
         engine/renderer/core/VulkanLogicalDevice.h
         engine/renderer/helpers/DeviceRequiredFeatures.cpp
-        engine/renderer/helpers/DeviceRequiredFeatures.h)
+        engine/renderer/helpers/DeviceRequiredFeatures.h
+        engine/renderer/core/VulkanQueues.cpp
+        engine/renderer/core/VulkanQueues.h
+        engine/renderer/core/VulkanQueue.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD

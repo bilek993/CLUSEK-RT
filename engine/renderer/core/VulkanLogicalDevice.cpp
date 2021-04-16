@@ -3,3 +3,18 @@
 //
 
 #include "VulkanLogicalDevice.h"
+
+VulkanLogicalDevice::VulkanLogicalDevice()
+{
+    // TODO: Implement this
+}
+
+VulkanLogicalDevice::~VulkanLogicalDevice()
+{
+    vkDestroyDevice(InternalLogicalDevice, nullptr);
+}
+
+VkDevice VulkanLogicalDevice::GetRaw() const
+{
+    return InternalLogicalDevice;
+}
