@@ -39,7 +39,7 @@ node ./generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
 
 ### redistribute_engine.js
 
-This script has been designed to deliver the final version of CLUSEK to the end-users and to help game developers ship their games with ease. This tool may look redundant due to CPack that is delivered with CMake, but due to problems with CPack, I decided to design this small tool. This tool has 1 required parameter (path to bin folder) and two optional parameters (version and project name). Usage example:
+This script has been designed to deliver the final version of CLUSEK to the end-users and to help game developers ship their games with ease. This tool may look redundant due to CPack that is delivered with CMake, but due to problems with CPack, I decided to design this small tool. This tool has 1 required parameter (path to bin folder) and two optional parameters (version and project name). This script is called automatically when building a project in the Release mode. Manual usage example:
 
 ```
 node .\redistribute_engine.js ..\..\bin\ 1.2.3 VK_RT
