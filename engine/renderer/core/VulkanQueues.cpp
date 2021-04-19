@@ -26,6 +26,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
         {
             const auto allocatedQueues = std::min(graphicsQueuesToBeAllocated, currentFamilyLeftQueues);
             currentFamilyLeftQueues -= allocatedQueues;
+            graphicsQueuesToBeAllocated -= allocatedQueues;
 
             for (auto j = 0; j < allocatedQueues; j++)
             {
@@ -39,6 +40,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
         {
             const auto allocatedQueues = std::min(computeQueuesToBeAllocated, currentFamilyLeftQueues);
             currentFamilyLeftQueues -= allocatedQueues;
+            computeQueuesToBeAllocated -= allocatedQueues;
 
             for (auto j = 0; j < allocatedQueues; j++)
             {
@@ -52,6 +54,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
         {
             const auto allocatedQueues = std::min(transferQueuesToBeAllocated, currentFamilyLeftQueues);
             currentFamilyLeftQueues -= allocatedQueues;
+            transferQueuesToBeAllocated -= allocatedQueues;
 
             for (auto j = 0; j < allocatedQueues; j++)
             {
