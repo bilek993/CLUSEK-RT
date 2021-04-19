@@ -61,6 +61,15 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             }
         }
     }
+
+    if (graphicsQueuesToBeAllocated > 0)
+        throw std::runtime_error("Not all graphic queues have been assigned!");
+
+    if (computeQueuesToBeAllocated > 0)
+        throw std::runtime_error("Not all compute queues have been assigned!");
+
+    if (transferQueuesToBeAllocated > 0)
+        throw std::runtime_error("Not all transfer queues have been assigned!");
 }
 
 std::vector<VkQueueFamilyProperties>
