@@ -12,6 +12,7 @@
 #include "../../renderer/allocator/VulkanMemoryAllocatorImplementation.h"
 #include "../../renderer/core/VulkanInstance.h"
 #include "../../renderer/core/VulkanPhysicalDevice.h"
+#include "../../renderer/core/VulkanQueues.h"
 
 class RenderSystem final : public BaseSystem
 {
@@ -25,6 +26,7 @@ protected:
 private:
     std::shared_ptr<VulkanInstance> Instance;
     std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice;
+    std::unique_ptr<VulkanQueues> Queues;
 };
 
 

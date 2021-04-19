@@ -26,6 +26,9 @@ void RenderSystem::OnStart()
     PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance,
                                                             ConfigurationData->VulkanRequireDiscreteDevice,
                                                             physicalDeviceRequiredFeatures);
+
+    LOG_DEBUG("Searching for proper queues...");
+    Queues = std::make_unique<VulkanQueues>(PhysicalDevice, 1, 0, 1);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
