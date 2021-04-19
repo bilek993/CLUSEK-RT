@@ -11,6 +11,10 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
                            const unsigned int computeQueuesCount,
                            const unsigned int transferQueues)
 {
+    GraphicsQueues = std::make_shared<std::vector<VulkanQueue>>();
+    ComputeQueues = std::make_shared<std::vector<VulkanQueue>>();
+    TransferQueues = std::make_shared<std::vector<VulkanQueue>>();
+
     auto graphicsQueuesToBeAllocated = graphicsQueuesCount;
     auto computeQueuesToBeAllocated = computeQueuesCount;
     auto transferQueuesToBeAllocated = transferQueues;
@@ -32,7 +36,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             {
                 VulkanQueue graphicQueue{};
                 graphicQueue.FamilyIndex = i;
-                GraphicsQueues.emplace_back(graphicQueue);
+                GraphicsQueues->emplace_back(graphicQueue);
             }
         }
 
@@ -46,7 +50,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             {
                 VulkanQueue computeQueue{};
                 computeQueue.FamilyIndex = i;
-                ComputeQueues.emplace_back(computeQueue);
+                ComputeQueues->emplace_back(computeQueue);
             }
         }
 
@@ -60,7 +64,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             {
                 VulkanQueue transferQueue{};
                 transferQueue.FamilyIndex = i;
-                TransferQueues.emplace_back(transferQueue);
+                TransferQueues->emplace_back(transferQueue);
             }
         }
     }
@@ -75,6 +79,57 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
         throw std::runtime_error("Not all transfer queues have been assigned!");
 }
 
+std::shared_ptr<std::vector<VulkanQueue>> VulkanQueues::GetGraphicsQueues() const
+{
+    return GraphicsQueues;
+}
+
+std::shared_ptr<std::vector<VulkanQueue>> VulkanQueues::GetComputeQueues() const
+{
+    return ComputeQueues;
+}
+
+std::shared_ptr<std::vector<VulkanQueue>> VulkanQueues::GetTransferQueues() const
+{
+    return TransferQueues;
+}
+
+
+std::set<uint32_t> VulkanQueues::GetUsedQueueFamilies() const
+{
+    std::set<uint32_t> usedFamilies{};
+
+    for (const auto& queue : *GraphicsQueues)
+        usedFamilies.insert(queue.FamilyIndex);
+
+    for (const auto& queue : *ComputeQueues)
+        usedFamilies.insert(queue.FamilyIndex);
+
+    for (const auto& queue : *TransferQueues)
+        usedFamilies.insert(queue.FamilyIndex);
+
+    return usedFamilies;
+}
+
+uint32_t VulkanQueues::CountQueuesInFamily(const uint32_t familyIndex) const
+{
+    auto counter = 0;
+
+    for (const auto& queue : *GraphicsQueues)
+        if (queue.FamilyIndex == familyIndex)
+            counter++;
+
+    for (const auto& queue : *ComputeQueues)
+        if (queue.FamilyIndex == familyIndex)
+            counter++;
+
+    for (const auto& queue : *TransferQueues)
+        if (queue.FamilyIndex == familyIndex)
+            counter++;
+
+    return counter;
+}
+
 std::vector<VkQueueFamilyProperties>
 VulkanQueues::GetAllQueueFamilyProperties(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice)
 {
@@ -86,3 +141,5 @@ VulkanQueues::GetAllQueueFamilyProperties(const std::shared_ptr<VulkanPhysicalDe
 
     return queueFamilies;
 }
+
+

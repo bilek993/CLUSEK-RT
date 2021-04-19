@@ -7,10 +7,15 @@
 
 #include <vulkan/vulkan.h>
 
+#include "VulkanQueues.h"
+#include "VulkanPhysicalDevice.h"
+
 class VulkanLogicalDevice final
 {
 public:
-    VulkanLogicalDevice();
+    VulkanLogicalDevice(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+                        std::shared_ptr<VulkanQueues> queues,
+                        const VkPhysicalDeviceFeatures& requiredFeatures);
     ~VulkanLogicalDevice();
     VulkanLogicalDevice(const VulkanLogicalDevice& other) = delete;
     VulkanLogicalDevice(VulkanLogicalDevice&& other) noexcept = delete;

@@ -5,6 +5,7 @@
 #ifndef CLUSEK_RT_VULKANQUEUES_H
 #define CLUSEK_RT_VULKANQUEUES_H
 
+#include <set>
 #include <vulkan/vulkan.h>
 #include <vector>
 
@@ -23,13 +24,20 @@ public:
     VulkanQueues(VulkanQueues&& other) noexcept = delete;
     VulkanQueues& operator=(const VulkanQueues& other) = delete;
     VulkanQueues& operator=(VulkanQueues&& other) noexcept = delete;
+
+    [[nodiscard]] std::shared_ptr<std::vector<VulkanQueue>> GetGraphicsQueues() const;
+    [[nodiscard]] std::shared_ptr<std::vector<VulkanQueue>> GetComputeQueues() const;
+    [[nodiscard]] std::shared_ptr<std::vector<VulkanQueue>> GetTransferQueues() const;
+
+    [[nodiscard]] std::set<uint32_t> GetUsedQueueFamilies() const;
+    [[nodiscard]] uint32_t CountQueuesInFamily(uint32_t familyIndex) const;
 private:
     static std::vector<VkQueueFamilyProperties>
     GetAllQueueFamilyProperties(std::shared_ptr<VulkanPhysicalDevice> physicalDevice);
 
-    std::vector<VulkanQueue> GraphicsQueues{};
-    std::vector<VulkanQueue> ComputeQueues{};
-    std::vector<VulkanQueue> TransferQueues{};
+    std::shared_ptr<std::vector<VulkanQueue>> GraphicsQueues{};
+    std::shared_ptr<std::vector<VulkanQueue>> ComputeQueues{};
+    std::shared_ptr<std::vector<VulkanQueue>> TransferQueues{};
 };
 
 
