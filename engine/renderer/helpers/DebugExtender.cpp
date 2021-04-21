@@ -13,5 +13,5 @@ std::vector<const char*> DebugExtender::GetValidationLayers()
 
 void DebugExtender::AddDebugExtensions(std::vector<const char*>& extensions)
 {
-    extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME)
+    extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 }

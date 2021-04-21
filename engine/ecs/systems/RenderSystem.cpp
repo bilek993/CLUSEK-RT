@@ -6,6 +6,7 @@
 
 #include "../../common/debug/Logger.h"
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
+#include "../../renderer/helpers/DebugExtender.h"
 
 std::string RenderSystem::GetName()
 {
@@ -15,7 +16,8 @@ std::string RenderSystem::GetName()
 void RenderSystem::OnStart()
 {
     LOG_DEBUG("Preparing to create Vulkan Instance...");
-    const auto vulkanInstanceRequiredExtensions = MainWindow->GetRequiredExtensions();
+    auto vulkanInstanceRequiredExtensions = MainWindow->GetRequiredExtensions();
+    DebugExtender::AddDebugExtensions(vulkanInstanceRequiredExtensions);
     Instance = std::make_shared<VulkanInstance>(ConfigurationData->EnableVulkanValidationLayers,
                                                 ConfigurationData->ApplicationName,
                                                 ConfigurationData->ApplicationVersion,

@@ -6,13 +6,14 @@
 
 #include "../helpers/VulkanVersion.h"
 #include "../helpers/DebuggerCallback.h"
+#include "../helpers/DebugExtender.h"
 
 VulkanInstance::VulkanInstance(const bool enableValidationLayers,
                                const std::string& applicationName,
                                const std::string& applicationVersion,
                                std::vector<const char*> requiredExtensions)
 {
-    InitializeValidation(enableValidationLayers, requiredExtensions);
+    InitializeValidation(enableValidationLayers);
     InitializeInstance(applicationName, applicationVersion, requiredExtensions);
     InitializeDebugUtilsMessenger();
 }
@@ -30,18 +31,16 @@ VkInstance VulkanInstance::GetRaw() const
     return InternalInstance;
 }
 
-void VulkanInstance::InitializeValidation(bool enableValidationLayers, std::vector<const char*>& requiredExtensions)
+void VulkanInstance::InitializeValidation(bool enableValidationLayers)
 {
     UseValidationLayers = enableValidationLayers;
+    ValidationLayers = DebugExtender::GetValidationLayers();
 
     if (enableValidationLayers && CheckValidationLayersSupport())
     {
         LOG_DEBUG("Validation layers are not supported!");
         UseValidationLayers = false;
     }
-
-    if (UseValidationLayers)
-        requiredExtensions.insert(requiredExtensions.end(), ValidationLayers.begin(), ValidationLayers.end());
 }
 
 void VulkanInstance::InitializeInstance(const std::string& applicationName,
@@ -66,6 +65,9 @@ void VulkanInstance::InitializeInstance(const std::string& applicationName,
     {
         auto debugUtilsMessengerCreateInfo = GenerateDebugUtilsMessengerCreateInfo();
         instanceCreateInfo.pNext = static_cast<VkDebugUtilsMessengerCreateInfoEXT*>(&debugUtilsMessengerCreateInfo);
+
+        instanceCreateInfo.enabledLayerCount = static_cast<uint32_t>(ValidationLayers.size());
+        instanceCreateInfo.ppEnabledLayerNames = ValidationLayers.data();
     }
 
     const auto result = vkCreateInstance(&instanceCreateInfo, nullptr, &InternalInstance);
@@ -87,7 +89,7 @@ void VulkanInstance::InitializeDebugUtilsMessenger()
         throw std::runtime_error("Critical error when debug messenger!");
 }
 
-bool VulkanInstance::CheckValidationLayersSupport()
+bool VulkanInstance::CheckValidationLayersSupport() const
 {
     uint32_t layerCount;
     auto result = vkEnumerateInstanceLayerProperties(&layerCount, nullptr);

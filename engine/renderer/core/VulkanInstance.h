@@ -25,13 +25,13 @@ public:
     [[nodiscard]] VkInstance GetRaw() const;
 
 private:
-    void InitializeValidation(bool enableValidationLayers, std::vector<const char*>& requiredExtensions);
+    void InitializeValidation(bool enableValidationLayers);
     void InitializeInstance(const std::string& applicationName,
                             const std::string& applicationVersion,
                             const std::vector<const char*>& requiredExtensions);
     void InitializeDebugUtilsMessenger();
 
-    [[nodiscard]] static bool CheckValidationLayersSupport();
+    [[nodiscard]] bool CheckValidationLayersSupport() const;
 
     [[nodiscard]] static VkResult CreateDebugUtilsMessengerExtension(VkInstance instance,
                                                                      const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
@@ -43,9 +43,7 @@ private:
 
     [[nodiscard]] static VkDebugUtilsMessengerCreateInfoEXT GenerateDebugUtilsMessengerCreateInfo();
 
-
-    inline static const std::vector<const char*> ValidationLayers = { VK_EXT_DEBUG_UTILS_EXTENSION_NAME };
-
+    std::vector<const char*> ValidationLayers{};
     bool UseValidationLayers = false;
 
     VkInstance InternalInstance = VK_NULL_HANDLE;
