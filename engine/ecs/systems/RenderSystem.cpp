@@ -30,7 +30,16 @@ void RenderSystem::OnStart()
                                                             physicalDeviceRequiredFeatures);
 
     LOG_DEBUG("Searching for proper queues...");
-    Queues = std::make_shared<VulkanQueues>(PhysicalDevice, 1, 0, 1);
+    const std::vector<float> graphicPriorities = { 1.0F };
+    const std::vector<float> computePriorities = {};
+    const std::vector<float> transferPriorities = { 1.0F };
+    Queues = std::make_shared<VulkanQueues>(PhysicalDevice,
+                                            1,
+                                            graphicPriorities,
+                                            0,
+                                            computePriorities,
+                                            1,
+                                            transferPriorities);
 
     LOG_DEBUG("Preparing to create Vulkan Logical Device with Vulkan Queues...");
     LogicalDevice = std::make_shared<VulkanLogicalDevice>(ConfigurationData->EnableVulkanValidationLayers,

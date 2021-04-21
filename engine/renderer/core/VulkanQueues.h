@@ -8,6 +8,7 @@
 #include <set>
 #include <vulkan/vulkan.h>
 #include <vector>
+#include <unordered_map>
 
 #include "VulkanQueue.h"
 #include "VulkanPhysicalDevice.h"
@@ -17,8 +18,11 @@ class VulkanQueues final
 public:
     VulkanQueues(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                  unsigned int graphicsQueuesCount,
+                 const std::vector<float>& graphicsQueuesPriorities,
                  unsigned int computeQueuesCount,
-                 unsigned int transferQueuesCount);
+                 const std::vector<float>& computeQueuesPriorities,
+                 unsigned int transferQueuesCount,
+                 const std::vector<float>& transferQueuesPriorities);
     ~VulkanQueues() = default;
     VulkanQueues(const VulkanQueues& other) = delete;
     VulkanQueues(VulkanQueues&& other) noexcept = delete;
@@ -30,6 +34,7 @@ public:
     [[nodiscard]] std::shared_ptr<std::vector<VulkanQueue>> GetTransferQueues() const;
 
     [[nodiscard]] std::set<uint32_t> GetUsedQueueFamilies() const;
+    [[nodiscard]] std::unordered_map<uint32_t, std::vector<float>> GetQueuePriorities() const;
     [[nodiscard]] uint32_t CountQueuesInFamily(uint32_t familyIndex) const;
 private:
     static std::vector<VkQueueFamilyProperties>
@@ -38,6 +43,10 @@ private:
     std::shared_ptr<std::vector<VulkanQueue>> GraphicsQueues{};
     std::shared_ptr<std::vector<VulkanQueue>> ComputeQueues{};
     std::shared_ptr<std::vector<VulkanQueue>> TransferQueues{};
+
+    std::vector<float> GraphicsQueuesPriorities;
+    std::vector<float> ComputeQueuesPriorities;
+    std::vector<float> TransferQueuesPriorities;
 };
 
 

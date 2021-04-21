@@ -13,8 +13,7 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
                                          std::vector<const char*> requiredExtensions)
 {
     const auto usedQueueFamiliesIndices = queues->GetUsedQueueFamilies();
-
-    const auto queuePriority = 1.0F;
+    const auto queuePriorities = queues->GetQueuePriorities();
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 
     for (const auto queueFamilyIndex : usedQueueFamiliesIndices)
@@ -23,7 +22,7 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
         queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
         queueCreateInfo.queueCount = queues->CountQueuesInFamily(queueFamilyIndex);
-        queueCreateInfo.pQueuePriorities = &queuePriority;
+        queueCreateInfo.pQueuePriorities = queuePriorities.at(queueFamilyIndex).data();
         queueCreateInfos.push_back(queueCreateInfo);
     }
 

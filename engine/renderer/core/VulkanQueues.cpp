@@ -8,16 +8,23 @@
 
 VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                            const unsigned int graphicsQueuesCount,
+                           const std::vector<float>& graphicsQueuesPriorities,
                            const unsigned int computeQueuesCount,
-                           const unsigned int transferQueues)
+                           const std::vector<float>& computeQueuesPriorities,
+                           const unsigned int transferQueuesCount,
+                           const std::vector<float>& transferQueuesPriorities)
 {
     GraphicsQueues = std::make_shared<std::vector<VulkanQueue>>();
     ComputeQueues = std::make_shared<std::vector<VulkanQueue>>();
     TransferQueues = std::make_shared<std::vector<VulkanQueue>>();
 
+    GraphicsQueuesPriorities = graphicsQueuesPriorities;
+    ComputeQueuesPriorities = computeQueuesPriorities;
+    TransferQueuesPriorities = transferQueuesPriorities;
+
     auto graphicsQueuesToBeAllocated = graphicsQueuesCount;
     auto computeQueuesToBeAllocated = computeQueuesCount;
-    auto transferQueuesToBeAllocated = transferQueues;
+    auto transferQueuesToBeAllocated = transferQueuesCount;
 
     const auto queueFamilies = GetAllQueueFamilyProperties(physicalDevice);
 
@@ -111,6 +118,34 @@ std::set<uint32_t> VulkanQueues::GetUsedQueueFamilies() const
     return usedFamilies;
 }
 
+
+std::unordered_map<uint32_t, std::vector<float>> VulkanQueues::GetQueuePriorities() const
+{
+    const auto usedQueueFamilies = GetUsedQueueFamilies();
+    std::unordered_map<uint32_t, std::vector<float>> queuePriorities{};
+
+    auto graphicCounter = 0;
+    auto computeCounter = 0;
+    auto transferCounter = 0;
+
+    for (const auto familyIndex : usedQueueFamilies)
+    {
+        for (const auto& queue : *GraphicsQueues)
+            if (queue.FamilyIndex == familyIndex)
+                queuePriorities[familyIndex].emplace_back(GraphicsQueuesPriorities[graphicCounter++]);
+
+        for (const auto& queue : *ComputeQueues)
+            if (queue.FamilyIndex == familyIndex)
+                queuePriorities[familyIndex].emplace_back(ComputeQueuesPriorities[computeCounter++]);
+
+        for (const auto& queue : *TransferQueues)
+            if (queue.FamilyIndex == familyIndex)
+                queuePriorities[familyIndex].emplace_back(TransferQueuesPriorities[transferCounter++]);
+    }
+
+    return queuePriorities;
+}
+
 uint32_t VulkanQueues::CountQueuesInFamily(const uint32_t familyIndex) const
 {
     auto counter = 0;
@@ -141,5 +176,3 @@ VulkanQueues::GetAllQueueFamilyProperties(const std::shared_ptr<VulkanPhysicalDe
 
     return queueFamilies;
 }
-
-
