@@ -21,6 +21,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
+add_compile_definitions(ENGINE_VERSION="${CMAKE_PROJECT_VERSION}")
 
 add_executable(
         ${PROJECT_NAME}
@@ -28,6 +29,7 @@ add_executable(
         engine/common/debug/Logger.cpp
         engine/common/debug/Logger.h
         engine/common/debug/LoggerModes.h
+        engine/common/StringUtil.cpp
         engine/common/StringUtil.h
         engine/common/translations/Text.cpp
         engine/common/translations/Text.h
@@ -45,7 +47,26 @@ add_executable(
         engine/common/Timer.cpp
         engine/common/Timer.h
         engine/window/Window.cpp
-        engine/window/Window.h)
+        engine/window/Window.h
+        engine/renderer/allocator/VulkanMemoryAllocatorImplementation.h
+        engine/renderer/allocator/VulkanMemoryAllocatorImplementation.cpp
+        engine/renderer/core/VulkanInstance.cpp
+        engine/renderer/core/VulkanInstance.h
+        engine/renderer/helpers/VulkanVersion.h
+        engine/renderer/helpers/VulkanVersion.cpp
+        engine/renderer/helpers/DebuggerCallback.h
+        engine/renderer/helpers/DebuggerCallback.cpp
+        engine/renderer/core/VulkanPhysicalDevice.cpp
+        engine/renderer/core/VulkanPhysicalDevice.h
+        engine/renderer/core/VulkanLogicalDevice.cpp
+        engine/renderer/core/VulkanLogicalDevice.h
+        engine/renderer/helpers/DeviceRequiredFeatures.cpp
+        engine/renderer/helpers/DeviceRequiredFeatures.h
+        engine/renderer/core/VulkanQueues.cpp
+        engine/renderer/core/VulkanQueues.h
+        engine/renderer/core/VulkanQueue.h
+        engine/renderer/helpers/DebugExtender.cpp
+        engine/renderer/helpers/DebugExtender.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD

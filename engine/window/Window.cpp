@@ -87,6 +87,15 @@ void Window::ResetResized()
     Resized = false;
 }
 
+std::vector<const char*> Window::GetRequiredExtensions() const
+{
+    uint32_t extensionsCount = 0;
+    const char** extensions;
+
+    extensions = glfwGetRequiredInstanceExtensions(&extensionsCount);
+
+    return std::vector<const char*>(extensions, extensions + extensionsCount);
+}
 
 void Window::GlfwCallbackResizeFunction(GLFWwindow* window, const int width, const int height)
 {

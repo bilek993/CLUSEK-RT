@@ -8,8 +8,9 @@
 #define GLFW_INCLUDE_VULKAN
 
 #include <GLFW/glfw3.h>
+#include <vector>
 
-class Window
+class Window final
 {
 public:
     Window(int width, int height, bool resizable, bool fullscreen, bool canBeClosed, const std::string& name);
@@ -28,6 +29,8 @@ public:
 
     [[nodiscard]] bool HasBeenResized() const;
     void ResetResized();
+
+    [[nodiscard]] std::vector<const char*> GetRequiredExtensions() const;
 private:
     static void GlfwCallbackResizeFunction(GLFWwindow* window, int width, int height);
 

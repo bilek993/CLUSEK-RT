@@ -17,7 +17,7 @@ class BaseSystem
 {
 public:
     BaseSystem() = default;
-    ~BaseSystem() = default;
+    virtual ~BaseSystem() = default;
     BaseSystem(const BaseSystem& other) = delete;
     BaseSystem(BaseSystem&& other) noexcept = delete;
     BaseSystem& operator=(const BaseSystem& other) = delete;
@@ -25,7 +25,7 @@ public:
 
     void Start(std::shared_ptr<ConfigData> configurationData,
                std::shared_ptr<Window> mainWindow,
-               std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems);
+               std::weak_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems);
     void Update(float deltaTime);
 
     void Enable();
@@ -42,7 +42,7 @@ protected:
 
     std::shared_ptr<ConfigData> ConfigurationData;
     std::shared_ptr<Window> MainWindow;
-    std::shared_ptr<std::vector<std::shared_ptr<BaseSystem>>> Systems;
+    std::weak_ptr<std::vector<std::shared_ptr<BaseSystem>>> Systems;
 
 private:
     bool Enabled = true;
