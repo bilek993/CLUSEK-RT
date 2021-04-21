@@ -33,6 +33,8 @@ public:
     [[nodiscard]] std::shared_ptr<std::vector<VulkanQueue>> GetComputeQueues() const;
     [[nodiscard]] std::shared_ptr<std::vector<VulkanQueue>> GetTransferQueues() const;
 
+    [[nodiscard]] VulkanQueue* GetQueuePointerInFamily(uint32_t familyIndex, uint32_t queueIndex) const;
+
     [[nodiscard]] std::set<uint32_t> GetUsedQueueFamilies() const;
     [[nodiscard]] std::unordered_map<uint32_t, std::vector<float>> GetQueuePriorities() const;
     [[nodiscard]] uint32_t CountQueuesInFamily(uint32_t familyIndex) const;

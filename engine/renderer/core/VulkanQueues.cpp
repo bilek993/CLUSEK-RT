@@ -101,6 +101,27 @@ std::shared_ptr<std::vector<VulkanQueue>> VulkanQueues::GetTransferQueues() cons
     return TransferQueues;
 }
 
+VulkanQueue* VulkanQueues::GetQueuePointerInFamily(const uint32_t familyIndex, const uint32_t queueIndex) const
+{
+    auto counter = 0;
+
+    for (auto& queue : *GraphicsQueues)
+        if (queue.FamilyIndex == familyIndex)
+            if (queueIndex == counter++)
+                return &queue;
+
+    for (auto& queue : *ComputeQueues)
+        if (queue.FamilyIndex == familyIndex)
+            if (queueIndex == counter++)
+                return &queue;
+
+    for (auto& queue : *TransferQueues)
+        if (queue.FamilyIndex == familyIndex)
+            if (queueIndex == counter++)
+                return &queue;
+
+    return nullptr;
+}
 
 std::set<uint32_t> VulkanQueues::GetUsedQueueFamilies() const
 {
@@ -117,7 +138,6 @@ std::set<uint32_t> VulkanQueues::GetUsedQueueFamilies() const
 
     return usedFamilies;
 }
-
 
 std::unordered_map<uint32_t, std::vector<float>> VulkanQueues::GetQueuePriorities() const
 {

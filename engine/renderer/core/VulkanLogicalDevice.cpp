@@ -49,6 +49,17 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
     const auto result = vkCreateDevice(physicalDevice->GetRaw(), &deviceCreateInfo, nullptr, &InternalLogicalDevice);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Failed to create proper logical device!");
+
+    for (const auto queueFamilyIndex : usedQueueFamiliesIndices)
+    {
+        const auto numberOfQueues = queues->CountQueuesInFamily(queueFamilyIndex);
+
+        for (auto queueIndex = 0; queueIndex < numberOfQueues; queueIndex++)
+        {
+            const auto queue = queues->GetQueuePointerInFamily(queueFamilyIndex, queueIndex);
+            vkGetDeviceQueue(InternalLogicalDevice, queueFamilyIndex, queueIndex, &queue->Queue);
+        }
+    }
 }
 
 VulkanLogicalDevice::~VulkanLogicalDevice()
