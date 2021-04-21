@@ -6,6 +6,7 @@
 #define CLUSEK_RT_RENDERSYSTEM_H
 
 #include <memory>
+#include <vector>
 #include <vulkan/vulkan.h>
 
 #include "BaseSystem.h"
@@ -29,6 +30,10 @@ private:
     std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice;
     std::shared_ptr<VulkanQueues> Queues;
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
+
+    std::vector<const char*> LogicalDeviceRequiredExtensions = {
+            VK_KHR_SWAPCHAIN_EXTENSION_NAME
+    };
 };
 
 

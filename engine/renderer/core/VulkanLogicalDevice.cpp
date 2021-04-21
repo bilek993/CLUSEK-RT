@@ -4,9 +4,13 @@
 
 #include "VulkanLogicalDevice.h"
 
-VulkanLogicalDevice::VulkanLogicalDevice(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+#include "../helpers/DebugExtender.h"
+
+VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
+                                         std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                                          const std::shared_ptr<VulkanQueues> queues,
-                                         const VkPhysicalDeviceFeatures& requiredFeatures)
+                                         const VkPhysicalDeviceFeatures& requiredFeatures,
+                                         std::vector<const char*> requiredExtensions)
 {
     const auto usedQueueFamiliesIndices = queues->GetUsedQueueFamilies();
 
@@ -23,13 +27,25 @@ VulkanLogicalDevice::VulkanLogicalDevice(std::shared_ptr<VulkanPhysicalDevice> p
         queueCreateInfos.push_back(queueCreateInfo);
     }
 
+    const auto validationLayers = DebugExtender::GetValidationLayers();
+
     VkDeviceCreateInfo deviceCreateInfo{};
     deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
     deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
     deviceCreateInfo.pEnabledFeatures = &requiredFeatures;
-    //deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size()); // TODO: IMPLEMENT THIS
-    //deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data(); // TODO: IMPLEMENT THIS
+    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(requiredExtensions.size());
+    deviceCreateInfo.ppEnabledExtensionNames = requiredExtensions.data();
+
+    if (enableValidationLayers)
+    {
+        deviceCreateInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        deviceCreateInfo.ppEnabledLayerNames = validationLayers.data();
+    }
+    else
+    {
+        deviceCreateInfo.enabledLayerCount = 0;
+    }
 
     const auto result = vkCreateDevice(physicalDevice->GetRaw(), &deviceCreateInfo, nullptr, &InternalLogicalDevice);
     if (result != VK_SUCCESS)

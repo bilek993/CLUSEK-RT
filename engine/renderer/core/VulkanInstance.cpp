@@ -69,6 +69,10 @@ void VulkanInstance::InitializeInstance(const std::string& applicationName,
         instanceCreateInfo.enabledLayerCount = static_cast<uint32_t>(ValidationLayers.size());
         instanceCreateInfo.ppEnabledLayerNames = ValidationLayers.data();
     }
+    else
+    {
+        instanceCreateInfo.enabledLayerCount = 0;
+    }
 
     const auto result = vkCreateInstance(&instanceCreateInfo, nullptr, &InternalInstance);
     if (result != VK_SUCCESS)

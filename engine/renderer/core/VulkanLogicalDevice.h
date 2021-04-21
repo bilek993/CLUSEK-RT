@@ -13,9 +13,11 @@
 class VulkanLogicalDevice final
 {
 public:
-    VulkanLogicalDevice(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+    VulkanLogicalDevice(bool enableValidationLayers,
+                        std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                         std::shared_ptr<VulkanQueues> queues,
-                        const VkPhysicalDeviceFeatures& requiredFeatures);
+                        const VkPhysicalDeviceFeatures& requiredFeatures,
+                        std::vector<const char*> requiredExtensions);
     ~VulkanLogicalDevice();
     VulkanLogicalDevice(const VulkanLogicalDevice& other) = delete;
     VulkanLogicalDevice(VulkanLogicalDevice&& other) noexcept = delete;

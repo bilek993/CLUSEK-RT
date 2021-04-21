@@ -24,7 +24,6 @@ void RenderSystem::OnStart()
                                                 vulkanInstanceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
-    // TODO: Rename physicalDeviceRequiredFeatures and remove this comment
     VkPhysicalDeviceFeatures physicalDeviceRequiredFeatures = DeviceRequiredFeatures::FromConfig(ConfigurationData);
     PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance,
                                                             ConfigurationData->VulkanRequireDiscreteDevice,
@@ -34,7 +33,11 @@ void RenderSystem::OnStart()
     Queues = std::make_shared<VulkanQueues>(PhysicalDevice, 1, 0, 1);
 
     LOG_DEBUG("Preparing to create Vulkan Logical Device with Vulkan Queues...");
-    LogicalDevice = std::make_shared<VulkanLogicalDevice>(PhysicalDevice, Queues, physicalDeviceRequiredFeatures);
+    LogicalDevice = std::make_shared<VulkanLogicalDevice>(ConfigurationData->EnableVulkanValidationLayers,
+                                                          PhysicalDevice,
+                                                          Queues,
+                                                          physicalDeviceRequiredFeatures,
+                                                          LogicalDeviceRequiredExtensions);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
