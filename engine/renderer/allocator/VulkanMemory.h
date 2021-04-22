@@ -25,6 +25,8 @@ public:
     VulkanMemory& operator=(const VulkanMemory& other) = delete;
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
+    [[nodiscard]] VmaAllocator GetRaw() const;
+
 private:
     VmaAllocator InternalAllocator = VK_NULL_HANDLE;
 };

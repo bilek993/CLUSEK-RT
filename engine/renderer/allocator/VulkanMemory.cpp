@@ -26,3 +26,8 @@ VulkanMemory::~VulkanMemory()
 {
     vmaDestroyAllocator(InternalAllocator);
 }
+
+VmaAllocator VulkanMemory::GetRaw() const
+{
+    return InternalAllocator;
+}
