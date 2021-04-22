@@ -50,7 +50,10 @@ void RenderSystem::OnStart()
                                                           LogicalDeviceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Memory Allocator...");
-    MemoryAllocator = std::make_shared<VulkanMemory>();
+    MemoryAllocator = std::make_shared<VulkanMemory>(Instance,
+                                                     PhysicalDevice,
+                                                     LogicalDevice,
+                                                     VulkanApiVersion);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

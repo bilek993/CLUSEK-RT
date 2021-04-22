@@ -15,7 +15,7 @@ VulkanInstance::VulkanInstance(const bool enableValidationLayers,
                                std::vector<const char*> requiredExtensions)
 {
     InitializeValidation(enableValidationLayers);
-    InitializeInstance(applicationName, applicationVersion, requiredExtensions);
+    InitializeInstance(applicationName, applicationVersion, vulkanApiVersion, requiredExtensions);
     InitializeDebugUtilsMessenger();
 }
 

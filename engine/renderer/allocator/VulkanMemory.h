@@ -5,11 +5,20 @@
 #ifndef CLUSEK_RT_VULKANMEMORY_H
 #define CLUSEK_RT_VULKANMEMORY_H
 
+#include <vk_mem_alloc.h>
+#include <memory>
+
+#include "../core/VulkanInstance.h"
+#include "../core/VulkanPhysicalDevice.h"
+#include "../core/VulkanLogicalDevice.h"
 
 class VulkanMemory
 {
 public:
-    VulkanMemory();
+    VulkanMemory(std::shared_ptr<VulkanInstance> vulkanInstance,
+                 std::shared_ptr<VulkanPhysicalDevice> vulkanPhysicalDevice,
+                 std::shared_ptr<VulkanLogicalDevice> vulkanLogicalDevice,
+                 uint32_t vulkanApiVersion);
     ~VulkanMemory();
     VulkanMemory(const VulkanMemory& other) = delete;
     VulkanMemory(VulkanMemory&& other) noexcept = delete;
@@ -17,6 +26,7 @@ public:
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
 private:
+    VmaAllocator InternalAllocator = VK_NULL_HANDLE;
 };
 
 
