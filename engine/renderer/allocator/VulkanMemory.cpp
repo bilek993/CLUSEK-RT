@@ -19,7 +19,7 @@ VulkanMemory::VulkanMemory(const std::shared_ptr<VulkanInstance> vulkanInstance,
 
     const auto result = vmaCreateAllocator(&allocatorCreateInfo, &InternalAllocator);
     if (result != VK_SUCCESS)
-        throw std::runtime_error("Critical error when creating Vulkan Instance!");
+        throw std::runtime_error("Critical error when creating Allocator!");
 }
 
 VulkanMemory::~VulkanMemory()
