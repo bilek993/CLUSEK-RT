@@ -15,6 +15,7 @@
 #include "../../renderer/core/VulkanPhysicalDevice.h"
 #include "../../renderer/core/VulkanQueues.h"
 #include "../../renderer/core/VulkanLogicalDevice.h"
+#include "../../renderer/allocator//VulkanMemory.h"
 
 class RenderSystem final : public BaseSystem
 {
@@ -26,10 +27,11 @@ protected:
     void OnUpdate(float deltaTime) override;
 
 private:
-    std::shared_ptr<VulkanInstance> Instance;
-    std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice;
-    std::shared_ptr<VulkanQueues> Queues;
-    std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
+    std::shared_ptr<VulkanInstance> Instance = nullptr;
+    std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice = nullptr;
+    std::shared_ptr<VulkanQueues> Queues = nullptr;
+    std::shared_ptr<VulkanLogicalDevice> LogicalDevice = nullptr;
+    std::shared_ptr<VulkanMemory> MemoryAllocator = nullptr;
 
     std::vector<const char*> LogicalDeviceRequiredExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME

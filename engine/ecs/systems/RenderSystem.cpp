@@ -47,6 +47,9 @@ void RenderSystem::OnStart()
                                                           Queues,
                                                           physicalDeviceRequiredFeatures,
                                                           LogicalDeviceRequiredExtensions);
+
+    LOG_DEBUG("Preparing to create Vulkan Memory Allocator...");
+    MemoryAllocator = std::make_shared<VulkanMemory>();
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
