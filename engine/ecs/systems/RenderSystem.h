@@ -36,6 +36,7 @@ private:
     std::vector<const char*> LogicalDeviceRequiredExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
+    uint32_t VulkanApiVersion = VK_API_VERSION_1_2;
 };
 
 

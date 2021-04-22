@@ -15,6 +15,7 @@ public:
     VulkanInstance(bool enableValidationLayers,
                    const std::string& applicationName,
                    const std::string& applicationVersion,
+                   uint32_t vulkanApiVersion,
                    std::vector<const char*> requiredExtensions);
     ~VulkanInstance();
     VulkanInstance(const VulkanInstance& other) = delete;
@@ -28,6 +29,7 @@ private:
     void InitializeValidation(bool enableValidationLayers);
     void InitializeInstance(const std::string& applicationName,
                             const std::string& applicationVersion,
+                            uint32_t vulkanApiVersion,
                             const std::vector<const char*>& requiredExtensions);
     void InitializeDebugUtilsMessenger();
 

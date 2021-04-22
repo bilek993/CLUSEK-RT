@@ -21,6 +21,7 @@ void RenderSystem::OnStart()
     Instance = std::make_shared<VulkanInstance>(ConfigurationData->EnableVulkanValidationLayers,
                                                 ConfigurationData->ApplicationName,
                                                 ConfigurationData->ApplicationVersion,
+                                                VulkanApiVersion,
                                                 vulkanInstanceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
