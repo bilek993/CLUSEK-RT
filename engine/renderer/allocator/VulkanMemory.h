@@ -7,6 +7,7 @@
 
 #include <vk_mem_alloc.h>
 #include <memory>
+#include <utility>
 
 #include "../core/VulkanInstance.h"
 #include "../core/VulkanPhysicalDevice.h"
@@ -25,6 +26,13 @@ public:
     VulkanMemory& operator=(const VulkanMemory& other) = delete;
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
+    [[nodiscard]] std::pair<VkBuffer, VmaAllocation> CreateBufferWithAllocation(VkBufferUsageFlags bufferUsage,
+                                                                                VkSharingMode sharingMode,
+                                                                                VkMemoryPropertyFlags requiredMemoryProperties,
+                                                                                VkMemoryPropertyFlags preferredMemoryProperties,
+                                                                                VmaAllocationCreateFlags allocationCreateFlags,
+                                                                                VkDeviceSize bufferSize) const;
+    void DestroyBuffer(const std::pair<VkBuffer, VmaAllocation>& bufferWithAllocation) const;
 
     [[nodiscard]] VmaAllocator GetRaw() const;
 private:
