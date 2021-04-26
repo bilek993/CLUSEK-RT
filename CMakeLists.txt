@@ -68,7 +68,8 @@ add_executable(
         engine/renderer/helpers/DebugExtender.cpp
         engine/renderer/helpers/DebugExtender.h
         engine/renderer/allocator/VulkanMemory.cpp
-        engine/renderer/allocator/VulkanMemory.h)
+        engine/renderer/allocator/VulkanMemory.h
+        engine/renderer/core/VulkanBuffer.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
