@@ -15,6 +15,7 @@
    "WindowWidth": 1280,
    "WindowHeight": 720,
    "EnableVulkanValidationLayers": true,
+   "CheckVulkanBufferMemoryBeforeMapping": false,
    "VulkanRequireDiscreteDevice": true,
    "VulkanPhysicalDeviceRequireRobustBufferAccess": false,
    "VulkanPhysicalDeviceRequireFullDrawIndexUint32": false,

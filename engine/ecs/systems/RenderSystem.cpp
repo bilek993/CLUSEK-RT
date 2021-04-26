@@ -21,6 +21,7 @@ void RenderSystem::OnStart()
     Instance = std::make_shared<VulkanInstance>(ConfigurationData->EnableVulkanValidationLayers,
                                                 ConfigurationData->ApplicationName,
                                                 ConfigurationData->ApplicationVersion,
+                                                VulkanApiVersion,
                                                 vulkanInstanceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
@@ -47,6 +48,13 @@ void RenderSystem::OnStart()
                                                           Queues,
                                                           physicalDeviceRequiredFeatures,
                                                           LogicalDeviceRequiredExtensions);
+
+    LOG_DEBUG("Preparing to create Vulkan Memory Allocator...");
+    MemoryAllocator = std::make_shared<VulkanMemory>(Instance,
+                                                     PhysicalDevice,
+                                                     LogicalDevice,
+                                                     VulkanApiVersion,
+                                                     ConfigurationData->CheckVulkanBufferMemoryBeforeMapping);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

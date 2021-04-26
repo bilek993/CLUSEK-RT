@@ -11,10 +11,11 @@
 VulkanInstance::VulkanInstance(const bool enableValidationLayers,
                                const std::string& applicationName,
                                const std::string& applicationVersion,
+                               const uint32_t vulkanApiVersion,
                                std::vector<const char*> requiredExtensions)
 {
     InitializeValidation(enableValidationLayers);
-    InitializeInstance(applicationName, applicationVersion, requiredExtensions);
+    InitializeInstance(applicationName, applicationVersion, vulkanApiVersion, requiredExtensions);
     InitializeDebugUtilsMessenger();
 }
 
@@ -45,6 +46,7 @@ void VulkanInstance::InitializeValidation(bool enableValidationLayers)
 
 void VulkanInstance::InitializeInstance(const std::string& applicationName,
                                         const std::string& applicationVersion,
+                                        const uint32_t vulkanApiVersion,
                                         const std::vector<const char*>& requiredExtensions)
 {
     VkApplicationInfo applicationInfo{};
@@ -53,7 +55,7 @@ void VulkanInstance::InitializeInstance(const std::string& applicationName,
     applicationInfo.applicationVersion = VulkanVersion::GenerateVersion(applicationVersion);
     applicationInfo.pEngineName = "CLUSEK-RT Engine";
     applicationInfo.engineVersion = VulkanVersion::GenerateVersion(ENGINE_VERSION);
-    applicationInfo.apiVersion = VK_API_VERSION_1_2;
+    applicationInfo.apiVersion = vulkanApiVersion;
 
     VkInstanceCreateInfo instanceCreateInfo{};
     instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
