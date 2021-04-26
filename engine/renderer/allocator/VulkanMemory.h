@@ -51,6 +51,8 @@ private:
     [[nodiscard]] VulkanBuffer CreateBuffer(VkBufferCreateInfo bufferInfo,
                                             VmaAllocationCreateInfo allocationCreateInfo) const;
 
+    [[nodiscard]] bool IsMappable(const VulkanBuffer& buffer) const;
+
     VmaAllocator InternalAllocator = VK_NULL_HANDLE;
 
     bool CheckMemoryBeforeMapping = false;
