@@ -27,32 +27,49 @@ VulkanMemory::~VulkanMemory()
     vmaDestroyAllocator(InternalAllocator);
 }
 
-std::pair<VkBuffer, VmaAllocation> VulkanMemory::CreateBufferWithAllocation(const VkBufferUsageFlags bufferUsage,
-                                                                            const VkSharingMode sharingMode,
-                                                                            const VkMemoryPropertyFlags requiredMemoryProperties,
-                                                                            const VkMemoryPropertyFlags preferredMemoryProperties,
-                                                                            const VmaAllocationCreateFlags allocationCreateFlags,
-                                                                            const VkDeviceSize bufferSize) const
+std::pair<VkBuffer, VmaAllocation> VulkanMemory::CreateBufferExclusive(const VkBufferUsageFlags bufferUsage,
+                                                                       const VkMemoryPropertyFlags requiredMemoryProperties,
+                                                                       const VkMemoryPropertyFlags preferredMemoryProperties,
+                                                                       const VmaAllocationCreateFlags allocationCreateFlags,
+                                                                       const VkDeviceSize bufferSize) const
 {
-    VkBuffer buffer;
-    VmaAllocation allocation;
-
     VkBufferCreateInfo bufferInfo{};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     bufferInfo.size = bufferSize;
     bufferInfo.usage = bufferUsage;
-    bufferInfo.sharingMode = sharingMode;
+    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     VmaAllocationCreateInfo allocationInfo{};
     allocationInfo.requiredFlags = requiredMemoryProperties;
     allocationInfo.preferredFlags = preferredMemoryProperties;
     allocationInfo.flags = allocationCreateFlags;
 
-    const auto result = vmaCreateBuffer(InternalAllocator, &bufferInfo, &allocationInfo, &buffer, &allocation, nullptr);
-    if (result != VK_SUCCESS)
-        throw std::runtime_error("Buffer creation failed!");
+    return CreateBuffer(bufferInfo, allocationInfo);
+}
 
-    return std::make_pair(buffer, allocation);
+std::pair<VkBuffer, VmaAllocation> VulkanMemory::CreateBufferConcurrent(const VkBufferUsageFlags bufferUsage,
+                                                                        const uint32_t queueFamilyIndexCount,
+                                                                        const uint32_t* queueFamilyIndices,
+                                                                        const VkMemoryPropertyFlags requiredMemoryProperties,
+                                                                        const VkMemoryPropertyFlags preferredMemoryProperties,
+                                                                        const VmaAllocationCreateFlags allocationCreateFlags,
+                                                                        const VkDeviceSize bufferSize) const
+{
+    VkBufferCreateInfo bufferInfo{};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.size = bufferSize;
+    bufferInfo.usage = bufferUsage;
+    bufferInfo.sharingMode = VK_SHARING_MODE_CONCURRENT;
+    bufferInfo.queueFamilyIndexCount = queueFamilyIndexCount;
+    bufferInfo.pQueueFamilyIndices = queueFamilyIndices;
+
+    VmaAllocationCreateInfo
+            allocationInfo{};
+    allocationInfo.requiredFlags = requiredMemoryProperties;
+    allocationInfo.preferredFlags = preferredMemoryProperties;
+    allocationInfo.flags = allocationCreateFlags;
+
+    return CreateBuffer(bufferInfo, allocationInfo);
 }
 
 void VulkanMemory::DestroyBuffer(const std::pair<VkBuffer, VmaAllocation>& bufferWithAllocation) const
@@ -63,4 +80,17 @@ void VulkanMemory::DestroyBuffer(const std::pair<VkBuffer, VmaAllocation>& buffe
 VmaAllocator VulkanMemory::GetRaw() const
 {
     return InternalAllocator;
+}
+
+std::pair<VkBuffer, VmaAllocation> VulkanMemory::CreateBuffer(VkBufferCreateInfo bufferInfo,
+                                                              VmaAllocationCreateInfo allocationInfo) const
+{
+    VkBuffer buffer;
+    VmaAllocation allocation;
+
+    const auto result = vmaCreateBuffer(InternalAllocator, &bufferInfo, &allocationInfo, &buffer, &allocation, nullptr);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Buffer creation failed!");
+
+    return std::make_pair(buffer, allocation);
 }

@@ -26,16 +26,26 @@ public:
     VulkanMemory& operator=(const VulkanMemory& other) = delete;
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
-    [[nodiscard]] std::pair<VkBuffer, VmaAllocation> CreateBufferWithAllocation(VkBufferUsageFlags bufferUsage,
-                                                                                VkSharingMode sharingMode,
-                                                                                VkMemoryPropertyFlags requiredMemoryProperties,
-                                                                                VkMemoryPropertyFlags preferredMemoryProperties,
-                                                                                VmaAllocationCreateFlags allocationCreateFlags,
-                                                                                VkDeviceSize bufferSize) const;
+    [[nodiscard]] std::pair<VkBuffer, VmaAllocation> CreateBufferExclusive(VkBufferUsageFlags bufferUsage,
+                                                                           VkMemoryPropertyFlags requiredMemoryProperties,
+                                                                           VkMemoryPropertyFlags preferredMemoryProperties,
+                                                                           VmaAllocationCreateFlags allocationCreateFlags,
+                                                                           VkDeviceSize bufferSize) const;
+    /// Consider using `CreateBufferExclusive` instead of this function due to potential performance impact.
+    [[nodiscard]] std::pair<VkBuffer, VmaAllocation> CreateBufferConcurrent(VkBufferUsageFlags bufferUsage,
+                                                                            uint32_t queueFamilyIndexCount,
+                                                                            const uint32_t* queueFamilyIndices,
+                                                                            VkMemoryPropertyFlags requiredMemoryProperties,
+                                                                            VkMemoryPropertyFlags preferredMemoryProperties,
+                                                                            VmaAllocationCreateFlags allocationCreateFlags,
+                                                                            VkDeviceSize bufferSize) const;
     void DestroyBuffer(const std::pair<VkBuffer, VmaAllocation>& bufferWithAllocation) const;
 
     [[nodiscard]] VmaAllocator GetRaw() const;
 private:
+    [[nodiscard]] std::pair<VkBuffer, VmaAllocation> CreateBuffer(VkBufferCreateInfo bufferInfo,
+                                                                  VmaAllocationCreateInfo allocationInfo) const;
+
     VmaAllocator InternalAllocator = VK_NULL_HANDLE;
 };
 
