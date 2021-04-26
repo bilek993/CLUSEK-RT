@@ -50,6 +50,7 @@ namespace ObjectSerializers
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowWidth, int);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, WindowHeight, int);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, EnableVulkanValidationLayers, bool);
+        LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, CheckVulkanBufferMemoryBeforeMapping, bool);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, VulkanRequireDiscreteDevice, bool);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, VulkanPhysicalDeviceRequireRobustBufferAccess, bool);
         LOAD_PRIMITIVE_DATA_TO_FIELD(json, object, VulkanPhysicalDeviceRequireFullDrawIndexUint32, bool);
@@ -129,6 +130,7 @@ namespace ObjectSerializers
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowWidth);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, WindowHeight);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, EnableVulkanValidationLayers);
+        SAVE_PRIMITIVE_DATA_TO_JSON(json, object, CheckVulkanBufferMemoryBeforeMapping);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, VulkanRequireDiscreteDevice);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, VulkanPhysicalDeviceRequireRobustBufferAccess);
         SAVE_PRIMITIVE_DATA_TO_JSON(json, object, VulkanPhysicalDeviceRequireFullDrawIndexUint32);

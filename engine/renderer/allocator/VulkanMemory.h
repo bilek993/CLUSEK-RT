@@ -19,7 +19,8 @@ public:
     VulkanMemory(std::shared_ptr<VulkanInstance> vulkanInstance,
                  std::shared_ptr<VulkanPhysicalDevice> vulkanPhysicalDevice,
                  std::shared_ptr<VulkanLogicalDevice> vulkanLogicalDevice,
-                 uint32_t vulkanApiVersion);
+                 uint32_t vulkanApiVersion,
+                 bool checkMemoryBeforeMapping);
     ~VulkanMemory();
     VulkanMemory(const VulkanMemory& other) = delete;
     VulkanMemory(VulkanMemory&& other) noexcept = delete;
@@ -47,6 +48,8 @@ private:
                                                                   VmaAllocationCreateInfo allocationInfo) const;
 
     VmaAllocator InternalAllocator = VK_NULL_HANDLE;
+
+    bool CheckMemoryBeforeMapping = false;
 };
 
 

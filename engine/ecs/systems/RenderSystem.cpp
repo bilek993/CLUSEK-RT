@@ -53,7 +53,8 @@ void RenderSystem::OnStart()
     MemoryAllocator = std::make_shared<VulkanMemory>(Instance,
                                                      PhysicalDevice,
                                                      LogicalDevice,
-                                                     VulkanApiVersion);
+                                                     VulkanApiVersion,
+                                                     ConfigurationData->CheckVulkanBufferMemoryBeforeMapping);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

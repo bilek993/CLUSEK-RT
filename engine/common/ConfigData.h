@@ -60,6 +60,9 @@ struct ConfigData final
     SERIALIZE_FIELD(EnableVulkanValidationLayers, bool)
     bool EnableVulkanValidationLayers = true;
 
+    SERIALIZE_FIELD(CheckVulkanBufferMemoryBeforeMapping, bool)
+    bool CheckVulkanBufferMemoryBeforeMapping = false;
+
     SERIALIZE_FIELD(VulkanRequireDiscreteDevice, bool)
     bool VulkanRequireDiscreteDevice = true;
 
