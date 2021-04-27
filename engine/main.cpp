@@ -1,22 +1,18 @@
-#include <argh.h>
-
 #include "common/debug/Logger.h"
 #include "common/translations/Text.h"
+#include "common/CommandLineArgumentsParser.h"
 #include "Engine.h"
 #include "common/ConfigData.h"
 #include "generated/ObjectSerializers.h"
 
 int main(int argc, char* argv[])
 {
-    const auto commandLineArguments = argh::parser(argc, argv);
-
-    std::string configurationFilePath;
-
-    commandLineArguments("config-file", "./data/configuration.json") >> configurationFilePath;
+    const auto argsParser = CommandLineArgumentsParser(argc, argv);
 
     const auto configurationData = std::make_shared<ConfigData>();
-    std::ifstream configurationFile(configurationFilePath);
-    ObjectSerializers::Deserialize(configurationFile, *configurationData);
+    std::ifstream configurationFile(argsParser.GetConfigFilePath());
+    if (configurationFile.good())
+        ObjectSerializers::Deserialize(configurationFile, *configurationData);
 
     Logger::Initialize(configurationData->EnableLoggingToConsole,
                        configurationData->EnableLoggingToFile,
