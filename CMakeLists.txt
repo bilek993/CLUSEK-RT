@@ -158,3 +158,7 @@ add_subdirectory(libraries/glm)
 target_link_libraries(${PROJECT_NAME} glm)
 
 include_directories(libraries/glm)
+
+# Argh!
+
+include_directories(libraries/argh)
