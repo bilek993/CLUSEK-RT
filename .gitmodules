@@ -19,3 +19,6 @@
 [submodule "libraries/VulkanMemoryAllocator"]
 	path = libraries/VulkanMemoryAllocator
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "libraries/argh"]
+	path = libraries/argh
+	url = https://github.com/adishavit/argh.git

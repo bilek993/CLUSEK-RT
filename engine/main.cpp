@@ -1,14 +1,21 @@
 #include "common/debug/Logger.h"
 #include "common/translations/Text.h"
+#include "common/CommandLineArgumentsParser.h"
 #include "Engine.h"
 #include "common/ConfigData.h"
 #include "generated/ObjectSerializers.h"
 
-int main()
+int main(int argc, char* argv[])
 {
+    const auto argsParser = CommandLineArgumentsParser(argc, argv);
+
     const auto configurationData = std::make_shared<ConfigData>();
-    std::ifstream configurationFile("./data/configuration.json");
-    ObjectSerializers::Deserialize(configurationFile, *configurationData);
+    std::ifstream configurationFile(argsParser.GetConfigFilePath());
+
+    if (configurationFile.good())
+        ObjectSerializers::Deserialize(configurationFile, *configurationData);
+    else
+        throw std::runtime_error("Configuration filepath corrupted!");
 
     Logger::Initialize(configurationData->EnableLoggingToConsole,
                        configurationData->EnableLoggingToFile,
