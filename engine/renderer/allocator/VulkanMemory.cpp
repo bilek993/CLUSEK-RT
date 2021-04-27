@@ -66,8 +66,7 @@ VulkanBuffer VulkanMemory::CreateBufferConcurrent(const VkBufferUsageFlags buffe
     bufferInfo.queueFamilyIndexCount = queueFamilyIndexCount;
     bufferInfo.pQueueFamilyIndices = queueFamilyIndices;
 
-    VmaAllocationCreateInfo
-            allocationInfo{};
+    VmaAllocationCreateInfo allocationInfo{};
     allocationInfo.requiredFlags = requiredMemoryProperties;
     allocationInfo.preferredFlags = preferredMemoryProperties;
     allocationInfo.flags = allocationCreateFlags;
