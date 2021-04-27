@@ -11,8 +11,11 @@ int main(int argc, char* argv[])
 
     const auto configurationData = std::make_shared<ConfigData>();
     std::ifstream configurationFile(argsParser.GetConfigFilePath());
+
     if (configurationFile.good())
         ObjectSerializers::Deserialize(configurationFile, *configurationData);
+    else
+        throw std::runtime_error("Configuration filepath corrupted!");
 
     Logger::Initialize(configurationData->EnableLoggingToConsole,
                        configurationData->EnableLoggingToFile,
