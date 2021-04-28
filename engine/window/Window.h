@@ -5,8 +5,6 @@
 #ifndef CLUSEK_RT_WINDOW_H
 #define CLUSEK_RT_WINDOW_H
 
-#define GLFW_INCLUDE_VULKAN
-
 #include <GLFW/glfw3.h>
 #include <vector>
 
