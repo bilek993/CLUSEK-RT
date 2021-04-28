@@ -7,7 +7,7 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-project(CLUSEK-RT VERSION 1.0.0)
+project(CLUSEK-RT VERSION 1.1.0)
 
 if (NOT CMAKE_BUILD_TYPE)
     message("Build type is not defined! Falling back to the 'Debug' mode.")
