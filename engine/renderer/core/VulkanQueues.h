@@ -12,11 +12,13 @@
 
 #include "VulkanQueue.h"
 #include "VulkanPhysicalDevice.h"
+#include "VulkanSurface.h"
 
 class VulkanQueues final
 {
 public:
     VulkanQueues(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+                 std::shared_ptr<VulkanSurface> surface,
                  unsigned int graphicsQueuesCount,
                  const std::vector<float>& graphicsQueuesPriorities,
                  unsigned int computeQueuesCount,
@@ -41,6 +43,11 @@ public:
 private:
     static std::vector<VkQueueFamilyProperties>
     GetAllQueueFamilyProperties(std::shared_ptr<VulkanPhysicalDevice> physicalDevice);
+
+    static std::vector<bool> GetAllQueueFamilySupportForPresentation();
+    static bool CheckFamilySupportForPresentation(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+                                                  std::shared_ptr<VulkanSurface> surface,
+                                                  uint32_t familyIndex);
 
     std::shared_ptr<std::vector<VulkanQueue>> GraphicsQueues{};
     std::shared_ptr<std::vector<VulkanQueue>> ComputeQueues{};

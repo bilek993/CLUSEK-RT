@@ -5,8 +5,12 @@
 #include "VulkanQueues.h"
 
 #include <algorithm>
+#include <fmt/compile.h>
+
+#include "../../common/debug/Logger.h"
 
 VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+                           const std::shared_ptr<VulkanSurface> surface,
                            const unsigned int graphicsQueuesCount,
                            const std::vector<float>& graphicsQueuesPriorities,
                            const unsigned int computeQueuesCount,
@@ -33,6 +37,8 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
         const auto& queueFamily = queueFamilies[i];
         auto currentFamilyLeftQueues = queueFamily.queueCount;
 
+        const auto queueFamilySupportPresentation = CheckFamilySupportForPresentation(physicalDevice, surface, i);
+
         if (graphicsQueuesToBeAllocated > 0 && queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
         {
             const auto allocatedQueues = std::min(graphicsQueuesToBeAllocated, currentFamilyLeftQueues);
@@ -43,6 +49,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             {
                 VulkanQueue graphicQueue{};
                 graphicQueue.FamilyIndex = i;
+                graphicQueue.SupportPresentation = queueFamilySupportPresentation;
                 GraphicsQueues->emplace_back(graphicQueue);
             }
         }
@@ -57,6 +64,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             {
                 VulkanQueue computeQueue{};
                 computeQueue.FamilyIndex = i;
+                computeQueue.SupportPresentation = queueFamilySupportPresentation;
                 ComputeQueues->emplace_back(computeQueue);
             }
         }
@@ -71,6 +79,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
             {
                 VulkanQueue transferQueue{};
                 transferQueue.FamilyIndex = i;
+                transferQueue.SupportPresentation = queueFamilySupportPresentation;
                 TransferQueues->emplace_back(transferQueue);
             }
         }
@@ -195,4 +204,29 @@ VulkanQueues::GetAllQueueFamilyProperties(const std::shared_ptr<VulkanPhysicalDe
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice->GetRaw(), &queueFamilyCount, queueFamilies.data());
 
     return queueFamilies;
+}
+
+std::vector<bool> VulkanQueues::GetAllQueueFamilySupportForPresentation()
+{
+    return std::vector<bool>();
+}
+
+bool VulkanQueues::CheckFamilySupportForPresentation(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+                                                     const std::shared_ptr<VulkanSurface> surface,
+                                                     const uint32_t familyIndex)
+{
+    VkBool32 supportsPresentation = false;
+    const auto result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice->GetRaw(),
+                                                             familyIndex,
+                                                             surface->GetRaw(),
+                                                             &supportsPresentation);
+    if (result != VK_SUCCESS)
+    {
+        LOG_WARNING(fmt::format(
+                FMT_COMPILE("Couldn't verify support for presentation in queue family {}. Returning false instead..."),
+                familyIndex));
+        return false;
+    }
+
+    return supportsPresentation;
 }

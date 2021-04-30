@@ -38,6 +38,7 @@ void RenderSystem::OnStart()
     const std::vector<float> computePriorities = {};
     const std::vector<float> transferPriorities = { 1.0F };
     Queues = std::make_shared<VulkanQueues>(PhysicalDevice,
+                                            Surface,
                                             1,
                                             graphicPriorities,
                                             0,
