@@ -35,6 +35,9 @@ private:
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice = nullptr;
     std::shared_ptr<VulkanMemory> MemoryAllocator = nullptr;
 
+    VulkanQueue PresentationQueue;
+    VulkanQueue RayTracingMainQueue;
+
     std::vector<const char*> LogicalDeviceRequiredExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
