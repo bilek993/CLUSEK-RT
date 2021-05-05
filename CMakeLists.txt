@@ -74,7 +74,9 @@ add_executable(
         engine/common/CommandLineArgumentsParser.cpp
         engine/common/CommandLineArgumentsParser.h
         engine/renderer/core/VulkanSurface.cpp
-        engine/renderer/core/VulkanSurface.h)
+        engine/renderer/core/VulkanSurface.h
+        engine/renderer/core/VulkanSwapChain.cpp
+        engine/renderer/core/VulkanSwapChain.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
