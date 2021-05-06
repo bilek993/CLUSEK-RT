@@ -11,6 +11,7 @@
 #include "VulkanLogicalDevice.h"
 #include "VulkanPhysicalDevice.h"
 #include "VulkanSurface.h"
+#include "../../window/Window.h"
 
 class VulkanSwapChain
 {
@@ -18,6 +19,7 @@ public:
     VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
                     std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                     std::shared_ptr<VulkanSurface> surface,
+                    std::shared_ptr<Window> window,
                     VkSurfaceFormatKHR requestedFormat,
                     const std::vector<VkPresentModeKHR>& requestedPresentationModes);
     ~VulkanSwapChain();
@@ -33,6 +35,9 @@ private:
     static VkPresentModeKHR SelectPresentationMode(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                                                    std::shared_ptr<VulkanSurface> surface,
                                                    const std::vector<VkPresentModeKHR>& requestedPresentationModes);
+    static VkExtent2D GenerateExtend(std::shared_ptr<VulkanSurface> surface,
+                                     std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+                                     std::shared_ptr<Window> window);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
