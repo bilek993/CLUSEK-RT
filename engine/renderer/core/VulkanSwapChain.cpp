@@ -19,13 +19,28 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     if (isFormatSupported)
         throw std::runtime_error("Requested Swap Chain format is not supported!");
 
+    const auto capabilities = GetSurfaceCapabilities(surface, physicalDevice);
+
     const auto presentationMode = SelectPresentationMode(physicalDevice, surface, requestedPresentationModes);
-    const auto extend = GenerateExtend(surface, physicalDevice, window);
+    const auto extend = GenerateExtend(capabilities, window);
 }
 
 VulkanSwapChain::~VulkanSwapChain()
 {
     vkDestroySwapchainKHR(LogicalDevice->GetRaw(), InternalSwapchain, nullptr);
+}
+
+VkSurfaceCapabilitiesKHR VulkanSwapChain::GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
+                                                                 std::shared_ptr<VulkanPhysicalDevice> physicalDevice)
+{
+    VkSurfaceCapabilitiesKHR capabilities;
+    const auto result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice->GetRaw(),
+                                                                  surface->GetRaw(),
+                                                                  &capabilities);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Critical error when getting surface capabilities!");
+
+    return capabilities;
 }
 
 bool VulkanSwapChain::CheckRequestedFormatSupport(const std::shared_ptr<VulkanSurface> surface,
@@ -82,31 +97,19 @@ VkPresentModeKHR VulkanSwapChain::SelectPresentationMode(const std::shared_ptr<V
     throw std::runtime_error("Found 0 compatible presentation modes (based on requested values)!");
 }
 
-VkExtent2D VulkanSwapChain::GenerateExtend(const std::shared_ptr<VulkanSurface> surface,
-                                           const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+VkExtent2D VulkanSwapChain::GenerateExtend(const VkSurfaceCapabilitiesKHR& capabilities,
                                            const std::shared_ptr<Window> window)
 {
-    VkSurfaceCapabilitiesKHR capabilities;
-    const auto result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice->GetRaw(),
-                                                                  surface->GetRaw(),
-                                                                  &capabilities);
-    if (result != VK_SUCCESS)
-        throw std::runtime_error("Critical error when getting surface capabilities!");
-
     if (capabilities.currentExtent.width != UINT32_MAX)
-    {
         return capabilities.currentExtent;
-    }
-    else
-    {
-        window->UpdateSize();
 
-        const auto& minExtend = capabilities.minImageExtent;
-        const auto& maxExtend = capabilities.maxImageExtent;
+    window->UpdateSize();
 
-        const auto width = std::clamp(static_cast<uint32_t>(window->GetWidth()), minExtend.width, maxExtend.width);
-        const auto height = std::clamp(static_cast<uint32_t>(window->GetHeight()), minExtend.height, maxExtend.height);
+    const auto& minExtend = capabilities.minImageExtent;
+    const auto& maxExtend = capabilities.maxImageExtent;
 
-        return { width, height };
-    }
+    const auto width = std::clamp(static_cast<uint32_t>(window->GetWidth()), minExtend.width, maxExtend.width);
+    const auto height = std::clamp(static_cast<uint32_t>(window->GetHeight()), minExtend.height, maxExtend.height);
+
+    return { width, height };
 }

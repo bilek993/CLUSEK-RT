@@ -13,7 +13,7 @@
 #include "VulkanSurface.h"
 #include "../../window/Window.h"
 
-class VulkanSwapChain
+class VulkanSwapChain final
 {
 public:
     VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
@@ -29,14 +29,16 @@ public:
     VulkanSwapChain& operator=(VulkanSwapChain&& other) noexcept = delete;
 
 private:
+    static VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
+                                                           std::shared_ptr<VulkanPhysicalDevice> physicalDevice);
+
     static bool CheckRequestedFormatSupport(std::shared_ptr<VulkanSurface> surface,
                                             std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                                             VkSurfaceFormatKHR requestedFormat);
     static VkPresentModeKHR SelectPresentationMode(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                                                    std::shared_ptr<VulkanSurface> surface,
                                                    const std::vector<VkPresentModeKHR>& requestedPresentationModes);
-    static VkExtent2D GenerateExtend(std::shared_ptr<VulkanSurface> surface,
-                                     std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+    static VkExtent2D GenerateExtend(const VkSurfaceCapabilitiesKHR& capabilities,
                                      std::shared_ptr<Window> window);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;
