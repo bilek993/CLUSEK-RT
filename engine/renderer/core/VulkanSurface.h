@@ -11,7 +11,7 @@
 #include "VulkanInstance.h"
 #include "../../window/Window.h"
 
-class VulkanSurface
+class VulkanSurface final
 {
 public:
     VulkanSurface(std::shared_ptr<VulkanInstance> instance, std::shared_ptr<Window> window);
