@@ -70,6 +70,16 @@ void RenderSystem::OnStart()
                                                      LogicalDevice,
                                                      VulkanApiVersion,
                                                      ConfigurationData->CheckVulkanBufferMemoryBeforeMapping);
+
+    LOG_DEBUG("Preparing to create Vulkan Swap Chain...");
+    const std::vector<VkPresentModeKHR> requestedPresentationModes = { VK_PRESENT_MODE_FIFO_KHR };
+    const VkSurfaceFormatKHR requestedSwapChainFormat{ VK_FORMAT_B8G8R8A8_SRGB, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
+    SwapChain = std::make_shared<VulkanSwapChain>(LogicalDevice,
+                                                  PhysicalDevice,
+                                                  Surface,
+                                                  MainWindow,
+                                                  requestedSwapChainFormat,
+                                                  requestedPresentationModes);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
