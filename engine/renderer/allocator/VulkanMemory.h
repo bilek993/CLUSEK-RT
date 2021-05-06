@@ -14,7 +14,7 @@
 #include "../core/VulkanLogicalDevice.h"
 #include "../core/VulkanBuffer.h"
 
-class VulkanMemory
+class VulkanMemory final
 {
 public:
     VulkanMemory(std::shared_ptr<VulkanInstance> vulkanInstance,
