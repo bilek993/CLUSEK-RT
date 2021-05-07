@@ -16,6 +16,9 @@
 class VulkanSwapChain final
 {
 public:
+    /// The concurrent mode may result in bad performance on some devices. Consider using the exclusive mode
+    /// by passing `VK_SHARING_MODE_EXCLUSIVE` into `sharingMode`, `0` into `queueFamilyIndexCount`
+    /// and `nullptr` into `queueFamilyIndices` for consistent better performance on wide range of devices.
     VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
                     std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                     std::shared_ptr<VulkanSurface> surface,
