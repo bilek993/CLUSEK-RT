@@ -79,7 +79,10 @@ void RenderSystem::OnStart()
                                                   Surface,
                                                   MainWindow,
                                                   requestedSwapChainFormat,
-                                                  requestedPresentationModes);
+                                                  requestedPresentationModes,
+                                                  VK_SHARING_MODE_EXCLUSIVE,
+                                                  0,
+                                                  nullptr);
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

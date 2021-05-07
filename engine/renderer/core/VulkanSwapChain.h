@@ -21,7 +21,10 @@ public:
                     std::shared_ptr<VulkanSurface> surface,
                     std::shared_ptr<Window> window,
                     VkSurfaceFormatKHR requestedFormat,
-                    const std::vector<VkPresentModeKHR>& requestedPresentationModes);
+                    const std::vector<VkPresentModeKHR>& requestedPresentationModes,
+                    const VkSharingMode& sharingMode,
+                    uint32_t queueFamilyIndexCount,
+                    const uint32_t* queueFamilyIndices);
     ~VulkanSwapChain();
     VulkanSwapChain(const VulkanSwapChain& other) = delete;
     VulkanSwapChain(VulkanSwapChain&& other) noexcept = delete;
@@ -38,7 +41,7 @@ private:
     static VkPresentModeKHR SelectPresentationMode(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
                                                    std::shared_ptr<VulkanSurface> surface,
                                                    const std::vector<VkPresentModeKHR>& requestedPresentationModes);
-    static VkExtent2D GenerateExtend(const VkSurfaceCapabilitiesKHR& capabilities,
+    static VkExtent2D GenerateExtent(const VkSurfaceCapabilitiesKHR& capabilities,
                                      std::shared_ptr<Window> window);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;

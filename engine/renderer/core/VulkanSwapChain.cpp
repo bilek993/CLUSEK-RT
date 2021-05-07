@@ -11,7 +11,10 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
                                  const std::shared_ptr<VulkanSurface> surface,
                                  const std::shared_ptr<Window> window,
                                  const VkSurfaceFormatKHR requestedFormat,
-                                 const std::vector<VkPresentModeKHR>& requestedPresentationModes)
+                                 const std::vector<VkPresentModeKHR>& requestedPresentationModes,
+                                 const VkSharingMode& sharingMode,
+                                 const uint32_t queueFamilyIndexCount,
+                                 const uint32_t* queueFamilyIndices)
 {
     LogicalDevice = std::move(logicalDevice);
 
@@ -22,7 +25,32 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     const auto capabilities = GetSurfaceCapabilities(surface, physicalDevice);
 
     const auto presentationMode = SelectPresentationMode(physicalDevice, surface, requestedPresentationModes);
-    const auto extend = GenerateExtend(capabilities, window);
+    const auto extent = GenerateExtent(capabilities, window);
+
+    VkSwapchainCreateInfoKHR swapchainCreateInfo{};
+    swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+    swapchainCreateInfo.surface = surface->GetRaw();
+    swapchainCreateInfo.minImageCount = std::min(capabilities.maxImageCount, capabilities.minImageCount + 1);
+    swapchainCreateInfo.imageFormat = requestedFormat.format;
+    swapchainCreateInfo.imageColorSpace = requestedFormat.colorSpace;
+    swapchainCreateInfo.imageExtent = extent;
+    swapchainCreateInfo.imageArrayLayers = 1;
+    swapchainCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    swapchainCreateInfo.imageSharingMode = sharingMode;
+    swapchainCreateInfo.queueFamilyIndexCount = queueFamilyIndexCount;
+    swapchainCreateInfo.pQueueFamilyIndices = queueFamilyIndices;
+    swapchainCreateInfo.preTransform = capabilities.currentTransform;
+    swapchainCreateInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+    swapchainCreateInfo.presentMode = presentationMode;
+    swapchainCreateInfo.clipped = VK_TRUE;
+    swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
+
+    const auto result = vkCreateSwapchainKHR(LogicalDevice->GetRaw(),
+                                             &swapchainCreateInfo,
+                                             nullptr,
+                                             &InternalSwapchain);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Critical error when creating Vulkan Swap Chain!");
 }
 
 VulkanSwapChain::~VulkanSwapChain()
@@ -97,7 +125,7 @@ VkPresentModeKHR VulkanSwapChain::SelectPresentationMode(const std::shared_ptr<V
     throw std::runtime_error("Found 0 compatible presentation modes (based on requested values)!");
 }
 
-VkExtent2D VulkanSwapChain::GenerateExtend(const VkSurfaceCapabilitiesKHR& capabilities,
+VkExtent2D VulkanSwapChain::GenerateExtent(const VkSurfaceCapabilitiesKHR& capabilities,
                                            const std::shared_ptr<Window> window)
 {
     if (capabilities.currentExtent.width != UINT32_MAX)
@@ -105,11 +133,11 @@ VkExtent2D VulkanSwapChain::GenerateExtend(const VkSurfaceCapabilitiesKHR& capab
 
     window->UpdateSize();
 
-    const auto& minExtend = capabilities.minImageExtent;
-    const auto& maxExtend = capabilities.maxImageExtent;
+    const auto& minExtent = capabilities.minImageExtent;
+    const auto& maxExtent = capabilities.maxImageExtent;
 
-    const auto width = std::clamp(static_cast<uint32_t>(window->GetWidth()), minExtend.width, maxExtend.width);
-    const auto height = std::clamp(static_cast<uint32_t>(window->GetHeight()), minExtend.height, maxExtend.height);
+    const auto width = std::clamp(static_cast<uint32_t>(window->GetWidth()), minExtent.width, maxExtent.width);
+    const auto height = std::clamp(static_cast<uint32_t>(window->GetHeight()), minExtent.height, maxExtent.height);
 
     return { width, height };
 }
