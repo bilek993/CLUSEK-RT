@@ -76,7 +76,11 @@ add_executable(
         engine/renderer/core/VulkanSurface.cpp
         engine/renderer/core/VulkanSurface.h
         engine/renderer/core/VulkanSwapChain.cpp
-        engine/renderer/core/VulkanSwapChain.h)
+        engine/renderer/core/VulkanSwapChain.h
+        engine/renderer/core/VulkanImage.cpp
+        engine/renderer/core/VulkanImage.h
+        engine/renderer/core/VulkanImageView.cpp
+        engine/renderer/core/VulkanImageView.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
