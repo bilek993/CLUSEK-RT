@@ -33,14 +33,6 @@ public:
                                                      VkMemoryPropertyFlags preferredMemoryProperties,
                                                      VmaAllocationCreateFlags allocationCreateFlags,
                                                      VkDeviceSize bufferSize) const;
-    /// Consider using `CreateBufferExclusive` instead of this function due to potential performance impact.
-    [[nodiscard]] VulkanBuffer CreateBufferConcurrent(VkBufferUsageFlags bufferUsage,
-                                                      uint32_t queueFamilyIndexCount,
-                                                      const uint32_t* queueFamilyIndices,
-                                                      VkMemoryPropertyFlags requiredMemoryProperties,
-                                                      VkMemoryPropertyFlags preferredMemoryProperties,
-                                                      VmaAllocationCreateFlags allocationCreateFlags,
-                                                      VkDeviceSize bufferSize) const;
     void DestroyBuffer(const VulkanBuffer& buffer) const;
 
     void MapBuffer(const VulkanBuffer& buffer, void* mappedData) const;

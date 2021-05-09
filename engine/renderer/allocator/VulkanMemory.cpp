@@ -50,30 +50,6 @@ VulkanBuffer VulkanMemory::CreateBufferExclusive(const VkBufferUsageFlags buffer
     return CreateBuffer(bufferInfo, allocationInfo);
 }
 
-VulkanBuffer VulkanMemory::CreateBufferConcurrent(const VkBufferUsageFlags bufferUsage,
-                                                  const uint32_t queueFamilyIndexCount,
-                                                  const uint32_t* queueFamilyIndices,
-                                                  const VkMemoryPropertyFlags requiredMemoryProperties,
-                                                  const VkMemoryPropertyFlags preferredMemoryProperties,
-                                                  const VmaAllocationCreateFlags allocationCreateFlags,
-                                                  const VkDeviceSize bufferSize) const
-{
-    VkBufferCreateInfo bufferInfo{};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size = bufferSize;
-    bufferInfo.usage = bufferUsage;
-    bufferInfo.sharingMode = VK_SHARING_MODE_CONCURRENT;
-    bufferInfo.queueFamilyIndexCount = queueFamilyIndexCount;
-    bufferInfo.pQueueFamilyIndices = queueFamilyIndices;
-
-    VmaAllocationCreateInfo allocationInfo{};
-    allocationInfo.requiredFlags = requiredMemoryProperties;
-    allocationInfo.preferredFlags = preferredMemoryProperties;
-    allocationInfo.flags = allocationCreateFlags;
-
-    return CreateBuffer(bufferInfo, allocationInfo);
-}
-
 void VulkanMemory::DestroyBuffer(const VulkanBuffer& buffer) const
 {
     vmaDestroyBuffer(InternalAllocator, buffer.Buffer, buffer.Allocation);
