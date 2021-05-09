@@ -11,10 +11,7 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
                                  const std::shared_ptr<VulkanSurface> surface,
                                  const std::shared_ptr<Window> window,
                                  const VkSurfaceFormatKHR requestedFormat,
-                                 const std::vector<VkPresentModeKHR>& requestedPresentationModes,
-                                 const VkSharingMode& sharingMode,
-                                 const uint32_t queueFamilyIndexCount,
-                                 const uint32_t* queueFamilyIndices)
+                                 const std::vector<VkPresentModeKHR>& requestedPresentationModes)
 {
     LogicalDevice = std::move(logicalDevice);
 
@@ -36,9 +33,9 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     swapchainCreateInfo.imageExtent = extent;
     swapchainCreateInfo.imageArrayLayers = 1;
     swapchainCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-    swapchainCreateInfo.imageSharingMode = sharingMode;
-    swapchainCreateInfo.queueFamilyIndexCount = queueFamilyIndexCount;
-    swapchainCreateInfo.pQueueFamilyIndices = queueFamilyIndices;
+    swapchainCreateInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    swapchainCreateInfo.queueFamilyIndexCount = 0;
+    swapchainCreateInfo.pQueueFamilyIndices = nullptr;
     swapchainCreateInfo.preTransform = capabilities.currentTransform;
     swapchainCreateInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
     swapchainCreateInfo.presentMode = presentationMode;
