@@ -28,6 +28,7 @@ public:
     VulkanMemory& operator=(const VulkanMemory& other) = delete;
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
+    [[nodiscard]] bool IsMappable(const VmaAllocationInfo& allocationInfo) const;
     [[nodiscard]] bool ShouldCheckMemoryBeforeMapping() const;
 
     [[nodiscard]] VmaAllocator GetRaw() const;

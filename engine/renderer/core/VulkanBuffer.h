@@ -27,8 +27,6 @@ public:
 
     [[nodiscard]] VkBuffer GetRaw() const;
 private:
-    [[nodiscard]] bool IsMappable() const;
-
     VkBuffer InternalBuffer = VK_NULL_HANDLE;
     VmaAllocation InternalAllocation = VK_NULL_HANDLE;
     VmaAllocationInfo InternalAllocationInfo = VK_NULL_HANDLE;

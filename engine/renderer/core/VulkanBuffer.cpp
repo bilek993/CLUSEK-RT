@@ -41,7 +41,7 @@ VulkanBuffer::~VulkanBuffer()
 
 void VulkanBuffer::MapBuffer(void* mappedData) const
 {
-    if (Memory->ShouldCheckMemoryBeforeMapping() && !IsMappable())
+    if (Memory->ShouldCheckMemoryBeforeMapping() && !Memory->IsMappable(InternalAllocationInfo))
         throw std::runtime_error("This buffer is not mappable!");
 
     const auto result = vmaMapMemory(Memory->GetRaw(), InternalAllocation, &mappedData);
@@ -51,7 +51,7 @@ void VulkanBuffer::MapBuffer(void* mappedData) const
 
 void VulkanBuffer::UnmapBuffer() const
 {
-    if (Memory->ShouldCheckMemoryBeforeMapping() && !IsMappable())
+    if (Memory->ShouldCheckMemoryBeforeMapping() && !Memory->IsMappable(InternalAllocationInfo))
         throw std::runtime_error("This buffer is not unmappable!");
 
     vmaUnmapMemory(Memory->GetRaw(), InternalAllocation);
@@ -60,12 +60,4 @@ void VulkanBuffer::UnmapBuffer() const
 VkBuffer VulkanBuffer::GetRaw() const
 {
     return InternalBuffer;
-}
-
-bool VulkanBuffer::IsMappable() const
-{
-    VkMemoryPropertyFlags memoryPropertyFlags;
-    vmaGetMemoryTypeProperties(Memory->GetRaw(), InternalAllocationInfo.memoryType, &memoryPropertyFlags);
-
-    return ((memoryPropertyFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) != 0);
 }

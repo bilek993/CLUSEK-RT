@@ -30,6 +30,14 @@ VulkanMemory::~VulkanMemory()
     vmaDestroyAllocator(InternalAllocator);
 }
 
+bool VulkanMemory::IsMappable(const VmaAllocationInfo& allocationInfo) const
+{
+    VkMemoryPropertyFlags memoryPropertyFlags;
+    vmaGetMemoryTypeProperties(InternalAllocator, allocationInfo.memoryType, &memoryPropertyFlags);
+
+    return ((memoryPropertyFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) != 0);
+}
+
 bool VulkanMemory::ShouldCheckMemoryBeforeMapping() const
 {
     return CheckMemoryBeforeMapping;
