@@ -12,7 +12,6 @@
 #include "../core/VulkanInstance.h"
 #include "../core/VulkanPhysicalDevice.h"
 #include "../core/VulkanLogicalDevice.h"
-#include "../core/VulkanBuffer.h"
 
 class VulkanMemory final
 {

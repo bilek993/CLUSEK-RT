@@ -29,7 +29,7 @@ public:
 private:
     VkBuffer InternalBuffer = VK_NULL_HANDLE;
     VmaAllocation InternalAllocation = VK_NULL_HANDLE;
-    VmaAllocationInfo InternalAllocationInfo = VK_NULL_HANDLE;
+    VmaAllocationInfo InternalAllocationInfo;
 
     std::shared_ptr<VulkanMemory> Memory;
 };
