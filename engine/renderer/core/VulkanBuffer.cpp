@@ -5,11 +5,9 @@
 #include "VulkanBuffer.h"
 
 VulkanBuffer::VulkanBuffer(std::shared_ptr<VulkanMemory> memory,
-                           const VkBufferUsageFlags bufferUsage,
-                           const VkMemoryPropertyFlags requiredMemoryProperties,
-                           const VkMemoryPropertyFlags preferredMemoryProperties,
-                           const VmaAllocationCreateFlags allocationCreateFlags,
-                           const VkDeviceSize bufferSize)
+                           const VkBufferUsageFlags& bufferUsage,
+                           const VmaMemoryUsage& memoryUsage,
+                           const VkDeviceSize& bufferSize)
 {
     Memory = std::move(memory);
 
@@ -20,9 +18,7 @@ VulkanBuffer::VulkanBuffer(std::shared_ptr<VulkanMemory> memory,
     bufferCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     VmaAllocationCreateInfo allocationCreateInfo{};
-    allocationCreateInfo.requiredFlags = requiredMemoryProperties;
-    allocationCreateInfo.preferredFlags = preferredMemoryProperties;
-    allocationCreateInfo.flags = allocationCreateFlags;
+    allocationCreateInfo.usage = memoryUsage;
 
     const auto result = vmaCreateBuffer(Memory->GetRaw(),
                                         &bufferCreateInfo,

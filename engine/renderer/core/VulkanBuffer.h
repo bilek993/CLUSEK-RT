@@ -15,11 +15,9 @@ class VulkanBuffer final
 {
 public:
     VulkanBuffer(std::shared_ptr<VulkanMemory> memory,
-                 const VkBufferUsageFlags bufferUsage,
-                 const VkMemoryPropertyFlags requiredMemoryProperties,
-                 const VkMemoryPropertyFlags preferredMemoryProperties,
-                 const VmaAllocationCreateFlags allocationCreateFlags,
-                 const VkDeviceSize bufferSize);
+                 const VkBufferUsageFlags& bufferUsage,
+                 const VmaMemoryUsage& memoryUsage,
+                 const VkDeviceSize& bufferSize);
     virtual ~VulkanBuffer();
 
     void MapBuffer(void* mappedData) const;
@@ -29,7 +27,7 @@ public:
 private:
     VkBuffer InternalBuffer = VK_NULL_HANDLE;
     VmaAllocation InternalAllocation = VK_NULL_HANDLE;
-    VmaAllocationInfo InternalAllocationInfo;
+    VmaAllocationInfo InternalAllocationInfo{};
 
     std::shared_ptr<VulkanMemory> Memory;
 };
