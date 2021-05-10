@@ -30,82 +30,12 @@ VulkanMemory::~VulkanMemory()
     vmaDestroyAllocator(InternalAllocator);
 }
 
-VulkanBuffer VulkanMemory::CreateBufferExclusive(const VkBufferUsageFlags bufferUsage,
-                                                 const VkMemoryPropertyFlags requiredMemoryProperties,
-                                                 const VkMemoryPropertyFlags preferredMemoryProperties,
-                                                 const VmaAllocationCreateFlags allocationCreateFlags,
-                                                 const VkDeviceSize bufferSize) const
+bool VulkanMemory::ShouldCheckMemoryBeforeMapping() const
 {
-    VkBufferCreateInfo bufferInfo{};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size = bufferSize;
-    bufferInfo.usage = bufferUsage;
-    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-    VmaAllocationCreateInfo allocationInfo{};
-    allocationInfo.requiredFlags = requiredMemoryProperties;
-    allocationInfo.preferredFlags = preferredMemoryProperties;
-    allocationInfo.flags = allocationCreateFlags;
-
-    return CreateBuffer(bufferInfo, allocationInfo);
-}
-
-void VulkanMemory::DestroyBuffer(const VulkanBuffer& buffer) const
-{
-    vmaDestroyBuffer(InternalAllocator, buffer.Buffer, buffer.Allocation);
-}
-
-void VulkanMemory::MapBuffer(const VulkanBuffer& buffer, void* mappedData) const
-{
-    if (CheckMemoryBeforeMapping && !IsMappable(buffer))
-        throw std::runtime_error("This buffer is not mappable!");
-
-    const auto result = vmaMapMemory(InternalAllocator, buffer.Allocation, &mappedData);
-    if (result != VK_SUCCESS)
-        throw std::runtime_error("Buffer mapping failed!");
-}
-
-void VulkanMemory::UnmapBuffer(const VulkanBuffer& buffer) const
-{
-    if (CheckMemoryBeforeMapping && !IsMappable(buffer))
-        throw std::runtime_error("This buffer is not unmappable!");
-
-    vmaUnmapMemory(InternalAllocator, buffer.Allocation);
+    return CheckMemoryBeforeMapping;
 }
 
 VmaAllocator VulkanMemory::GetRaw() const
 {
     return InternalAllocator;
-}
-
-VulkanBuffer VulkanMemory::CreateBuffer(VkBufferCreateInfo bufferInfo,
-                                        VmaAllocationCreateInfo allocationCreateInfo) const
-{
-    VkBuffer buffer;
-    VmaAllocation allocation;
-    VmaAllocationInfo allocationInfo;
-
-    const auto result = vmaCreateBuffer(InternalAllocator,
-                                        &bufferInfo,
-                                        &allocationCreateInfo,
-                                        &buffer,
-                                        &allocation,
-                                        &allocationInfo);
-    if (result != VK_SUCCESS)
-        throw std::runtime_error("Buffer creation failed!");
-
-    VulkanBuffer newBuffer{};
-    newBuffer.Buffer = buffer;
-    newBuffer.Allocation = allocation;
-    newBuffer.AllocationInfo = allocationInfo;
-
-    return newBuffer;
-}
-
-bool VulkanMemory::IsMappable(const VulkanBuffer& buffer) const
-{
-    VkMemoryPropertyFlags memoryPropertyFlags;
-    vmaGetMemoryTypeProperties(InternalAllocator, buffer.AllocationInfo.memoryType, &memoryPropertyFlags);
-
-    return ((memoryPropertyFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) != 0);
 }

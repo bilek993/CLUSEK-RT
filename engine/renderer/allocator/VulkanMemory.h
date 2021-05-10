@@ -28,23 +28,10 @@ public:
     VulkanMemory& operator=(const VulkanMemory& other) = delete;
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
-    [[nodiscard]] VulkanBuffer CreateBufferExclusive(VkBufferUsageFlags bufferUsage,
-                                                     VkMemoryPropertyFlags requiredMemoryProperties,
-                                                     VkMemoryPropertyFlags preferredMemoryProperties,
-                                                     VmaAllocationCreateFlags allocationCreateFlags,
-                                                     VkDeviceSize bufferSize) const;
-    void DestroyBuffer(const VulkanBuffer& buffer) const;
-
-    void MapBuffer(const VulkanBuffer& buffer, void* mappedData) const;
-    void UnmapBuffer(const VulkanBuffer& buffer) const;
+    [[nodiscard]] bool ShouldCheckMemoryBeforeMapping() const;
 
     [[nodiscard]] VmaAllocator GetRaw() const;
 private:
-    [[nodiscard]] VulkanBuffer CreateBuffer(VkBufferCreateInfo bufferInfo,
-                                            VmaAllocationCreateInfo allocationCreateInfo) const;
-
-    [[nodiscard]] bool IsMappable(const VulkanBuffer& buffer) const;
-
     VmaAllocator InternalAllocator = VK_NULL_HANDLE;
 
     bool CheckMemoryBeforeMapping = false;
