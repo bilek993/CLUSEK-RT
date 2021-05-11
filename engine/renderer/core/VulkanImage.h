@@ -7,22 +7,33 @@
 
 #include <vulkan/vulkan.h>
 
+#include "../allocator/VulkanMemory.h"
 #include "VulkanLogicalDevice.h"
 
 class VulkanImage final
 {
 public:
-    VulkanImage(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                const VkImage& inputImage,
-                bool autoDestroy);
+    VulkanImage(const VkImage& inputImage);
+    VulkanImage(std::shared_ptr<VulkanMemory> memory,
+                VkImageType imageType,
+                uint32_t width,
+                uint32_t height,
+                uint32_t depth,
+                uint32_t mipLevelsCount,
+                uint32_t arrayLayers,
+                VkFormat format,
+                VkImageTiling tiling,
+                VkImageUsageFlags usage,
+                const VmaMemoryUsage& memoryUsage);
     virtual ~VulkanImage();
 
     [[nodiscard]] VkImage GetRaw() const;
 private:
-    std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
+    std::shared_ptr<VulkanMemory> Memory;
 
     VkImage InternalImage = VK_NULL_HANDLE;
-    bool AutoDestroy = true;
+    VmaAllocation InternalAllocation = VK_NULL_HANDLE;
+    VmaAllocationInfo InternalAllocationInfo{};
 };
 
 
