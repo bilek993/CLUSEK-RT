@@ -28,6 +28,8 @@ public:
     VulkanSwapChain& operator=(const VulkanSwapChain& other) = delete;
     VulkanSwapChain& operator=(VulkanSwapChain&& other) noexcept = delete;
 
+    [[nodiscard]] VkInstance GetRaw() const;
+
 private:
     static VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
                                                            std::shared_ptr<VulkanPhysicalDevice> physicalDevice);

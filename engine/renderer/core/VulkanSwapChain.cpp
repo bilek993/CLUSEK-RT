@@ -55,6 +55,11 @@ VulkanSwapChain::~VulkanSwapChain()
     vkDestroySwapchainKHR(LogicalDevice->GetRaw(), InternalSwapchain, nullptr);
 }
 
+VkInstance VulkanSwapChain::GetRaw() const
+{
+    return InternalSwapchain;
+}
+
 VkSurfaceCapabilitiesKHR VulkanSwapChain::GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
                                                                  std::shared_ptr<VulkanPhysicalDevice> physicalDevice)
 {
