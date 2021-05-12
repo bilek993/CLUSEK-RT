@@ -11,6 +11,7 @@
 #include "VulkanLogicalDevice.h"
 #include "VulkanPhysicalDevice.h"
 #include "VulkanSurface.h"
+#include "VulkanImage.h"
 #include "../../window/Window.h"
 
 class VulkanSwapChain final
@@ -28,7 +29,12 @@ public:
     VulkanSwapChain& operator=(const VulkanSwapChain& other) = delete;
     VulkanSwapChain& operator=(VulkanSwapChain&& other) noexcept = delete;
 
-    [[nodiscard]] VkInstance GetRaw() const;
+    std::vector<std::shared_ptr<VulkanImage>> GetImages();
+
+    std::shared_ptr<VulkanImage> GetImage(int id);
+    std::size_t GetImageCount();
+
+    [[nodiscard]] VkSwapchainKHR GetRaw() const;
 
 private:
     static VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
@@ -44,6 +50,7 @@ private:
                                      std::shared_ptr<Window> window);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;
+    std::vector<std::shared_ptr<VulkanImage>> InternalSwapchainImages{};
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
 };
 

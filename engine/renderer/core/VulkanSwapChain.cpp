@@ -42,12 +42,27 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     swapchainCreateInfo.clipped = VK_TRUE;
     swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
 
-    const auto result = vkCreateSwapchainKHR(LogicalDevice->GetRaw(),
-                                             &swapchainCreateInfo,
-                                             nullptr,
-                                             &InternalSwapchain);
+    auto result = vkCreateSwapchainKHR(LogicalDevice->GetRaw(),
+                                       &swapchainCreateInfo,
+                                       nullptr,
+                                       &InternalSwapchain);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Critical error when creating Vulkan Swap Chain!");
+
+    uint32_t imageCount;
+    result = vkGetSwapchainImagesKHR(LogicalDevice->GetRaw(), InternalSwapchain, &imageCount, nullptr);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Error retrieving swapchain images!");
+
+    std::vector<VkImage> vulkanImages(imageCount);
+    InternalSwapchainImages.resize(imageCount);
+
+    result = vkGetSwapchainImagesKHR(LogicalDevice->GetRaw(), InternalSwapchain, &imageCount, vulkanImages.data());
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Error retrieving swapchain images!");
+
+    for (uint32_t i = 0; i < imageCount; i++)
+        InternalSwapchainImages[i] = std::make_shared<VulkanImage>(vulkanImages[i]);
 }
 
 VulkanSwapChain::~VulkanSwapChain()
@@ -55,7 +70,22 @@ VulkanSwapChain::~VulkanSwapChain()
     vkDestroySwapchainKHR(LogicalDevice->GetRaw(), InternalSwapchain, nullptr);
 }
 
-VkInstance VulkanSwapChain::GetRaw() const
+std::vector<std::shared_ptr<VulkanImage>> VulkanSwapChain::GetImages()
+{
+    return InternalSwapchainImages;
+}
+
+std::shared_ptr<VulkanImage> VulkanSwapChain::GetImage(int id)
+{
+    return InternalSwapchainImages[id];
+}
+
+std::size_t VulkanSwapChain::GetImageCount()
+{
+    return InternalSwapchainImages.size();
+}
+
+VkSwapchainKHR VulkanSwapChain::GetRaw() const
 {
     return InternalSwapchain;
 }
