@@ -34,6 +34,9 @@ public:
     std::shared_ptr<VulkanImage> GetImage(int id);
     std::size_t GetImageCount();
 
+    [[nodiscard]] VkExtent2D GetUsedExtent() const;
+    [[nodiscard]] VkSurfaceFormatKHR GetUsedFormat() const;
+
     [[nodiscard]] VkSwapchainKHR GetRaw() const;
 
 private:
@@ -50,8 +53,11 @@ private:
                                      std::shared_ptr<Window> window);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;
-    std::vector<std::shared_ptr<VulkanImage>> InternalSwapchainImages{};
+    VkExtent2D Extent;
+    VkSurfaceFormatKHR Format;
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
+
+    std::vector<std::shared_ptr<VulkanImage>> InternalSwapchainImages{};
 };
 
 

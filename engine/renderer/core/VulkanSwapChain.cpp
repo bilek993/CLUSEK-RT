@@ -14,6 +14,7 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
                                  const std::vector<VkPresentModeKHR>& requestedPresentationModes)
 {
     LogicalDevice = std::move(logicalDevice);
+    Format = requestedFormat;
 
     const auto isFormatSupported = CheckRequestedFormatSupport(surface, physicalDevice, requestedFormat);
     if (isFormatSupported)
@@ -22,7 +23,7 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     const auto capabilities = GetSurfaceCapabilities(surface, physicalDevice);
 
     const auto presentationMode = SelectPresentationMode(physicalDevice, surface, requestedPresentationModes);
-    const auto extent = GenerateExtent(capabilities, window);
+    Extent = GenerateExtent(capabilities, window);
 
     VkSwapchainCreateInfoKHR swapchainCreateInfo{};
     swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -30,7 +31,7 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     swapchainCreateInfo.minImageCount = std::min(capabilities.maxImageCount, capabilities.minImageCount + 1);
     swapchainCreateInfo.imageFormat = requestedFormat.format;
     swapchainCreateInfo.imageColorSpace = requestedFormat.colorSpace;
-    swapchainCreateInfo.imageExtent = extent;
+    swapchainCreateInfo.imageExtent = Extent;
     swapchainCreateInfo.imageArrayLayers = 1;
     swapchainCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     swapchainCreateInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
@@ -83,6 +84,16 @@ std::shared_ptr<VulkanImage> VulkanSwapChain::GetImage(int id)
 std::size_t VulkanSwapChain::GetImageCount()
 {
     return InternalSwapchainImages.size();
+}
+
+VkExtent2D VulkanSwapChain::GetUsedExtent() const
+{
+    return Extent;
+}
+
+VkSurfaceFormatKHR VulkanSwapChain::GetUsedFormat() const
+{
+    return Format;
 }
 
 VkSwapchainKHR VulkanSwapChain::GetRaw() const
