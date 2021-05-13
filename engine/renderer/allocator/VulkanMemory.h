@@ -12,9 +12,8 @@
 #include "../core/VulkanInstance.h"
 #include "../core/VulkanPhysicalDevice.h"
 #include "../core/VulkanLogicalDevice.h"
-#include "../core/VulkanBuffer.h"
 
-class VulkanMemory
+class VulkanMemory final
 {
 public:
     VulkanMemory(std::shared_ptr<VulkanInstance> vulkanInstance,
@@ -28,31 +27,11 @@ public:
     VulkanMemory& operator=(const VulkanMemory& other) = delete;
     VulkanMemory& operator=(VulkanMemory&& other) noexcept = delete;
 
-    [[nodiscard]] VulkanBuffer CreateBufferExclusive(VkBufferUsageFlags bufferUsage,
-                                                     VkMemoryPropertyFlags requiredMemoryProperties,
-                                                     VkMemoryPropertyFlags preferredMemoryProperties,
-                                                     VmaAllocationCreateFlags allocationCreateFlags,
-                                                     VkDeviceSize bufferSize) const;
-    /// Consider using `CreateBufferExclusive` instead of this function due to potential performance impact.
-    [[nodiscard]] VulkanBuffer CreateBufferConcurrent(VkBufferUsageFlags bufferUsage,
-                                                      uint32_t queueFamilyIndexCount,
-                                                      const uint32_t* queueFamilyIndices,
-                                                      VkMemoryPropertyFlags requiredMemoryProperties,
-                                                      VkMemoryPropertyFlags preferredMemoryProperties,
-                                                      VmaAllocationCreateFlags allocationCreateFlags,
-                                                      VkDeviceSize bufferSize) const;
-    void DestroyBuffer(const VulkanBuffer& buffer) const;
-
-    void MapBuffer(const VulkanBuffer& buffer, void* mappedData) const;
-    void UnmapBuffer(const VulkanBuffer& buffer) const;
+    [[nodiscard]] bool IsMappable(const VmaAllocationInfo& allocationInfo) const;
+    [[nodiscard]] bool ShouldCheckMemoryBeforeMapping() const;
 
     [[nodiscard]] VmaAllocator GetRaw() const;
 private:
-    [[nodiscard]] VulkanBuffer CreateBuffer(VkBufferCreateInfo bufferInfo,
-                                            VmaAllocationCreateInfo allocationCreateInfo) const;
-
-    [[nodiscard]] bool IsMappable(const VulkanBuffer& buffer) const;
-
     VmaAllocator InternalAllocator = VK_NULL_HANDLE;
 
     bool CheckMemoryBeforeMapping = false;

@@ -97,6 +97,11 @@ std::vector<const char*> Window::GetRequiredExtensions() const
     return std::vector<const char*>(extensions, extensions + extensionsCount);
 }
 
+GLFWwindow* Window::GetRaw() const
+{
+    return InternalWindow;
+}
+
 void Window::GlfwCallbackResizeFunction(GLFWwindow* window, const int width, const int height)
 {
     auto thisWindow = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));

@@ -5,8 +5,6 @@
 #ifndef CLUSEK_RT_WINDOW_H
 #define CLUSEK_RT_WINDOW_H
 
-#define GLFW_INCLUDE_VULKAN
-
 #include <GLFW/glfw3.h>
 #include <vector>
 
@@ -31,6 +29,9 @@ public:
     void ResetResized();
 
     [[nodiscard]] std::vector<const char*> GetRequiredExtensions() const;
+
+    [[nodiscard]] GLFWwindow* GetRaw() const;
+
 private:
     static void GlfwCallbackResizeFunction(GLFWwindow* window, int width, int height);
 

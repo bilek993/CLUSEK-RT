@@ -16,6 +16,8 @@
 #include "../../renderer/core/VulkanQueues.h"
 #include "../../renderer/core/VulkanLogicalDevice.h"
 #include "../../renderer/allocator//VulkanMemory.h"
+#include "../../renderer/core/VulkanSurface.h"
+#include "../../renderer/core/VulkanSwapChain.h"
 
 class RenderSystem final : public BaseSystem
 {
@@ -28,10 +30,15 @@ protected:
 
 private:
     std::shared_ptr<VulkanInstance> Instance = nullptr;
+    std::shared_ptr<VulkanSurface> Surface = nullptr;
     std::shared_ptr<VulkanPhysicalDevice> PhysicalDevice = nullptr;
     std::shared_ptr<VulkanQueues> Queues = nullptr;
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice = nullptr;
+    std::shared_ptr<VulkanSwapChain> SwapChain = nullptr;
     std::shared_ptr<VulkanMemory> MemoryAllocator = nullptr;
+
+    VulkanQueue PresentationQueue;
+    VulkanQueue RayTracingMainQueue;
 
     std::vector<const char*> LogicalDeviceRequiredExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME

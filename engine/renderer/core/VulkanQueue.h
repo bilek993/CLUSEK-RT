@@ -11,6 +11,7 @@ struct VulkanQueue final
 {
     uint32_t FamilyIndex = 0;
     VkQueue Queue = VK_NULL_HANDLE;
+    bool SupportPresentation = false;
 };
 
 

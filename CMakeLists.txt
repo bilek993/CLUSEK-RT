@@ -21,6 +21,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
+add_compile_definitions(NOMINMAX)
 add_compile_definitions(ENGINE_VERSION="${CMAKE_PROJECT_VERSION}")
 
 add_executable(
@@ -69,9 +70,18 @@ add_executable(
         engine/renderer/helpers/DebugExtender.h
         engine/renderer/allocator/VulkanMemory.cpp
         engine/renderer/allocator/VulkanMemory.h
+        engine/renderer/core/VulkanBuffer.cpp
         engine/renderer/core/VulkanBuffer.h
         engine/common/CommandLineArgumentsParser.cpp
-        engine/common/CommandLineArgumentsParser.h)
+        engine/common/CommandLineArgumentsParser.h
+        engine/renderer/core/VulkanSurface.cpp
+        engine/renderer/core/VulkanSurface.h
+        engine/renderer/core/VulkanSwapChain.cpp
+        engine/renderer/core/VulkanSwapChain.h
+        engine/renderer/core/VulkanImage.cpp
+        engine/renderer/core/VulkanImage.h
+        engine/renderer/core/VulkanImageView.cpp
+        engine/renderer/core/VulkanImageView.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
@@ -153,6 +163,8 @@ target_link_libraries(${PROJECT_NAME} glfw)
 
 include_directories(libraries/glfw/include)
 
+add_compile_definitions(GLFW_INCLUDE_VULKAN)
+
 # GLM
 
 add_subdirectory(libraries/glm)
@@ -160,6 +172,9 @@ add_subdirectory(libraries/glm)
 target_link_libraries(${PROJECT_NAME} glm)
 
 include_directories(libraries/glm)
+
+add_compile_definitions(GLM_FORCE_RADIANS)
+add_compile_definitions(GLM_FORCE_DEPTH_ZERO_TO_ONE)
 
 # Argh!
 
