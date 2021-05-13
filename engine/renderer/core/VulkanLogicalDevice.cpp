@@ -57,7 +57,7 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
         for (auto queueIndex = 0; queueIndex < numberOfQueues; queueIndex++)
         {
             const auto queue = queues->GetQueuePointerInFamily(queueFamilyIndex, queueIndex);
-            vkGetDeviceQueue(InternalLogicalDevice, queueFamilyIndex, queueIndex, &queue->Queue);
+            vkGetDeviceQueue(InternalLogicalDevice, queueFamilyIndex, queueIndex, queue->GetPointerToRaw());
         }
     }
 }
