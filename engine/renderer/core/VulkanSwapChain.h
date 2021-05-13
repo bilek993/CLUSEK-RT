@@ -12,6 +12,7 @@
 #include "VulkanPhysicalDevice.h"
 #include "VulkanSurface.h"
 #include "VulkanImage.h"
+#include "VulkanImageView.h"
 #include "../../window/Window.h"
 
 class VulkanSwapChain final
@@ -30,9 +31,12 @@ public:
     VulkanSwapChain& operator=(VulkanSwapChain&& other) noexcept = delete;
 
     std::vector<std::shared_ptr<VulkanImage>> GetImages();
-
     std::shared_ptr<VulkanImage> GetImage(int id);
     std::size_t GetImageCount();
+
+    std::vector<std::shared_ptr<VulkanImageView>> GetImageViews();
+    std::shared_ptr<VulkanImageView> GetImageView(int id);
+    std::size_t GetImageViewCount();
 
     [[nodiscard]] VkExtent2D GetUsedExtent() const;
     [[nodiscard]] VkSurfaceFormatKHR GetUsedFormat() const;
@@ -58,6 +62,7 @@ private:
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
 
     std::vector<std::shared_ptr<VulkanImage>> InternalSwapchainImages{};
+    std::vector<std::shared_ptr<VulkanImageView>> InternalSwapchainImageViews{};
 };
 
 

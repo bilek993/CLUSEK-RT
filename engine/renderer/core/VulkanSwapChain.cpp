@@ -57,13 +57,26 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
 
     std::vector<VkImage> vulkanImages(imageCount);
     InternalSwapchainImages.resize(imageCount);
+    InternalSwapchainImageViews.resize(imageCount);
 
     result = vkGetSwapchainImagesKHR(LogicalDevice->GetRaw(), InternalSwapchain, &imageCount, vulkanImages.data());
     if (result != VK_SUCCESS)
         throw std::runtime_error("Error retrieving swapchain images!");
 
     for (uint32_t i = 0; i < imageCount; i++)
+    {
         InternalSwapchainImages[i] = std::make_shared<VulkanImage>(vulkanImages[i]);
+        InternalSwapchainImageViews[i] = std::make_shared<VulkanImageView>(LogicalDevice,
+                                                                           InternalSwapchainImages[i],
+                                                                           VK_IMAGE_VIEW_TYPE_2D,
+                                                                           Format.format,
+                                                                           VK_IMAGE_ASPECT_COLOR_BIT,
+                                                                           0,
+                                                                           1,
+                                                                           0,
+                                                                           1);
+    }
+
 }
 
 VulkanSwapChain::~VulkanSwapChain()
@@ -84,6 +97,21 @@ std::shared_ptr<VulkanImage> VulkanSwapChain::GetImage(int id)
 std::size_t VulkanSwapChain::GetImageCount()
 {
     return InternalSwapchainImages.size();
+}
+
+std::vector<std::shared_ptr<VulkanImageView>> VulkanSwapChain::GetImageViews()
+{
+    return InternalSwapchainImageViews;
+}
+
+std::shared_ptr<VulkanImageView> VulkanSwapChain::GetImageView(int id)
+{
+    return InternalSwapchainImageViews[id];
+}
+
+std::size_t VulkanSwapChain::GetImageViewCount()
+{
+    return InternalSwapchainImageViews.size();
 }
 
 VkExtent2D VulkanSwapChain::GetUsedExtent() const
