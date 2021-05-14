@@ -17,7 +17,7 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 |-------------------|-------------------------------|-----------------------------------------------|
 | OS                | Windows 7                     | Windows 10                                    |
 | Source control    | Latest Git with LFS support   | -                                             |
-| Project generator | CMake 3.17                    | -                                             |
+| Project generator | CMake 3.19                    | Latest CMake                                  |
 | Vulkan SDK        | latest                        | 1.2.170.0                                     |
 | GPU Drivers       | latest stable                 | -                                             |
 | JS Toolchain      | Latest NodeJS and npm         | npm 6.14.0 & NodeJS 14.5.0                    |
@@ -29,7 +29,7 @@ This project is a complete ray-tracing game engine solution written in C++. It r
 |-------------------|-----------------------------|----------------------------|
 | OS                | Linux                       | Linux Mint 20.1            |
 | Source control    | Latest Git with LFS support | -                          |
-| Project generator | CMake 3.17                  | -                          |
+| Project generator | CMake 3.19                  | Latest CMake               |
 | Vulkan SDK        | latest                      | 1.2.170.0                  |
 | GPU Drivers       | latest stable               | -                          |
 | JS Toolchain      | Latest NodeJS and npm       | npm 6.14.0 & NodeJS 14.5.0 |

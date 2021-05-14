@@ -5,7 +5,7 @@
 # | \__/\| |____| |_| |/\__/ /| |___ | |\  \        | |\ \   | |
 #  \____/\_____/ \___/ \____/ \____/ \_| \_/        \_| \_|  \_/
 
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.19)
 
 project(CLUSEK-RT VERSION 1.1.0)
 
