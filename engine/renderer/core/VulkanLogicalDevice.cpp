@@ -67,6 +67,13 @@ VulkanLogicalDevice::~VulkanLogicalDevice()
     vkDestroyDevice(InternalLogicalDevice, nullptr);
 }
 
+void VulkanLogicalDevice::WaitIdle()
+{
+    const auto result = vkDeviceWaitIdle(InternalLogicalDevice);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Waiting for logical device failed!");
+}
+
 VkDevice VulkanLogicalDevice::GetRaw() const
 {
     return InternalLogicalDevice;

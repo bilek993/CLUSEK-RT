@@ -24,6 +24,8 @@ public:
     VulkanLogicalDevice& operator=(const VulkanLogicalDevice& other) = delete;
     VulkanLogicalDevice& operator=(VulkanLogicalDevice&& other) noexcept = delete;
 
+    void WaitIdle();
+
     [[nodiscard]] VkDevice GetRaw() const;
 private:
     VkDevice InternalLogicalDevice{};
