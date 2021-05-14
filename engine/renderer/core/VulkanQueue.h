@@ -7,11 +7,24 @@
 
 #include <vulkan/vulkan.h>
 
-struct VulkanQueue final
+class VulkanQueue final
 {
+public:
+    VulkanQueue();
+    VulkanQueue(uint32_t familyIndex, bool supportPresentation);
+
+    void WaitIdle();
+
+    [[nodiscard]] uint32_t GetFamilyIndex() const;
+    [[nodiscard]] bool IsSupportingPresentation() const;
+
+    [[nodiscard]] VkQueue GetRaw() const;
+    VkQueue* GetPointerToRaw();
+private:
     uint32_t FamilyIndex = 0;
-    VkQueue Queue = VK_NULL_HANDLE;
     bool SupportPresentation = false;
+
+    VkQueue InternalQueue = VK_NULL_HANDLE;
 };
 
 

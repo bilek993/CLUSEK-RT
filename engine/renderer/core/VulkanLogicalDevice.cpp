@@ -57,7 +57,7 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
         for (auto queueIndex = 0; queueIndex < numberOfQueues; queueIndex++)
         {
             const auto queue = queues->GetQueuePointerInFamily(queueFamilyIndex, queueIndex);
-            vkGetDeviceQueue(InternalLogicalDevice, queueFamilyIndex, queueIndex, &queue->Queue);
+            vkGetDeviceQueue(InternalLogicalDevice, queueFamilyIndex, queueIndex, queue->GetPointerToRaw());
         }
     }
 }
@@ -65,6 +65,13 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
 VulkanLogicalDevice::~VulkanLogicalDevice()
 {
     vkDestroyDevice(InternalLogicalDevice, nullptr);
+}
+
+void VulkanLogicalDevice::WaitIdle()
+{
+    const auto result = vkDeviceWaitIdle(InternalLogicalDevice);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Waiting for logical device failed!");
 }
 
 VkDevice VulkanLogicalDevice::GetRaw() const

@@ -65,6 +65,7 @@ add_executable(
         engine/renderer/helpers/DeviceRequiredFeatures.h
         engine/renderer/core/VulkanQueues.cpp
         engine/renderer/core/VulkanQueues.h
+        engine/renderer/core/VulkanQueue.cpp
         engine/renderer/core/VulkanQueue.h
         engine/renderer/helpers/DebugExtender.cpp
         engine/renderer/helpers/DebugExtender.h

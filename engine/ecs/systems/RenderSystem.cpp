@@ -61,7 +61,7 @@ void RenderSystem::OnStart()
     PresentationQueue = graphicQueues->at(0);
     RayTracingMainQueue = graphicQueues->at(1);
 
-    if (!PresentationQueue.SupportPresentation)
+    if (!PresentationQueue.IsSupportingPresentation())
         throw std::runtime_error("Presentation queues is not capable for supporting presentation!");
 
     LOG_DEBUG("Preparing to create Vulkan Memory Allocator...");

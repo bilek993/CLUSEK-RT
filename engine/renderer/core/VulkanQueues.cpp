@@ -47,9 +47,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
 
             for (auto j = 0; j < allocatedQueues; j++)
             {
-                VulkanQueue graphicQueue{};
-                graphicQueue.FamilyIndex = i;
-                graphicQueue.SupportPresentation = queueFamilySupportPresentation;
+                VulkanQueue graphicQueue{ static_cast<uint32_t>(i), queueFamilySupportPresentation };
                 GraphicsQueues->emplace_back(graphicQueue);
             }
         }
@@ -62,9 +60,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
 
             for (auto j = 0; j < allocatedQueues; j++)
             {
-                VulkanQueue computeQueue{};
-                computeQueue.FamilyIndex = i;
-                computeQueue.SupportPresentation = queueFamilySupportPresentation;
+                VulkanQueue computeQueue{ static_cast<uint32_t>(i), queueFamilySupportPresentation };
                 ComputeQueues->emplace_back(computeQueue);
             }
         }
@@ -77,9 +73,7 @@ VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalD
 
             for (auto j = 0; j < allocatedQueues; j++)
             {
-                VulkanQueue transferQueue{};
-                transferQueue.FamilyIndex = i;
-                transferQueue.SupportPresentation = queueFamilySupportPresentation;
+                VulkanQueue transferQueue{ static_cast<uint32_t>(i), queueFamilySupportPresentation };
                 TransferQueues->emplace_back(transferQueue);
             }
         }
@@ -115,17 +109,17 @@ VulkanQueue* VulkanQueues::GetQueuePointerInFamily(const uint32_t familyIndex, c
     auto counter = 0;
 
     for (auto& queue : *GraphicsQueues)
-        if (queue.FamilyIndex == familyIndex)
+        if (queue.GetFamilyIndex() == familyIndex)
             if (queueIndex == counter++)
                 return &queue;
 
     for (auto& queue : *ComputeQueues)
-        if (queue.FamilyIndex == familyIndex)
+        if (queue.GetFamilyIndex() == familyIndex)
             if (queueIndex == counter++)
                 return &queue;
 
     for (auto& queue : *TransferQueues)
-        if (queue.FamilyIndex == familyIndex)
+        if (queue.GetFamilyIndex() == familyIndex)
             if (queueIndex == counter++)
                 return &queue;
 
@@ -137,13 +131,13 @@ std::set<uint32_t> VulkanQueues::GetUsedQueueFamilies() const
     std::set<uint32_t> usedFamilies{};
 
     for (const auto& queue : *GraphicsQueues)
-        usedFamilies.insert(queue.FamilyIndex);
+        usedFamilies.insert(queue.GetFamilyIndex());
 
     for (const auto& queue : *ComputeQueues)
-        usedFamilies.insert(queue.FamilyIndex);
+        usedFamilies.insert(queue.GetFamilyIndex());
 
     for (const auto& queue : *TransferQueues)
-        usedFamilies.insert(queue.FamilyIndex);
+        usedFamilies.insert(queue.GetFamilyIndex());
 
     return usedFamilies;
 }
@@ -160,15 +154,15 @@ std::unordered_map<uint32_t, std::vector<float>> VulkanQueues::GetQueuePrioritie
     for (const auto familyIndex : usedQueueFamilies)
     {
         for (const auto& queue : *GraphicsQueues)
-            if (queue.FamilyIndex == familyIndex)
+            if (queue.GetFamilyIndex() == familyIndex)
                 queuePriorities[familyIndex].emplace_back(GraphicsQueuesPriorities[graphicCounter++]);
 
         for (const auto& queue : *ComputeQueues)
-            if (queue.FamilyIndex == familyIndex)
+            if (queue.GetFamilyIndex() == familyIndex)
                 queuePriorities[familyIndex].emplace_back(ComputeQueuesPriorities[computeCounter++]);
 
         for (const auto& queue : *TransferQueues)
-            if (queue.FamilyIndex == familyIndex)
+            if (queue.GetFamilyIndex() == familyIndex)
                 queuePriorities[familyIndex].emplace_back(TransferQueuesPriorities[transferCounter++]);
     }
 
@@ -180,15 +174,15 @@ uint32_t VulkanQueues::CountQueuesInFamily(const uint32_t familyIndex) const
     auto counter = 0;
 
     for (const auto& queue : *GraphicsQueues)
-        if (queue.FamilyIndex == familyIndex)
+        if (queue.GetFamilyIndex() == familyIndex)
             counter++;
 
     for (const auto& queue : *ComputeQueues)
-        if (queue.FamilyIndex == familyIndex)
+        if (queue.GetFamilyIndex() == familyIndex)
             counter++;
 
     for (const auto& queue : *TransferQueues)
-        if (queue.FamilyIndex == familyIndex)
+        if (queue.GetFamilyIndex() == familyIndex)
             counter++;
 
     return counter;
