@@ -13,6 +13,8 @@ public:
     VulkanQueue();
     VulkanQueue(uint32_t familyIndex, bool supportPresentation);
 
+    void WaitIdle();
+
     [[nodiscard]] uint32_t GetFamilyIndex() const;
     [[nodiscard]] bool IsSupportingPresentation() const;
 
