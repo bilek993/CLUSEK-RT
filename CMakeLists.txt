@@ -89,6 +89,11 @@ add_custom_command(
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_custom_command(
+        TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND node ./scripts/js/compile_shaders.js ${Vulkan_GLSLC_EXECUTABLE} ./shaders/ ./bin/data/shaders/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_command(
         OUTPUT ./engine/generated/ObjectSerializers.h
         COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
