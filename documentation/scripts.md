@@ -50,5 +50,5 @@ node .\redistribute_engine.js ..\..\bin\ 1.2.3 VK_RT
 This script has been designed to automatically compile shaders when building the game engine. It's called by the toolchain, but can be called manually:
 
 ```
-node ./compile_shaders.js /Vulkan/ ../../shaders/ ../../bin/data/shaders/
+node ./compile_shaders.js /vulkan/x86_64/bin/glslc ../../shaders/ ../../bin/data/shaders/
 ```
