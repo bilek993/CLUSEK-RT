@@ -31,7 +31,6 @@ const SUPPORTED_EXTENSTION = [
             const outputFilePath = path.join(outputDirPath, (path.basename(inputFilePath, path.extname(inputFilePath)) + '.spv'));
 
             console.log(`Compiling shader '${path.basename(inputFilePath)}' as '${path.basename(outputFilePath)}'...`);
-
             exec(`${glslcPath} ${inputFilePath} -o ${outputFilePath} --target-env=vulkan1.2`, handleExecErrors);
         }
     }
