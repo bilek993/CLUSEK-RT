@@ -5,7 +5,7 @@
 # | \__/\| |____| |_| |/\__/ /| |___ | |\  \        | |\ \   | |
 #  \____/\_____/ \___/ \____/ \____/ \_| \_/        \_| \_|  \_/
 
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.19)
 
 project(CLUSEK-RT VERSION 1.1.0)
 
@@ -87,6 +87,11 @@ add_executable(
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND node ./scripts/js/format_json_files.js ./bin/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_command(
+        TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND node ./scripts/js/compile_shaders.js ${Vulkan_GLSLC_EXECUTABLE} ./shaders/ ./bin/data/shaders/
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_custom_command(

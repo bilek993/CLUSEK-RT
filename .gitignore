@@ -2,8 +2,8 @@
 /**/.idea/*
 
 # CMake
-cmake-build-*/
-cmake-build/
+cmake-build-*/*
+cmake-build/*
 
 # Javascript
 scripts/js/**/node_modules/*
@@ -11,3 +11,9 @@ scripts/js/**/node_modules/*
 # CLUSEK-RT
 bin/CLUSEK-RT.*
 bin/CLUSEK-RT
+
+# SPIR-V Shaders
+bin/data/shaders/*
+
+# Keep all .keep files
+!.keep
