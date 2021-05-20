@@ -12,6 +12,9 @@ scripts/js/**/node_modules/*
 bin/CLUSEK-RT.*
 bin/CLUSEK-RT
 
+# Generated C++ Files
+engine/generated/*
+
 # SPIR-V Shaders
 bin/data/shaders/*
 
