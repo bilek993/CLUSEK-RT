@@ -14,6 +14,8 @@ const SUPPORTED_EXTENSTION = [
     '.comp',
 ];
 
+const OUTPUT_EXTENSTION = '.spv';
+
 (async () => {
     console.log('Starting shaders compiler...');
 
@@ -23,12 +25,14 @@ const SUPPORTED_EXTENSTION = [
 
     console.log('Cleaning up old compiled shaders...');
     for await (const outputFilePath of getFiles(outputDirPath)) {
-        unlinkSync(outputFilePath);
+        if (path.extname(outputFilePath).toLocaleLowerCase() == OUTPUT_EXTENSTION) {
+            unlinkSync(outputFilePath);
+        }
     }
 
     for await (const inputFilePath of getFiles(inputDirPath)) {
         if (SUPPORTED_EXTENSTION.some((extenstion) => extenstion == path.extname(inputFilePath).toLocaleLowerCase())) {
-            const outputFilePath = path.join(outputDirPath, (path.basename(inputFilePath, path.extname(inputFilePath)) + '.spv'));
+            const outputFilePath = path.join(outputDirPath, (path.basename(inputFilePath, path.extname(inputFilePath)) + OUTPUT_EXTENSTION));
 
             console.log(`Compiling shader '${path.basename(inputFilePath)}' as '${path.basename(outputFilePath)}'...`);
             exec(`${glslcPath} ${inputFilePath} -o ${outputFilePath} --target-env=vulkan1.2`, handleExecErrors);
