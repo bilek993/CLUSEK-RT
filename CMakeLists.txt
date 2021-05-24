@@ -82,7 +82,9 @@ add_executable(
         engine/renderer/core/VulkanImage.cpp
         engine/renderer/core/VulkanImage.h
         engine/renderer/core/VulkanImageView.cpp
-        engine/renderer/core/VulkanImageView.h)
+        engine/renderer/core/VulkanImageView.h
+        engine/renderer/core/CommandBuffer.cpp
+        engine/renderer/core/CommandBuffer.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
