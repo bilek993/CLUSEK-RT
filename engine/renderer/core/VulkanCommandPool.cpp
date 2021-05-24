@@ -2,9 +2,9 @@
 // Created by jbili on 24.05.2021.
 //
 
-#include "CommandPool.h"
+#include "VulkanCommandPool.h"
 
-CommandPool::CommandPool(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
+VulkanCommandPool::VulkanCommandPool(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
                          const VulkanQueue& queue,
                          const bool shortLivedCommandBuffers,
                          const bool resetCommandBuffersIndividually)
@@ -29,12 +29,12 @@ CommandPool::CommandPool(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
         throw std::runtime_error("Command pool cannot be created!");
 }
 
-CommandPool::~CommandPool()
+VulkanCommandPool::~VulkanCommandPool()
 {
     vkDestroyCommandPool(LogicalDevice->GetRaw(), InternalCommandPool, nullptr);
 }
 
-VkCommandPool CommandPool::GetRaw() const
+VkCommandPool VulkanCommandPool::GetRaw() const
 {
     return InternalCommandPool;
 }
