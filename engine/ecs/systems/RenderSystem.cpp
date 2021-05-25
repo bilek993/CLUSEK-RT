@@ -36,14 +36,14 @@ void RenderSystem::OnStart()
     LOG_DEBUG("Searching for proper queues...");
     const std::vector<float> graphicPriorities = { 1.0F, 1.0F };
     const std::vector<float> computePriorities = {};
-    const std::vector<float> transferPriorities = {};
+    const std::vector<float> transferPriorities = { 1.0F };
     Queues = std::make_shared<VulkanQueues>(PhysicalDevice,
                                             Surface,
                                             2,
                                             graphicPriorities,
                                             0,
                                             computePriorities,
-                                            0,
+                                            1,
                                             transferPriorities);
 
     LOG_DEBUG("Preparing to create Vulkan Logical Device with Vulkan Queues...");
@@ -60,6 +60,8 @@ void RenderSystem::OnStart()
 
     PresentationQueue = graphicQueues->at(0);
     RayTracingMainQueue = graphicQueues->at(1);
+
+    TransferMainQueue = graphicQueues->at(0);
 
     if (!PresentationQueue.IsSupportingPresentation())
         throw std::runtime_error("Presentation queues is not capable for supporting presentation!");

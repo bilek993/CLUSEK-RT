@@ -39,6 +39,7 @@ private:
 
     VulkanQueue PresentationQueue;
     VulkanQueue RayTracingMainQueue;
+    VulkanQueue TransferMainQueue;
 
     std::vector<const char*> LogicalDeviceRequiredExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME
