@@ -21,10 +21,13 @@ VulkanInstance::VulkanInstance(const bool enableValidationLayers,
 
 VulkanInstance::~VulkanInstance()
 {
-    if (UseValidationLayers)
-        DestroyDebugUtilsMessengerExtension(InternalInstance, InternalDebugUtilsMessenger, nullptr);
+    if (InternalInstance != VK_NULL_HANDLE)
+    {
+        if (UseValidationLayers)
+            DestroyDebugUtilsMessengerExtension(InternalInstance, InternalDebugUtilsMessenger, nullptr);
 
-    vkDestroyInstance(InternalInstance, nullptr);
+        vkDestroyInstance(InternalInstance, nullptr);
+    }
 }
 
 VkInstance VulkanInstance::GetRaw() const

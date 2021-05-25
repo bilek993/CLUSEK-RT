@@ -15,7 +15,8 @@ VulkanSurface::VulkanSurface(std::shared_ptr<VulkanInstance> instance, const std
 
 VulkanSurface::~VulkanSurface()
 {
-    vkDestroySurfaceKHR(Instance->GetRaw(), InternalSurface, nullptr);
+    if (InternalSurface != VK_NULL_HANDLE)
+        vkDestroySurfaceKHR(Instance->GetRaw(), InternalSurface, nullptr);
 }
 
 VkSurfaceKHR VulkanSurface::GetRaw() const

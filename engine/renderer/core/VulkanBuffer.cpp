@@ -32,7 +32,8 @@ VulkanBuffer::VulkanBuffer(std::shared_ptr<VulkanMemory> memory,
 
 VulkanBuffer::~VulkanBuffer()
 {
-    vmaDestroyBuffer(Memory->GetRaw(), InternalBuffer, InternalAllocation);
+    if (InternalBuffer != VK_NULL_HANDLE)
+        vmaDestroyBuffer(Memory->GetRaw(), InternalBuffer, InternalAllocation);
 }
 
 void VulkanBuffer::MapBuffer(void* mappedData) const

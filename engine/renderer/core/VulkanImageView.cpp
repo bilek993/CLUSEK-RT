@@ -38,7 +38,8 @@ VulkanImageView::VulkanImageView(std::shared_ptr<VulkanLogicalDevice> logicalDev
 
 VulkanImageView::~VulkanImageView()
 {
-    vkDestroyImageView(LogicalDevice->GetRaw(), InternalImageView, nullptr);
+    if (InternalImageView != VK_NULL_HANDLE)
+        vkDestroyImageView(LogicalDevice->GetRaw(), InternalImageView, nullptr);
 }
 
 VkImageView VulkanImageView::GetRaw() const

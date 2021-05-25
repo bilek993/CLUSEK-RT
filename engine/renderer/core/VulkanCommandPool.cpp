@@ -5,9 +5,9 @@
 #include "VulkanCommandPool.h"
 
 VulkanCommandPool::VulkanCommandPool(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                         const VulkanQueue& queue,
-                         const bool shortLivedCommandBuffers,
-                         const bool resetCommandBuffersIndividually)
+                                     const VulkanQueue& queue,
+                                     const bool shortLivedCommandBuffers,
+                                     const bool resetCommandBuffersIndividually)
 {
     LogicalDevice = std::move(logicalDevice);
 
@@ -31,7 +31,8 @@ VulkanCommandPool::VulkanCommandPool(std::shared_ptr<VulkanLogicalDevice> logica
 
 VulkanCommandPool::~VulkanCommandPool()
 {
-    vkDestroyCommandPool(LogicalDevice->GetRaw(), InternalCommandPool, nullptr);
+    if (InternalCommandPool != VK_NULL_HANDLE)
+        vkDestroyCommandPool(LogicalDevice->GetRaw(), InternalCommandPool, nullptr);
 }
 
 VkCommandPool VulkanCommandPool::GetRaw() const

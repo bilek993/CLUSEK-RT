@@ -53,7 +53,7 @@ VulkanImage::VulkanImage(std::shared_ptr<VulkanMemory> memory,
 
 VulkanImage::~VulkanImage()
 {
-    if (Memory != nullptr)
+    if (Memory != nullptr && InternalImage != VK_NULL_HANDLE)
         vmaDestroyImage(Memory->GetRaw(), InternalImage, InternalAllocation);
 }
 

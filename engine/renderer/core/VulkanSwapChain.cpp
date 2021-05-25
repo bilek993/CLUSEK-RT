@@ -76,12 +76,12 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
                                                                            0,
                                                                            1);
     }
-
 }
 
 VulkanSwapChain::~VulkanSwapChain()
 {
-    vkDestroySwapchainKHR(LogicalDevice->GetRaw(), InternalSwapchain, nullptr);
+    if (InternalSwapchain != VK_NULL_HANDLE)
+        vkDestroySwapchainKHR(LogicalDevice->GetRaw(), InternalSwapchain, nullptr);
 }
 
 std::vector<std::shared_ptr<VulkanImage>> VulkanSwapChain::GetImages()
