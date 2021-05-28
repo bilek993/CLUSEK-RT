@@ -22,6 +22,17 @@ public:
     VulkanCommandBuffer& operator=(const VulkanCommandBuffer& other) = delete;
     VulkanCommandBuffer& operator=(VulkanCommandBuffer&& other) noexcept = delete;
 
+    void BeginRecording(bool oneTimeSubmit,
+                        bool renderPassContinue,
+                        bool useSimultaneous);
+    void BeginRecording(bool oneTimeSubmit,
+                        bool renderPassContinue,
+                        bool useSimultaneous,
+                        const VkCommandBufferInheritanceInfo* inheritanceInfo);
+    void EndRecording();
+
+    [[nodiscard]] bool IsRecording() const;
+
     [[nodiscard]] VkCommandBuffer GetRaw() const;
 
 private:
@@ -29,6 +40,8 @@ private:
 
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
     std::shared_ptr<VulkanCommandPool> CommandPool;
+
+    bool RecordingInProgress = false;
 };
 
 
