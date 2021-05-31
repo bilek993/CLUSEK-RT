@@ -88,7 +88,9 @@ add_executable(
         engine/renderer/core/VulkanCommandPool.cpp
         engine/renderer/core/VulkanCommandPool.h
         engine/renderer/core/VulkanSemaphore.cpp
-        engine/renderer/core/VulkanSemaphore.h engine/renderer/core/VulkanFence.cpp engine/renderer/core/VulkanFence.h)
+        engine/renderer/core/VulkanSemaphore.h
+        engine/renderer/core/VulkanFence.cpp
+        engine/renderer/core/VulkanFence.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
