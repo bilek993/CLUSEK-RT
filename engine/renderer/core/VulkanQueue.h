@@ -7,10 +7,13 @@
 
 #include <vulkan/vulkan.h>
 #include <memory>
+#include <vector>
 
-#include "VulkanCommandBuffer.h"
-#include "VulkanSemaphore.h"
-#include "VulkanFence.h"
+class VulkanCommandBuffer;
+
+class VulkanSemaphore;
+
+class VulkanFence;
 
 class VulkanQueue final
 {

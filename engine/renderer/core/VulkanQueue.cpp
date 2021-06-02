@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <algorithm>
 
+#include "VulkanCommandBuffer.h"
+#include "VulkanSemaphore.h"
+#include "VulkanFence.h"
+
 VulkanQueue::VulkanQueue()
 {
 }
@@ -39,7 +43,7 @@ void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>
     std::vector<VkCommandBuffer> vulkanCommandBuffers;
     std::transform(commandBuffers.begin(), commandBuffers.end(),
                    std::back_inserter(vulkanCommandBuffers), [](std::shared_ptr<VulkanCommandBuffer> buffer)
-                   { return buffer->GetPointerToRaw(); });
+                   { return buffer->GetRaw(); });
 
     VkSubmitInfo submitInfo{};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -60,7 +64,7 @@ void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>
     std::vector<VkCommandBuffer> vkCommandBuffers;
     std::transform(commandBuffers.begin(), commandBuffers.end(),
                    std::back_inserter(vkCommandBuffers), [](std::shared_ptr<VulkanCommandBuffer> buffer)
-                   { return buffer->GetPointerToRaw(); });
+                   { return buffer->GetRaw(); });
 
     std::vector<VkSemaphore> vkWaitSemaphores;
     std::transform(waitSemaphores.begin(), waitSemaphores.end(),
