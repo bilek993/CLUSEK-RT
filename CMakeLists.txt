@@ -93,7 +93,9 @@ add_executable(
         engine/renderer/core/VulkanFence.h
         engine/renderer/vertex/FatVertex.h
         engine/renderer/core/VulkanVertexBuffer.cpp
-        engine/renderer/core/VulkanVertexBuffer.h)
+        engine/renderer/core/VulkanVertexBuffer.h
+        engine/renderer/core/VulkanIndexBuffer.cpp
+        engine/renderer/core/VulkanIndexBuffer.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
