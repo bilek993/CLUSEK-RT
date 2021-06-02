@@ -40,19 +40,7 @@ bool VulkanQueue::IsSupportingPresentation() const
 
 void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>& commandBuffers)
 {
-    std::vector<VkCommandBuffer> vulkanCommandBuffers;
-    std::transform(commandBuffers.begin(), commandBuffers.end(),
-                   std::back_inserter(vulkanCommandBuffers), [](std::shared_ptr<VulkanCommandBuffer> buffer)
-                   { return buffer->GetRaw(); });
-
-    VkSubmitInfo submitInfo{};
-    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submitInfo.commandBufferCount = vulkanCommandBuffers.size();
-    submitInfo.pCommandBuffers = vulkanCommandBuffers.data();
-
-    const auto result = vkQueueSubmit(InternalQueue, 1, &submitInfo, VK_NULL_HANDLE);
-    if (result != VK_SUCCESS)
-        throw std::runtime_error("Submitting command buffers failed!");
+    Submit(commandBuffers, {}, {}, nullptr, nullptr);
 }
 
 void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>& commandBuffers,
@@ -76,6 +64,8 @@ void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>
                    std::back_inserter(vkSignalSemaphores), [](std::shared_ptr<VulkanSemaphore> semaphore)
                    { return semaphore->GetRaw(); });
 
+    const auto vkSignalFence = signalFence != nullptr ? signalFence->GetRaw() : VK_NULL_HANDLE;
+
     VkSubmitInfo submitInfo{};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.commandBufferCount = vkCommandBuffers.size();
@@ -86,7 +76,7 @@ void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>
     submitInfo.pSignalSemaphores = vkSignalSemaphores.data();
     submitInfo.pWaitDstStageMask = waitDestinationStageMask;
 
-    const auto result = vkQueueSubmit(InternalQueue, 1, &submitInfo, signalFence->GetRaw());
+    const auto result = vkQueueSubmit(InternalQueue, 1, &submitInfo, vkSignalFence);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Submitting command buffers failed!");
 }
