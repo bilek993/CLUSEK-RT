@@ -34,6 +34,7 @@ public:
     [[nodiscard]] bool IsRecording() const;
 
     [[nodiscard]] VkCommandBuffer GetRaw() const;
+    VkCommandBuffer* GetPointerToRaw();
 
 private:
     VkCommandBuffer InternalCommandBuffer = VK_NULL_HANDLE;

@@ -87,3 +87,8 @@ VkCommandBuffer VulkanCommandBuffer::GetRaw() const
 {
     return InternalCommandBuffer;
 }
+
+VkCommandBuffer* VulkanCommandBuffer::GetPointerToRaw()
+{
+    return &InternalCommandBuffer;
+}

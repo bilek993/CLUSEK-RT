@@ -6,6 +6,11 @@
 #define CLUSEK_RT_VULKANQUEUE_H
 
 #include <vulkan/vulkan.h>
+#include <memory>
+
+#include "VulkanCommandBuffer.h"
+#include "VulkanSemaphore.h"
+#include "VulkanFence.h"
 
 class VulkanQueue final
 {
@@ -17,6 +22,13 @@ public:
 
     [[nodiscard]] uint32_t GetFamilyIndex() const;
     [[nodiscard]] bool IsSupportingPresentation() const;
+
+    void Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>& commandBuffers);
+    void Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>& commandBuffers,
+                const std::vector<std::shared_ptr<VulkanSemaphore>>& waitSemaphores,
+                const std::vector<std::shared_ptr<VulkanSemaphore>>& signalSemaphores,
+                std::shared_ptr<VulkanFence> signalFence,
+                const VkPipelineStageFlags* waitDestinationStageMask);
 
     [[nodiscard]] VkQueue GetRaw() const;
     VkQueue* GetPointerToRaw();
