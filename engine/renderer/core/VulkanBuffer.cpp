@@ -54,6 +54,16 @@ void VulkanBuffer::UnmapBuffer() const
     vmaUnmapMemory(Memory->GetRaw(), InternalAllocation);
 }
 
+VmaAllocation VulkanBuffer::GetAllocation() const
+{
+    return InternalAllocation;
+}
+
+VmaAllocationInfo VulkanBuffer::GetAllocationInfo() const
+{
+    return InternalAllocationInfo;
+}
+
 VkBuffer VulkanBuffer::GetRaw() const
 {
     return InternalBuffer;

@@ -14,8 +14,7 @@ public:
     MemoryBarrierBuilder& SetAccessFlags(const VkAccessFlags& srcAccessMask,
                                          const VkAccessFlags& dstAccessMask);
 
-    [[nodiscard]]
-    VkBufferMemoryBarrier Build() const;
+    [[nodiscard]] VkBufferMemoryBarrier Build() const;
 
 private:
     VkBufferMemoryBarrier InternalBufferMemoryBarrier{};

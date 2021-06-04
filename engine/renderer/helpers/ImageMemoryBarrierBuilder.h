@@ -29,8 +29,7 @@ public:
                                                    uint32_t baseArrayLayer,
                                                    uint32_t layerCount);
 
-    [[nodiscard]]
-    VkImageMemoryBarrier Build() const;
+    [[nodiscard]] VkImageMemoryBarrier Build() const;
 
 private:
     VkImageMemoryBarrier InternalImageMemoryBarrier{};
