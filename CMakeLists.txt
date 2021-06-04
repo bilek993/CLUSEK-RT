@@ -95,7 +95,9 @@ add_executable(
         engine/renderer/core/VulkanVertexBuffer.cpp
         engine/renderer/core/VulkanVertexBuffer.h
         engine/renderer/core/VulkanIndexBuffer.cpp
-        engine/renderer/core/VulkanIndexBuffer.h)
+        engine/renderer/core/VulkanIndexBuffer.h
+        engine/renderer/helpers/ImageMemoryBarrierBuilder.cpp
+        engine/renderer/helpers/ImageMemoryBarrierBuilder.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
