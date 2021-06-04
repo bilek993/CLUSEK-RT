@@ -17,3 +17,8 @@ MemoryBarrierBuilder& MemoryBarrierBuilder::SetAccessFlags(const VkAccessFlags& 
     InternalBufferMemoryBarrier.dstAccessMask = dstAccessMask;
     return *this;
 }
+
+VkBufferMemoryBarrier MemoryBarrierBuilder::Build() const
+{
+    return InternalBufferMemoryBarrier;
+}
