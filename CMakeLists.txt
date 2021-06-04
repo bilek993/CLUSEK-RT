@@ -99,7 +99,9 @@ add_executable(
         engine/renderer/helpers/ImageMemoryBarrierBuilder.cpp
         engine/renderer/helpers/ImageMemoryBarrierBuilder.h
         engine/renderer/helpers/MemoryBarrierBuilder.cpp
-        engine/renderer/helpers/MemoryBarrierBuilder.h engine/renderer/helpers/BufferMemoryBarrierBuilder.cpp engine/renderer/helpers/BufferMemoryBarrierBuilder.h)
+        engine/renderer/helpers/MemoryBarrierBuilder.h
+        engine/renderer/helpers/BufferMemoryBarrierBuilder.cpp
+        engine/renderer/helpers/BufferMemoryBarrierBuilder.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
