@@ -11,7 +11,7 @@
 #include "../core/VulkanQueue.h"
 #include "../core/VulkanImage.h"
 
-class ImageMemoryBarrierBuilder
+class ImageMemoryBarrierBuilder final
 {
 public:
     ImageMemoryBarrierBuilder();
