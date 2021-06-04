@@ -6,7 +6,7 @@
 
 MemoryBarrierBuilder::MemoryBarrierBuilder()
 {
-    InternalBufferMemoryBarrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+    InternalBufferMemoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
     InternalBufferMemoryBarrier.pNext = nullptr;
 }
 
