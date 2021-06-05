@@ -8,7 +8,7 @@
 #include <memory>
 #include <vulkan/vulkan.h>
 
-#include "../allocator//VulkanMemory.h"
+#include "../allocator/VulkanMemory.h"
 #include "../core/VulkanBuffer.h"
 #include "../core/VulkanCommandBuffer.h"
 #include "../../common/debug/Logger.h"
