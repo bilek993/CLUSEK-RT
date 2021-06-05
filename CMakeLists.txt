@@ -82,7 +82,25 @@ add_executable(
         engine/renderer/core/VulkanImage.cpp
         engine/renderer/core/VulkanImage.h
         engine/renderer/core/VulkanImageView.cpp
-        engine/renderer/core/VulkanImageView.h)
+        engine/renderer/core/VulkanImageView.h
+        engine/renderer/core/VulkanCommandBuffer.cpp
+        engine/renderer/core/VulkanCommandBuffer.h
+        engine/renderer/core/VulkanCommandPool.cpp
+        engine/renderer/core/VulkanCommandPool.h
+        engine/renderer/core/VulkanSemaphore.cpp
+        engine/renderer/core/VulkanSemaphore.h
+        engine/renderer/core/VulkanFence.cpp
+        engine/renderer/core/VulkanFence.h
+        engine/renderer/vertex/FatVertex.h
+        engine/renderer/core/VulkanVertexBuffer.h
+        engine/renderer/core/VulkanIndexBuffer.cpp
+        engine/renderer/core/VulkanIndexBuffer.h
+        engine/renderer/helpers/ImageMemoryBarrierBuilder.cpp
+        engine/renderer/helpers/ImageMemoryBarrierBuilder.h
+        engine/renderer/helpers/MemoryBarrierBuilder.cpp
+        engine/renderer/helpers/MemoryBarrierBuilder.h
+        engine/renderer/helpers/BufferMemoryBarrierBuilder.cpp
+        engine/renderer/helpers/BufferMemoryBarrierBuilder.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD

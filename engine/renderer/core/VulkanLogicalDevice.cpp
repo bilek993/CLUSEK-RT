@@ -64,7 +64,8 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
 
 VulkanLogicalDevice::~VulkanLogicalDevice()
 {
-    vkDestroyDevice(InternalLogicalDevice, nullptr);
+    if (InternalLogicalDevice != VK_NULL_HANDLE)
+        vkDestroyDevice(InternalLogicalDevice, nullptr);
 }
 
 void VulkanLogicalDevice::WaitIdle()

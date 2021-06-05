@@ -7,6 +7,11 @@
 #include "../../common/debug/Logger.h"
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
 #include "../../renderer/helpers/DebugExtender.h"
+#include "../../renderer/core/VulkanVertexBuffer.h"
+#include "../../renderer/core/VulkanIndexBuffer.h"
+#include "../../renderer/core/VulkanCommandBuffer.h"
+#include "../../renderer/core/VulkanCommandPool.h"
+#include "../../renderer/vertex/FatVertex.h"
 
 std::string RenderSystem::GetName()
 {
@@ -36,14 +41,14 @@ void RenderSystem::OnStart()
     LOG_DEBUG("Searching for proper queues...");
     const std::vector<float> graphicPriorities = { 1.0F, 1.0F };
     const std::vector<float> computePriorities = {};
-    const std::vector<float> transferPriorities = {};
+    const std::vector<float> transferPriorities = { 1.0F };
     Queues = std::make_shared<VulkanQueues>(PhysicalDevice,
                                             Surface,
                                             2,
                                             graphicPriorities,
                                             0,
                                             computePriorities,
-                                            0,
+                                            1,
                                             transferPriorities);
 
     LOG_DEBUG("Preparing to create Vulkan Logical Device with Vulkan Queues...");
@@ -60,6 +65,8 @@ void RenderSystem::OnStart()
 
     PresentationQueue = graphicQueues->at(0);
     RayTracingMainQueue = graphicQueues->at(1);
+
+    TransferMainQueue = graphicQueues->at(0);
 
     if (!PresentationQueue.IsSupportingPresentation())
         throw std::runtime_error("Presentation queues is not capable for supporting presentation!");
@@ -80,6 +87,54 @@ void RenderSystem::OnStart()
                                                   MainWindow,
                                                   requestedSwapChainFormat,
                                                   requestedPresentationModes);
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    //                                 BELOW IS CODE FOR TESTING PURPOSES ONLY
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // Preparing code
+
+    std::shared_ptr<VulkanCommandPool> vulkanCommandPoolForTests = std::make_shared<VulkanCommandPool>(LogicalDevice,
+                                                                                                       TransferMainQueue,
+                                                                                                       true,
+                                                                                                       false);
+    std::shared_ptr<VulkanCommandBuffer> vulkanCommandBufferForTests =
+            std::make_shared<VulkanCommandBuffer>(LogicalDevice,
+                                                  vulkanCommandPoolForTests,
+                                                  VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+
+    vulkanCommandBufferForTests->BeginRecording(true, false, false);
+
+    // Vertex Buffer testing code
+
+    std::shared_ptr<std::vector<FatVertex>> exampleVertices = std::make_shared<std::vector<FatVertex>>();
+    exampleVertices->emplace_back(FatVertex{{ 0, 1, 2 }});
+    exampleVertices->emplace_back(FatVertex{{ 2, 1, 0 }});
+    exampleVertices->emplace_back(FatVertex{{ 0, 2, 1 }});
+
+    VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
+    exampleVertexBuffer.UploadData(*vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
+
+    // Index Buffer testing code
+
+    std::vector<uint32_t> indices{ 0, 1, 2 };
+
+    VulkanIndexBuffer exampleIndexBuffer{ MemoryAllocator };
+    exampleIndexBuffer.UploadData(*vulkanCommandBufferForTests, indices.data(), indices.size());
+
+    // Cleaning up
+
+    vulkanCommandBufferForTests->EndRecording();
+
+    TransferMainQueue.Submit({ vulkanCommandBufferForTests });
+    TransferMainQueue.WaitIdle();
+
+    exampleVertexBuffer.CleanUpAfterUploading();
+    exampleIndexBuffer.CleanUpAfterUploading();
 }
 
 void RenderSystem::OnUpdate(float deltaTime)

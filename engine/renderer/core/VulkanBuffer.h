@@ -20,10 +20,14 @@ public:
                  const VkDeviceSize& bufferSize);
     virtual ~VulkanBuffer();
 
-    void MapBuffer(void* mappedData) const;
+    void MapBuffer(void** mappedData) const;
     void UnmapBuffer() const;
 
+    [[nodiscard]] VmaAllocation GetAllocation() const;
+    [[nodiscard]] VmaAllocationInfo GetAllocationInfo() const;
+
     [[nodiscard]] VkBuffer GetRaw() const;
+
 private:
     VkBuffer InternalBuffer = VK_NULL_HANDLE;
     VmaAllocation InternalAllocation = VK_NULL_HANDLE;
