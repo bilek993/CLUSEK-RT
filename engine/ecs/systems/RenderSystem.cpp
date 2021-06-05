@@ -7,6 +7,8 @@
 #include "../../common/debug/Logger.h"
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
 #include "../../renderer/helpers/DebugExtender.h"
+#include "../../renderer/core/VulkanVertexBuffer.h"
+#include "../../renderer/vertex/FatVertex.h"
 
 std::string RenderSystem::GetName()
 {
@@ -90,6 +92,14 @@ void RenderSystem::OnStart()
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
+
+    std::shared_ptr<std::vector<FatVertex>> exampleVertices = std::make_shared<std::vector<FatVertex>>();
+    exampleVertices->emplace_back(FatVertex{{ 0, 1, 2 }});
+    exampleVertices->emplace_back(FatVertex{{ 2, 1, 0 }});
+
+    VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
+    exampleVertexBuffer.UploadData(exampleVertices->data(), exampleVertices->size());
+    exampleVertexBuffer.CleanUpAfterUploading();
 }
 
 void RenderSystem::OnUpdate(float deltaTime)
