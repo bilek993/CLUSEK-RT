@@ -114,13 +114,14 @@ void RenderSystem::OnStart()
     std::shared_ptr<std::vector<FatVertex>> exampleVertices = std::make_shared<std::vector<FatVertex>>();
     exampleVertices->emplace_back(FatVertex{{ 0, 1, 2 }});
     exampleVertices->emplace_back(FatVertex{{ 2, 1, 0 }});
+    exampleVertices->emplace_back(FatVertex{{ 0, 2, 1 }});
 
     VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
     exampleVertexBuffer.UploadData(*vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
 
     // Index Buffer testing code
 
-    std::vector<uint32_t> indices{ 1, 2, 3 };
+    std::vector<uint32_t> indices{ 0, 1, 2 };
 
     VulkanIndexBuffer exampleIndexBuffer{ MemoryAllocator };
     exampleIndexBuffer.UploadData(*vulkanCommandBufferForTests, indices.data(), indices.size());
