@@ -83,6 +83,13 @@ bool VulkanCommandBuffer::IsRecording() const
     return RecordingInProgress;
 }
 
+void VulkanCommandBuffer::CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize)
+{
+    VkBufferCopy copyRegion{};
+    copyRegion.size = bufferSize;
+    vkCmdCopyBuffer(InternalCommandBuffer, srcBuffer.GetRaw(), dstBuffer.GetRaw(), 1, &copyRegion);
+}
+
 VkCommandBuffer VulkanCommandBuffer::GetRaw() const
 {
     return InternalCommandBuffer;

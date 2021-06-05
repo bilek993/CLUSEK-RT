@@ -8,6 +8,8 @@
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
 #include "../../renderer/helpers/DebugExtender.h"
 #include "../../renderer/core/VulkanVertexBuffer.h"
+#include "../../renderer/core/VulkanCommandBuffer.h"
+#include "../../renderer/core/VulkanCommandPool.h"
 #include "../../renderer/vertex/FatVertex.h"
 
 std::string RenderSystem::GetName()
@@ -93,12 +95,28 @@ void RenderSystem::OnStart()
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
+    std::shared_ptr<VulkanCommandPool> vulkanCommandPoolForVertex = std::make_shared<VulkanCommandPool>(LogicalDevice,
+                                                                                                        TransferMainQueue,
+                                                                                                        true,
+                                                                                                        false);
+    std::shared_ptr<VulkanCommandBuffer> vulkanCommandBufferForVertex =
+            std::make_shared<VulkanCommandBuffer>(LogicalDevice,
+                                                  vulkanCommandPoolForVertex,
+                                                  VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+
     std::shared_ptr<std::vector<FatVertex>> exampleVertices = std::make_shared<std::vector<FatVertex>>();
     exampleVertices->emplace_back(FatVertex{{ 0, 1, 2 }});
     exampleVertices->emplace_back(FatVertex{{ 2, 1, 0 }});
 
     VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
-    exampleVertexBuffer.UploadData(exampleVertices->data(), exampleVertices->size());
+
+    vulkanCommandBufferForVertex->BeginRecording(true, false, false);
+    exampleVertexBuffer.UploadData(*vulkanCommandBufferForVertex, exampleVertices->data(), exampleVertices->size());
+    vulkanCommandBufferForVertex->EndRecording();
+
+    TransferMainQueue.Submit({ vulkanCommandBufferForVertex });
+    TransferMainQueue.WaitIdle();
+
     exampleVertexBuffer.CleanUpAfterUploading();
 }
 

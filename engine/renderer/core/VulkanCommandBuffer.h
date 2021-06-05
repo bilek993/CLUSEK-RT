@@ -9,6 +9,7 @@
 
 #include "VulkanLogicalDevice.h"
 #include "VulkanCommandPool.h"
+#include "VulkanBuffer.h"
 
 class VulkanCommandBuffer final
 {
@@ -32,6 +33,8 @@ public:
     void EndRecording();
 
     [[nodiscard]] bool IsRecording() const;
+
+    void CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize);
 
     [[nodiscard]] VkCommandBuffer GetRaw() const;
     VkCommandBuffer* GetPointerToRaw();

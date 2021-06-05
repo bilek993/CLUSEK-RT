@@ -10,6 +10,7 @@
 
 #include "../allocator//VulkanMemory.h"
 #include "../core/VulkanBuffer.h"
+#include "../core/VulkanCommandBuffer.h"
 #include "../../common/debug/Logger.h"
 
 // ______  _____  _____  _       ___  ______   ___   _____  _____  _____  _   _
@@ -30,8 +31,10 @@ public:
     VulkanVertexBuffer& operator=(const VulkanVertexBuffer& other) = delete;
     VulkanVertexBuffer& operator=(VulkanVertexBuffer&& other) noexcept = delete;
 
-    void UploadData(T* vertexData, uint32_t vertexCount);
+    void UploadData(VulkanCommandBuffer& commandBuffer, T* vertexData, uint32_t vertexCount);
     void CleanUpAfterUploading();
+
+    [[nodiscard]] VkBuffer GetRaw() const;
 
 private:
     std::shared_ptr<VulkanMemory> Memory;
@@ -58,7 +61,7 @@ VulkanVertexBuffer<T>::VulkanVertexBuffer(std::shared_ptr<VulkanMemory> memory)
 }
 
 template<class T>
-void VulkanVertexBuffer<T>::UploadData(T* vertexData, const uint32_t vertexCount)
+void VulkanVertexBuffer<T>::UploadData(VulkanCommandBuffer& commandBuffer, T* vertexData, const uint32_t vertexCount)
 {
     LOG_DEBUG("Preparing data to be uploaded in vertex buffer...");
 
@@ -80,7 +83,7 @@ void VulkanVertexBuffer<T>::UploadData(T* vertexData, const uint32_t vertexCount
                                                           VMA_MEMORY_USAGE_GPU_ONLY,
                                                           bufferSize);
 
-    // TODO: Add copy buffer here
+    commandBuffer.CopyBuffer(*StagingBuffer, *InternalVertexBuffer, bufferSize);
 }
 
 template<class T>
@@ -88,6 +91,12 @@ void VulkanVertexBuffer<T>::CleanUpAfterUploading()
 {
     LOG_DEBUG("Cleaning vertex buffer data after uploading...");
     StagingBuffer = nullptr;
+}
+
+template<class T>
+VkBuffer VulkanVertexBuffer<T>::GetRaw() const
+{
+    return InternalVertexBuffer->GetRaw();
 }
 
 #endif //CLUSEK_RT_VULKANVERTEXBUFFER_H
