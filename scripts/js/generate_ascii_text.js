@@ -1,5 +1,4 @@
 const art = require('ascii-art');
-const { EOL } = require('os');
 
 const DEFAULT_FONT = 'Doom';
 
@@ -21,7 +20,7 @@ const opening = process.argv[3] ?? '';
 const closing = process.argv[4] ?? '';
 
 art.font(inputString, DEFAULT_FONT, function (error, rendered) {
-    let splittedText = rendered.split(EOL);
+    let splittedText = rendered.split('\n');
     splittedText.forEach((value) => {
         if (value.trim().length != 0) {
             console.log(opening + value + closing);
