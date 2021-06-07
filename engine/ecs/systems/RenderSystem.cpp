@@ -72,9 +72,9 @@ void RenderSystem::OnStart()
         throw std::runtime_error("Presentation queues is not capable for supporting presentation!");
 
     LOG_DEBUG("Preparing to create Vulkan Memory Allocator...");
-    MemoryAllocator = std::make_shared<VulkanMemory>(Instance,
-                                                     PhysicalDevice,
-                                                     LogicalDevice,
+    MemoryAllocator = std::make_shared<VulkanMemory>(*Instance,
+                                                     *PhysicalDevice,
+                                                     *LogicalDevice,
                                                      VulkanApiVersion,
                                                      ConfigurationData->CheckVulkanBufferMemoryBeforeMapping);
 

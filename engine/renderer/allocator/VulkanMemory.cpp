@@ -6,9 +6,9 @@
 
 #include <stdexcept>
 
-VulkanMemory::VulkanMemory(const std::shared_ptr<VulkanInstance> vulkanInstance,
-                           const std::shared_ptr<VulkanPhysicalDevice> vulkanPhysicalDevice,
-                           const std::shared_ptr<VulkanLogicalDevice> vulkanLogicalDevice,
+VulkanMemory::VulkanMemory(const VulkanInstance& vulkanInstance,
+                           const VulkanPhysicalDevice& vulkanPhysicalDevice,
+                           const VulkanLogicalDevice& vulkanLogicalDevice,
                            const uint32_t vulkanApiVersion,
                            const bool checkMemoryBeforeMapping)
 {
@@ -16,9 +16,9 @@ VulkanMemory::VulkanMemory(const std::shared_ptr<VulkanInstance> vulkanInstance,
 
     VmaAllocatorCreateInfo allocatorCreateInfo{};
     allocatorCreateInfo.vulkanApiVersion = vulkanApiVersion;
-    allocatorCreateInfo.instance = vulkanInstance->GetRaw();
-    allocatorCreateInfo.physicalDevice = vulkanPhysicalDevice->GetRaw();
-    allocatorCreateInfo.device = vulkanLogicalDevice->GetRaw();
+    allocatorCreateInfo.instance = vulkanInstance.GetRaw();
+    allocatorCreateInfo.physicalDevice = vulkanPhysicalDevice.GetRaw();
+    allocatorCreateInfo.device = vulkanLogicalDevice.GetRaw();
 
     const auto result = vmaCreateAllocator(&allocatorCreateInfo, &InternalAllocator);
     if (result != VK_SUCCESS)
