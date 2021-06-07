@@ -33,7 +33,7 @@ void RenderSystem::OnStart()
     Surface = std::make_shared<VulkanSurface>(Instance, *MainWindow);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
-    VkPhysicalDeviceFeatures physicalDeviceRequiredFeatures = DeviceRequiredFeatures::FromConfig(ConfigurationData);
+    VkPhysicalDeviceFeatures physicalDeviceRequiredFeatures = DeviceRequiredFeatures::FromConfig(*ConfigurationData);
     PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(*Instance,
                                                             ConfigurationData->VulkanRequireDiscreteDevice,
                                                             physicalDeviceRequiredFeatures);
