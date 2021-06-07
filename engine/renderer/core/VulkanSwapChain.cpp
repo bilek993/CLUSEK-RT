@@ -7,9 +7,9 @@
 #include <algorithm>
 
 VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                                 const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                                 const std::shared_ptr<VulkanSurface> surface,
-                                 const std::shared_ptr<Window> window,
+                                 const VulkanPhysicalDevice& physicalDevice,
+                                 const VulkanSurface& surface,
+                                 Window& window,
                                  const VkSurfaceFormatKHR requestedFormat,
                                  const std::vector<VkPresentModeKHR>& requestedPresentationModes)
 {
@@ -27,7 +27,7 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
 
     VkSwapchainCreateInfoKHR swapchainCreateInfo{};
     swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-    swapchainCreateInfo.surface = surface->GetRaw();
+    swapchainCreateInfo.surface = surface.GetRaw();
     swapchainCreateInfo.minImageCount = std::min(capabilities.maxImageCount, capabilities.minImageCount + 1);
     swapchainCreateInfo.imageFormat = requestedFormat.format;
     swapchainCreateInfo.imageColorSpace = requestedFormat.colorSpace;
@@ -67,7 +67,7 @@ VulkanSwapChain::VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDev
     {
         InternalSwapchainImages[i] = std::make_shared<VulkanImage>(vulkanImages[i]);
         InternalSwapchainImageViews[i] = std::make_shared<VulkanImageView>(LogicalDevice,
-                                                                           InternalSwapchainImages[i],
+                                                                           *InternalSwapchainImages[i],
                                                                            VK_IMAGE_VIEW_TYPE_2D,
                                                                            Format.format,
                                                                            VK_IMAGE_ASPECT_COLOR_BIT,
@@ -129,12 +129,12 @@ VkSwapchainKHR VulkanSwapChain::GetRaw() const
     return InternalSwapchain;
 }
 
-VkSurfaceCapabilitiesKHR VulkanSwapChain::GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
-                                                                 std::shared_ptr<VulkanPhysicalDevice> physicalDevice)
+VkSurfaceCapabilitiesKHR VulkanSwapChain::GetSurfaceCapabilities(const VulkanSurface& surface,
+                                                                 const VulkanPhysicalDevice& physicalDevice)
 {
     VkSurfaceCapabilitiesKHR capabilities;
-    const auto result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice->GetRaw(),
-                                                                  surface->GetRaw(),
+    const auto result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice.GetRaw(),
+                                                                  surface.GetRaw(),
                                                                   &capabilities);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Critical error when getting surface capabilities!");
@@ -142,21 +142,21 @@ VkSurfaceCapabilitiesKHR VulkanSwapChain::GetSurfaceCapabilities(std::shared_ptr
     return capabilities;
 }
 
-bool VulkanSwapChain::CheckRequestedFormatSupport(const std::shared_ptr<VulkanSurface> surface,
-                                                  const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+bool VulkanSwapChain::CheckRequestedFormatSupport(const VulkanSurface& surface,
+                                                  const VulkanPhysicalDevice& physicalDevice,
                                                   const VkSurfaceFormatKHR requestedFormat)
 {
     uint32_t supportedFormatsCount;
-    auto result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice->GetRaw(),
-                                                       surface->GetRaw(),
+    auto result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.GetRaw(),
+                                                       surface.GetRaw(),
                                                        &supportedFormatsCount,
                                                        nullptr);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Critical error when getting surface formats!");
 
     std::vector<VkSurfaceFormatKHR> supportedFormats{ supportedFormatsCount };
-    result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice->GetRaw(),
-                                                  surface->GetRaw(),
+    result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.GetRaw(),
+                                                  surface.GetRaw(),
                                                   &supportedFormatsCount,
                                                   supportedFormats.data());
     if (result != VK_SUCCESS)
@@ -169,21 +169,21 @@ bool VulkanSwapChain::CheckRequestedFormatSupport(const std::shared_ptr<VulkanSu
     });
 }
 
-VkPresentModeKHR VulkanSwapChain::SelectPresentationMode(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                                                         const std::shared_ptr<VulkanSurface> surface,
+VkPresentModeKHR VulkanSwapChain::SelectPresentationMode(const VulkanPhysicalDevice& physicalDevice,
+                                                         const VulkanSurface& surface,
                                                          const std::vector<VkPresentModeKHR>& requestedPresentationModes)
 {
     uint32_t supportedPresentModesCount;
-    auto result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice->GetRaw(),
-                                                            surface->GetRaw(),
+    auto result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.GetRaw(),
+                                                            surface.GetRaw(),
                                                             &supportedPresentModesCount,
                                                             nullptr);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Critical error when getting surface presentation modes!");
 
     std::vector<VkPresentModeKHR> supportedPresentModes{ supportedPresentModesCount };
-    result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice->GetRaw(),
-                                                       surface->GetRaw(),
+    result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.GetRaw(),
+                                                       surface.GetRaw(),
                                                        &supportedPresentModesCount,
                                                        supportedPresentModes.data());
     if (result != VK_SUCCESS)
@@ -197,18 +197,18 @@ VkPresentModeKHR VulkanSwapChain::SelectPresentationMode(const std::shared_ptr<V
 }
 
 VkExtent2D VulkanSwapChain::GenerateExtent(const VkSurfaceCapabilitiesKHR& capabilities,
-                                           const std::shared_ptr<Window> window)
+                                           Window& window)
 {
     if (capabilities.currentExtent.width != UINT32_MAX)
         return capabilities.currentExtent;
 
-    window->UpdateSize();
+    window.UpdateSize();
 
     const auto& minExtent = capabilities.minImageExtent;
     const auto& maxExtent = capabilities.maxImageExtent;
 
-    const auto width = std::clamp(static_cast<uint32_t>(window->GetWidth()), minExtent.width, maxExtent.width);
-    const auto height = std::clamp(static_cast<uint32_t>(window->GetHeight()), minExtent.height, maxExtent.height);
+    const auto width = std::clamp(static_cast<uint32_t>(window.GetWidth()), minExtent.width, maxExtent.width);
+    const auto height = std::clamp(static_cast<uint32_t>(window.GetHeight()), minExtent.height, maxExtent.height);
 
     return { width, height };
 }

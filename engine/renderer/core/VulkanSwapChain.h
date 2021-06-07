@@ -19,9 +19,9 @@ class VulkanSwapChain final
 {
 public:
     VulkanSwapChain(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                    std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                    std::shared_ptr<VulkanSurface> surface,
-                    std::shared_ptr<Window> window,
+                    const VulkanPhysicalDevice& physicalDevice,
+                    const VulkanSurface& surface,
+                    Window& window,
                     VkSurfaceFormatKHR requestedFormat,
                     const std::vector<VkPresentModeKHR>& requestedPresentationModes);
     ~VulkanSwapChain();
@@ -44,17 +44,17 @@ public:
     [[nodiscard]] VkSwapchainKHR GetRaw() const;
 
 private:
-    static VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(std::shared_ptr<VulkanSurface> surface,
-                                                           std::shared_ptr<VulkanPhysicalDevice> physicalDevice);
+    static VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(const VulkanSurface& surface,
+                                                           const VulkanPhysicalDevice& physicalDevice);
 
-    static bool CheckRequestedFormatSupport(std::shared_ptr<VulkanSurface> surface,
-                                            std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
+    static bool CheckRequestedFormatSupport(const VulkanSurface& surface,
+                                            const VulkanPhysicalDevice& physicalDevice,
                                             VkSurfaceFormatKHR requestedFormat);
-    static VkPresentModeKHR SelectPresentationMode(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                                                   std::shared_ptr<VulkanSurface> surface,
+    static VkPresentModeKHR SelectPresentationMode(const VulkanPhysicalDevice& physicalDevice,
+                                                   const VulkanSurface& surface,
                                                    const std::vector<VkPresentModeKHR>& requestedPresentationModes);
     static VkExtent2D GenerateExtent(const VkSurfaceCapabilitiesKHR& capabilities,
-                                     std::shared_ptr<Window> window);
+                                     Window& window);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;
     VkExtent2D Extent;

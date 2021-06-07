@@ -14,8 +14,8 @@ class VulkanLogicalDevice final
 {
 public:
     VulkanLogicalDevice(bool enableValidationLayers,
-                        std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                        std::shared_ptr<VulkanQueues> queues,
+                        const VulkanPhysicalDevice& physicalDevice,
+                        const VulkanQueues& queues,
                         const VkPhysicalDeviceFeatures& requiredFeatures,
                         std::vector<const char*> requiredExtensions);
     ~VulkanLogicalDevice();

@@ -16,7 +16,7 @@ public:
                    const std::string& applicationName,
                    const std::string& applicationVersion,
                    uint32_t vulkanApiVersion,
-                   std::vector<const char*> requiredExtensions);
+                   const std::vector<const char*>& requiredExtensions);
     ~VulkanInstance();
     VulkanInstance(const VulkanInstance& other) = delete;
     VulkanInstance(VulkanInstance&& other) noexcept = delete;
@@ -35,7 +35,7 @@ private:
 
     [[nodiscard]] bool CheckValidationLayersSupport() const;
 
-    [[nodiscard]] static VkResult CreateDebugUtilsMessengerExtension(VkInstance instance,
+    [[nodiscard]] static VkResult CreateDebugUtilsMessengerExtension(const VkInstance& instance,
                                                                      const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
                                                                      const VkAllocationCallbacks* pAllocator,
                                                                      VkDebugUtilsMessengerEXT* pDebugMessenger);

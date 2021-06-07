@@ -5,7 +5,7 @@
 #include "VulkanImageView.h"
 
 VulkanImageView::VulkanImageView(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                                 const std::shared_ptr<VulkanImage> image,
+                                 const VulkanImage& image,
                                  const VkImageViewType imageViewType,
                                  const VkFormat format,
                                  const VkImageAspectFlags aspectMask,
@@ -18,7 +18,7 @@ VulkanImageView::VulkanImageView(std::shared_ptr<VulkanLogicalDevice> logicalDev
 
     VkImageViewCreateInfo imageViewCreateInfo{};
     imageViewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-    imageViewCreateInfo.image = image->GetRaw();
+    imageViewCreateInfo.image = image.GetRaw();
     imageViewCreateInfo.viewType = imageViewType;
     imageViewCreateInfo.format = format;
     imageViewCreateInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;

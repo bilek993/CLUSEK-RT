@@ -15,7 +15,7 @@ class VulkanImageView final
 {
 public:
     VulkanImageView(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                    std::shared_ptr<VulkanImage> image,
+                    const VulkanImage& image,
                     VkImageViewType imageViewType,
                     VkFormat format,
                     VkImageAspectFlags aspectMask,
