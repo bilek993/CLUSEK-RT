@@ -38,30 +38,30 @@ bool VulkanQueue::IsSupportingPresentation() const
     return SupportPresentation;
 }
 
-void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>& commandBuffers)
+void VulkanQueue::Submit(const std::vector<VulkanCommandBuffer*>& commandBuffers)
 {
     Submit(commandBuffers, {}, {}, nullptr, nullptr);
 }
 
-void VulkanQueue::Submit(const std::vector<std::shared_ptr<VulkanCommandBuffer>>& commandBuffers,
-                         const std::vector<std::shared_ptr<VulkanSemaphore>>& waitSemaphores,
-                         const std::vector<std::shared_ptr<VulkanSemaphore>>& signalSemaphores,
-                         const std::shared_ptr<VulkanFence> signalFence,
+void VulkanQueue::Submit(const std::vector<VulkanCommandBuffer*>& commandBuffers,
+                         const std::vector<VulkanSemaphore*>& waitSemaphores,
+                         const std::vector<VulkanSemaphore*>& signalSemaphores,
+                         const VulkanFence* signalFence,
                          const VkPipelineStageFlags* waitDestinationStageMask)
 {
     std::vector<VkCommandBuffer> vkCommandBuffers;
     std::transform(commandBuffers.begin(), commandBuffers.end(),
-                   std::back_inserter(vkCommandBuffers), [](std::shared_ptr<VulkanCommandBuffer> buffer)
+                   std::back_inserter(vkCommandBuffers), [](VulkanCommandBuffer* buffer)
                    { return buffer->GetRaw(); });
 
     std::vector<VkSemaphore> vkWaitSemaphores;
     std::transform(waitSemaphores.begin(), waitSemaphores.end(),
-                   std::back_inserter(vkWaitSemaphores), [](std::shared_ptr<VulkanSemaphore> semaphore)
+                   std::back_inserter(vkWaitSemaphores), [](VulkanSemaphore* semaphore)
                    { return semaphore->GetRaw(); });
 
     std::vector<VkSemaphore> vkSignalSemaphores;
     std::transform(signalSemaphores.begin(), signalSemaphores.end(),
-                   std::back_inserter(vkSignalSemaphores), [](std::shared_ptr<VulkanSemaphore> semaphore)
+                   std::back_inserter(vkSignalSemaphores), [](VulkanSemaphore* semaphore)
                    { return semaphore->GetRaw(); });
 
     const auto vkSignalFence = signalFence != nullptr ? signalFence->GetRaw() : VK_NULL_HANDLE;

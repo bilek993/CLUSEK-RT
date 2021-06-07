@@ -6,7 +6,6 @@
 #define CLUSEK_RT_IMAGEMEMORYBARRIERBUILDER_H
 
 #include <vulkan/vulkan.h>
-#include <memory>
 
 #include "../core/VulkanQueue.h"
 #include "../core/VulkanImage.h"
@@ -22,7 +21,7 @@ public:
                                                const VkImageLayout& newLayout);
     ImageMemoryBarrierBuilder& SetOwnershipTransferIfNeeded(const VulkanQueue& srcQueue,
                                                             const VulkanQueue& dstQueue);
-    ImageMemoryBarrierBuilder& SetImage(std::shared_ptr<VulkanImage> image);
+    ImageMemoryBarrierBuilder& SetImage(const VulkanImage& image);
     ImageMemoryBarrierBuilder& SetSubresourceRange(VkImageAspectFlags aspectMask,
                                                    uint32_t baseMipLevel,
                                                    uint32_t levelCount,

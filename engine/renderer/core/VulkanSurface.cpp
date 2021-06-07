@@ -4,11 +4,11 @@
 
 #include "VulkanSurface.h"
 
-VulkanSurface::VulkanSurface(std::shared_ptr<VulkanInstance> instance, const std::shared_ptr<Window> window)
+VulkanSurface::VulkanSurface(std::shared_ptr<VulkanInstance> instance, const Window& window)
 {
     Instance = std::move(instance);
 
-    const auto result = glfwCreateWindowSurface(Instance->GetRaw(), window->GetRaw(), nullptr, &InternalSurface);
+    const auto result = glfwCreateWindowSurface(Instance->GetRaw(), window.GetRaw(), nullptr, &InternalSurface);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Window surface cannot be created!");
 }

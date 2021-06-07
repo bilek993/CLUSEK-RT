@@ -4,12 +4,12 @@
 
 #include "VulkanPhysicalDevice.h"
 
-VulkanPhysicalDevice::VulkanPhysicalDevice(const std::shared_ptr<VulkanInstance> vulkanInstance,
+VulkanPhysicalDevice::VulkanPhysicalDevice(const VulkanInstance& vulkanInstance,
                                            bool requireDiscretePhysicalDevice,
                                            const VkPhysicalDeviceFeatures& requiredFeatures)
 {
     uint32_t deviceCount = 0;
-    auto result = vkEnumeratePhysicalDevices(vulkanInstance->GetRaw(), &deviceCount, nullptr);
+    auto result = vkEnumeratePhysicalDevices(vulkanInstance.GetRaw(), &deviceCount, nullptr);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Error enumerating physical devices!");
 
@@ -17,7 +17,7 @@ VulkanPhysicalDevice::VulkanPhysicalDevice(const std::shared_ptr<VulkanInstance>
         throw std::runtime_error("Zero physical devices found!");
 
     std::vector<VkPhysicalDevice> devices(deviceCount);
-    result = vkEnumeratePhysicalDevices(vulkanInstance->GetRaw(), &deviceCount, devices.data());
+    result = vkEnumeratePhysicalDevices(vulkanInstance.GetRaw(), &deviceCount, devices.data());
     if (result != VK_SUCCESS)
         throw std::runtime_error("Error enumerating physical devices!");
 

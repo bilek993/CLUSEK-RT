@@ -17,8 +17,8 @@
 class VulkanQueues final
 {
 public:
-    VulkanQueues(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                 std::shared_ptr<VulkanSurface> surface,
+    VulkanQueues(const VulkanPhysicalDevice& physicalDevice,
+                 const VulkanSurface& surface,
                  unsigned int graphicsQueuesCount,
                  const std::vector<float>& graphicsQueuesPriorities,
                  unsigned int computeQueuesCount,
@@ -41,12 +41,11 @@ public:
     [[nodiscard]] std::unordered_map<uint32_t, std::vector<float>> GetQueuePriorities() const;
     [[nodiscard]] uint32_t CountQueuesInFamily(uint32_t familyIndex) const;
 private:
-    static std::vector<VkQueueFamilyProperties>
-    GetAllQueueFamilyProperties(std::shared_ptr<VulkanPhysicalDevice> physicalDevice);
+    static std::vector<VkQueueFamilyProperties> GetAllQueueFamilyProperties(const VulkanPhysicalDevice& physicalDevice);
 
     static std::vector<bool> GetAllQueueFamilySupportForPresentation();
-    static bool CheckFamilySupportForPresentation(std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                                                  std::shared_ptr<VulkanSurface> surface,
+    static bool CheckFamilySupportForPresentation(const VulkanPhysicalDevice& physicalDevice,
+                                                  const VulkanSurface& surface,
                                                   uint32_t familyIndex);
 
     std::shared_ptr<std::vector<VulkanQueue>> GraphicsQueues{};

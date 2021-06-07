@@ -7,13 +7,13 @@
 #include "../helpers/DebugExtender.h"
 
 VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
-                                         std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                                         const std::shared_ptr<VulkanQueues> queues,
+                                         const VulkanPhysicalDevice& physicalDevice,
+                                         const VulkanQueues& queues,
                                          const VkPhysicalDeviceFeatures& requiredFeatures,
                                          std::vector<const char*> requiredExtensions)
 {
-    const auto usedQueueFamiliesIndices = queues->GetUsedQueueFamilies();
-    const auto queuePriorities = queues->GetQueuePriorities();
+    const auto usedQueueFamiliesIndices = queues.GetUsedQueueFamilies();
+    const auto queuePriorities = queues.GetQueuePriorities();
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 
     for (const auto queueFamilyIndex : usedQueueFamiliesIndices)
@@ -21,7 +21,7 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
         VkDeviceQueueCreateInfo queueCreateInfo{};
         queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
-        queueCreateInfo.queueCount = queues->CountQueuesInFamily(queueFamilyIndex);
+        queueCreateInfo.queueCount = queues.CountQueuesInFamily(queueFamilyIndex);
         queueCreateInfo.pQueuePriorities = queuePriorities.at(queueFamilyIndex).data();
         queueCreateInfos.push_back(queueCreateInfo);
     }
@@ -46,17 +46,17 @@ VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
         deviceCreateInfo.enabledLayerCount = 0;
     }
 
-    const auto result = vkCreateDevice(physicalDevice->GetRaw(), &deviceCreateInfo, nullptr, &InternalLogicalDevice);
+    const auto result = vkCreateDevice(physicalDevice.GetRaw(), &deviceCreateInfo, nullptr, &InternalLogicalDevice);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Failed to create proper logical device!");
 
     for (const auto queueFamilyIndex : usedQueueFamiliesIndices)
     {
-        const auto numberOfQueues = queues->CountQueuesInFamily(queueFamilyIndex);
+        const auto numberOfQueues = queues.CountQueuesInFamily(queueFamilyIndex);
 
         for (auto queueIndex = 0; queueIndex < numberOfQueues; queueIndex++)
         {
-            const auto queue = queues->GetQueuePointerInFamily(queueFamilyIndex, queueIndex);
+            const auto queue = queues.GetQueuePointerInFamily(queueFamilyIndex, queueIndex);
             vkGetDeviceQueue(InternalLogicalDevice, queueFamilyIndex, queueIndex, queue->GetPointerToRaw());
         }
     }

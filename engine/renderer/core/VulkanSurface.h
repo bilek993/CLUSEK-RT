@@ -14,7 +14,7 @@
 class VulkanSurface final
 {
 public:
-    VulkanSurface(std::shared_ptr<VulkanInstance> instance, std::shared_ptr<Window> window);
+    VulkanSurface(std::shared_ptr<VulkanInstance> instance, const Window& window);
     ~VulkanSurface();
     VulkanSurface(const VulkanSurface& other) = delete;
     VulkanSurface(VulkanSurface&& other) noexcept = delete;

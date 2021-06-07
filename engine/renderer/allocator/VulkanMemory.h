@@ -16,9 +16,9 @@
 class VulkanMemory final
 {
 public:
-    VulkanMemory(std::shared_ptr<VulkanInstance> vulkanInstance,
-                 std::shared_ptr<VulkanPhysicalDevice> vulkanPhysicalDevice,
-                 std::shared_ptr<VulkanLogicalDevice> vulkanLogicalDevice,
+    VulkanMemory(const VulkanInstance& vulkanInstance,
+                 const VulkanPhysicalDevice& vulkanPhysicalDevice,
+                 const VulkanLogicalDevice& vulkanLogicalDevice,
                  uint32_t vulkanApiVersion,
                  bool checkMemoryBeforeMapping);
     ~VulkanMemory();

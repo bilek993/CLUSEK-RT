@@ -15,7 +15,7 @@
 class VulkanPhysicalDevice final
 {
 public:
-    VulkanPhysicalDevice(std::shared_ptr<VulkanInstance> vulkanInstance,
+    VulkanPhysicalDevice(const VulkanInstance& vulkanInstance,
                          bool requireDiscretePhysicalDevice,
                          const VkPhysicalDeviceFeatures& requiredFeatures);
     ~VulkanPhysicalDevice() = default;

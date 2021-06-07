@@ -12,7 +12,7 @@ VulkanInstance::VulkanInstance(const bool enableValidationLayers,
                                const std::string& applicationName,
                                const std::string& applicationVersion,
                                const uint32_t vulkanApiVersion,
-                               std::vector<const char*> requiredExtensions)
+                               const std::vector<const char*>& requiredExtensions)
 {
     InitializeValidation(enableValidationLayers);
     InitializeInstance(applicationName, applicationVersion, vulkanApiVersion, requiredExtensions);
@@ -130,7 +130,7 @@ bool VulkanInstance::CheckValidationLayersSupport() const
     return true;
 }
 
-VkResult VulkanInstance::CreateDebugUtilsMessengerExtension(VkInstance instance,
+VkResult VulkanInstance::CreateDebugUtilsMessengerExtension(const VkInstance& instance,
                                                             const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
                                                             const VkAllocationCallbacks* pAllocator,
                                                             VkDebugUtilsMessengerEXT* pDebugMessenger)

@@ -9,8 +9,8 @@
 
 #include "../../common/debug/Logger.h"
 
-VulkanQueues::VulkanQueues(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                           const std::shared_ptr<VulkanSurface> surface,
+VulkanQueues::VulkanQueues(const VulkanPhysicalDevice& physicalDevice,
+                           const VulkanSurface& surface,
                            const unsigned int graphicsQueuesCount,
                            const std::vector<float>& graphicsQueuesPriorities,
                            const unsigned int computeQueuesCount,
@@ -189,13 +189,13 @@ uint32_t VulkanQueues::CountQueuesInFamily(const uint32_t familyIndex) const
 }
 
 std::vector<VkQueueFamilyProperties>
-VulkanQueues::GetAllQueueFamilyProperties(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice)
+VulkanQueues::GetAllQueueFamilyProperties(const VulkanPhysicalDevice& physicalDevice)
 {
     uint32_t queueFamilyCount = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice->GetRaw(), &queueFamilyCount, nullptr);
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice.GetRaw(), &queueFamilyCount, nullptr);
 
     std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice->GetRaw(), &queueFamilyCount, queueFamilies.data());
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice.GetRaw(), &queueFamilyCount, queueFamilies.data());
 
     return queueFamilies;
 }
@@ -205,14 +205,14 @@ std::vector<bool> VulkanQueues::GetAllQueueFamilySupportForPresentation()
     return std::vector<bool>();
 }
 
-bool VulkanQueues::CheckFamilySupportForPresentation(const std::shared_ptr<VulkanPhysicalDevice> physicalDevice,
-                                                     const std::shared_ptr<VulkanSurface> surface,
+bool VulkanQueues::CheckFamilySupportForPresentation(const VulkanPhysicalDevice& physicalDevice,
+                                                     const VulkanSurface& surface,
                                                      const uint32_t familyIndex)
 {
     VkBool32 supportsPresentation = false;
-    const auto result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice->GetRaw(),
+    const auto result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice.GetRaw(),
                                                              familyIndex,
-                                                             surface->GetRaw(),
+                                                             surface.GetRaw(),
                                                              &supportsPresentation);
     if (result != VK_SUCCESS)
     {

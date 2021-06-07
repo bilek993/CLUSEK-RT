@@ -6,7 +6,6 @@
 #define CLUSEK_RT_BUFFERMEMORYBARRIERBUILDER_H
 
 #include <vulkan/vulkan.h>
-#include <memory>
 
 #include "../core/VulkanQueue.h"
 #include "../core/VulkanBuffer.h"
@@ -20,7 +19,7 @@ public:
                                                const VkAccessFlags& dstAccessMask);
     BufferMemoryBarrierBuilder& SetOwnershipTransferIfNeeded(const VulkanQueue& srcQueue,
                                                              const VulkanQueue& dstQueue);
-    BufferMemoryBarrierBuilder& SetBufferData(std::shared_ptr<VulkanBuffer> buffer);
+    BufferMemoryBarrierBuilder& SetBufferData(const VulkanBuffer& buffer);
 
     [[nodiscard]] VkBufferMemoryBarrier Build() const;
 
