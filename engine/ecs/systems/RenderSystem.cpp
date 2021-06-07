@@ -30,11 +30,11 @@ void RenderSystem::OnStart()
                                                 vulkanInstanceRequiredExtensions);
 
     LOG_DEBUG("Preparing to create Vulkan Surface...");
-    Surface = std::make_shared<VulkanSurface>(Instance, MainWindow);
+    Surface = std::make_shared<VulkanSurface>(Instance, *MainWindow);
 
     LOG_DEBUG("Preparing to create Vulkan Physical Device...");
     VkPhysicalDeviceFeatures physicalDeviceRequiredFeatures = DeviceRequiredFeatures::FromConfig(ConfigurationData);
-    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(Instance,
+    PhysicalDevice = std::make_shared<VulkanPhysicalDevice>(*Instance,
                                                             ConfigurationData->VulkanRequireDiscreteDevice,
                                                             physicalDeviceRequiredFeatures);
 
@@ -42,8 +42,8 @@ void RenderSystem::OnStart()
     const std::vector<float> graphicPriorities = { 1.0F, 1.0F };
     const std::vector<float> computePriorities = {};
     const std::vector<float> transferPriorities = { 1.0F };
-    Queues = std::make_shared<VulkanQueues>(PhysicalDevice,
-                                            Surface,
+    Queues = std::make_shared<VulkanQueues>(*PhysicalDevice,
+                                            *Surface,
                                             2,
                                             graphicPriorities,
                                             0,
@@ -53,8 +53,8 @@ void RenderSystem::OnStart()
 
     LOG_DEBUG("Preparing to create Vulkan Logical Device with Vulkan Queues...");
     LogicalDevice = std::make_shared<VulkanLogicalDevice>(ConfigurationData->EnableVulkanValidationLayers,
-                                                          PhysicalDevice,
-                                                          Queues,
+                                                          *PhysicalDevice,
+                                                          *Queues,
                                                           physicalDeviceRequiredFeatures,
                                                           LogicalDeviceRequiredExtensions);
 
@@ -82,9 +82,9 @@ void RenderSystem::OnStart()
     const std::vector<VkPresentModeKHR> requestedPresentationModes = { VK_PRESENT_MODE_FIFO_KHR };
     const VkSurfaceFormatKHR requestedSwapChainFormat{ VK_FORMAT_B8G8R8A8_SRGB, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
     SwapChain = std::make_shared<VulkanSwapChain>(LogicalDevice,
-                                                  PhysicalDevice,
-                                                  Surface,
-                                                  MainWindow,
+                                                  *PhysicalDevice,
+                                                  *Surface,
+                                                  *MainWindow,
                                                   requestedSwapChainFormat,
                                                   requestedPresentationModes);
 
@@ -102,12 +102,11 @@ void RenderSystem::OnStart()
                                                                                                        TransferMainQueue,
                                                                                                        true,
                                                                                                        false);
-    std::shared_ptr<VulkanCommandBuffer> vulkanCommandBufferForTests =
-            std::make_shared<VulkanCommandBuffer>(LogicalDevice,
-                                                  vulkanCommandPoolForTests,
-                                                  VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+    auto vulkanCommandBufferForTests = VulkanCommandBuffer(LogicalDevice,
+                                                           vulkanCommandPoolForTests,
+                                                           VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
-    vulkanCommandBufferForTests->BeginRecording(true, false, false);
+    vulkanCommandBufferForTests.BeginRecording(true, false, false);
 
     // Vertex Buffer testing code
 
@@ -117,20 +116,20 @@ void RenderSystem::OnStart()
     exampleVertices->emplace_back(FatVertex{{ 0, 2, 1 }});
 
     VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
-    exampleVertexBuffer.UploadData(*vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
+    exampleVertexBuffer.UploadData(vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
 
     // Index Buffer testing code
 
     std::vector<uint32_t> indices{ 0, 1, 2 };
 
     VulkanIndexBuffer exampleIndexBuffer{ MemoryAllocator };
-    exampleIndexBuffer.UploadData(*vulkanCommandBufferForTests, indices.data(), indices.size());
+    exampleIndexBuffer.UploadData(vulkanCommandBufferForTests, indices.data(), indices.size());
 
     // Cleaning up
 
-    vulkanCommandBufferForTests->EndRecording();
+    vulkanCommandBufferForTests.EndRecording();
 
-    TransferMainQueue.Submit({ vulkanCommandBufferForTests });
+    TransferMainQueue.Submit({ &vulkanCommandBufferForTests });
     TransferMainQueue.WaitIdle();
 
     exampleVertexBuffer.CleanUpAfterUploading();
