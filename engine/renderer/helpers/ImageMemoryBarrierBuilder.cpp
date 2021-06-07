@@ -45,9 +45,9 @@ ImageMemoryBarrierBuilder& ImageMemoryBarrierBuilder::SetOwnershipTransferIfNeed
     return *this;
 }
 
-ImageMemoryBarrierBuilder& ImageMemoryBarrierBuilder::SetImage(const std::shared_ptr<VulkanImage> image)
+ImageMemoryBarrierBuilder& ImageMemoryBarrierBuilder::SetImage(const VulkanImage& image)
 {
-    InternalImageMemoryBarrier.image = image->GetRaw();
+    InternalImageMemoryBarrier.image = image.GetRaw();
     return *this;
 }
 

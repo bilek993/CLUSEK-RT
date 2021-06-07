@@ -6,13 +6,12 @@
 #define CLUSEK_RT_DEVICEREQUIREDFEATURES_H
 
 #include <vulkan/vulkan.h>
-#include <memory>
 
 #include "../../common/ConfigData.h"
 
 namespace DeviceRequiredFeatures
 {
-    [[nodiscard]] VkPhysicalDeviceFeatures FromConfig(std::shared_ptr<ConfigData> configurationData);
+    [[nodiscard]] VkPhysicalDeviceFeatures FromConfig(const ConfigData& configurationData);
 };
 
 

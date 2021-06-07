@@ -37,11 +37,11 @@ BufferMemoryBarrierBuilder& BufferMemoryBarrierBuilder::SetOwnershipTransferIfNe
     return *this;
 }
 
-BufferMemoryBarrierBuilder& BufferMemoryBarrierBuilder::SetBufferData(std::shared_ptr<VulkanBuffer> buffer)
+BufferMemoryBarrierBuilder& BufferMemoryBarrierBuilder::SetBufferData(const VulkanBuffer& buffer)
 {
-    const auto bufferAllocationInfo = buffer->GetAllocationInfo();
+    const auto bufferAllocationInfo = buffer.GetAllocationInfo();
 
-    InternalBufferMemoryBarrier.buffer = buffer->GetRaw();
+    InternalBufferMemoryBarrier.buffer = buffer.GetRaw();
     InternalBufferMemoryBarrier.offset = bufferAllocationInfo.offset;
     InternalBufferMemoryBarrier.size = bufferAllocationInfo.size;
 
