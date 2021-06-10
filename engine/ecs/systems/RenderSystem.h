@@ -38,7 +38,7 @@ private:
     std::shared_ptr<VulkanMemory> MemoryAllocator = nullptr;
 
     VulkanQueue PresentationQueue;
-    VulkanQueue RayTracingMainQueue;
+    VulkanQueue GraphicsMainQueue;
     VulkanQueue TransferMainQueue;
 
     std::vector<const char*> LogicalDeviceRequiredExtensions = {

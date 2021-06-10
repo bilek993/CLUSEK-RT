@@ -64,7 +64,7 @@ void RenderSystem::OnStart()
     const auto transferQueues = Queues->GetTransferQueues();
 
     PresentationQueue = graphicQueues->at(0);
-    RayTracingMainQueue = graphicQueues->at(1);
+    GraphicsMainQueue = graphicQueues->at(1);
 
     TransferMainQueue = graphicQueues->at(0);
 
