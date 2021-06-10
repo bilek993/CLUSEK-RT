@@ -100,7 +100,9 @@ add_executable(
         engine/renderer/helpers/MemoryBarrierBuilder.cpp
         engine/renderer/helpers/MemoryBarrierBuilder.h
         engine/renderer/helpers/BufferMemoryBarrierBuilder.cpp
-        engine/renderer/helpers/BufferMemoryBarrierBuilder.h)
+        engine/renderer/helpers/BufferMemoryBarrierBuilder.h
+        engine/renderer/core/VulkanShaderModule.cpp
+        engine/renderer/core/VulkanShaderModule.h)
 
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
