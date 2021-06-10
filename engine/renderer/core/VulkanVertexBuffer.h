@@ -35,12 +35,13 @@ public:
     void CleanUpAfterUploading();
 
     [[nodiscard]] VkBuffer GetRaw() const;
+    [[nodiscard]] std::shared_ptr<VulkanBuffer> Get() const;
 
 private:
     std::shared_ptr<VulkanMemory> Memory;
 
     std::unique_ptr<VulkanBuffer> StagingBuffer;
-    std::unique_ptr<VulkanBuffer> InternalVertexBuffer;
+    std::shared_ptr<VulkanBuffer> InternalVertexBuffer;
     uint32_t Stride;
 };
 
@@ -77,7 +78,7 @@ void VulkanVertexBuffer<T>::UploadData(VulkanCommandBuffer& commandBuffer, T* ve
     memcpy(data, vertexData, bufferSize);
     StagingBuffer->UnmapBuffer();
 
-    InternalVertexBuffer = std::make_unique<VulkanBuffer>(Memory,
+    InternalVertexBuffer = std::make_shared<VulkanBuffer>(Memory,
                                                           VK_BUFFER_USAGE_TRANSFER_DST_BIT |
                                                           VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
                                                           VMA_MEMORY_USAGE_GPU_ONLY,
@@ -97,6 +98,12 @@ template<class T>
 VkBuffer VulkanVertexBuffer<T>::GetRaw() const
 {
     return InternalVertexBuffer->GetRaw();
+}
+
+template<class T>
+std::shared_ptr<VulkanBuffer> VulkanVertexBuffer<T>::Get() const
+{
+    return InternalVertexBuffer;
 }
 
 #endif //CLUSEK_RT_VULKANVERTEXBUFFER_H

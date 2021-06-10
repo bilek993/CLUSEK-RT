@@ -28,7 +28,7 @@ void VulkanIndexBuffer::UploadData(VulkanCommandBuffer& commandBuffer, uint32_t*
     memcpy(data, indexData, bufferSize);
     StagingBuffer->UnmapBuffer();
 
-    InternalIndexBuffer = std::make_unique<VulkanBuffer>(Memory,
+    InternalIndexBuffer = std::make_shared<VulkanBuffer>(Memory,
                                                          VK_BUFFER_USAGE_TRANSFER_DST_BIT |
                                                          VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
                                                          VMA_MEMORY_USAGE_GPU_ONLY,
@@ -46,4 +46,9 @@ void VulkanIndexBuffer::CleanUpAfterUploading()
 VkBuffer VulkanIndexBuffer::GetRaw() const
 {
     return InternalIndexBuffer->GetRaw();
+}
+
+std::shared_ptr<VulkanBuffer> VulkanIndexBuffer::Get() const
+{
+    return InternalIndexBuffer;
 }
