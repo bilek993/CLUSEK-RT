@@ -39,9 +39,9 @@ public:
     void AddBarrier(VkPipelineStageFlags srcStageMask,
                     VkPipelineStageFlags dstStageMask,
                     VkDependencyFlags dependencyFlags,
-                    const std::vector<VkMemoryBarrier*>& memoryBarriers,
-                    const std::vector<VkBufferMemoryBarrier*>& bufferMemoryBarriers,
-                    const std::vector<VkImageMemoryBarrier*>& imageMemoryBarriers);
+                    const std::vector<VkMemoryBarrier>& memoryBarriers,
+                    const std::vector<VkBufferMemoryBarrier>& bufferMemoryBarriers,
+                    const std::vector<VkImageMemoryBarrier>& imageMemoryBarriers);
 
     [[nodiscard]] VkCommandBuffer GetRaw() const;
     VkCommandBuffer* GetPointerToRaw();
