@@ -24,7 +24,7 @@ public:
     [[nodiscard]] VkShaderModule GetRaw() const;
 
 private:
-    std::vector<char> ReadFile(const std::string& filepath);
+    static std::vector<char> ReadFile(const std::string& filepath);
     void CreateInternalInstance(const std::vector<char>& data);
 
     VkShaderModule InternalShaderModule = VK_NULL_HANDLE;
