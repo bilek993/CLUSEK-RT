@@ -90,6 +90,16 @@ void VulkanCommandBuffer::CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstB
     vkCmdCopyBuffer(InternalCommandBuffer, srcBuffer.GetRaw(), dstBuffer.GetRaw(), 1, &copyRegion);
 }
 
+void VulkanCommandBuffer::AddBarrier(VkPipelineStageFlags srcStageMask,
+                                     VkPipelineStageFlags dstStageMask,
+                                     VkDependencyFlags dependencyFlags,
+                                     const std::vector<VkMemoryBarrier*>& memoryBarriers,
+                                     const std::vector<VkBufferMemoryBarrier*>& bufferMemoryBarriers,
+                                     const std::vector<VkImageMemoryBarrier*>& imageMemoryBarriers)
+{
+    vkCmdPipelineBarrier(InternalCommandBuffer,)
+}
+
 VkCommandBuffer VulkanCommandBuffer::GetRaw() const
 {
     return InternalCommandBuffer;
