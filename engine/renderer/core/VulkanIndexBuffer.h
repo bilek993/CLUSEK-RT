@@ -25,12 +25,13 @@ public:
     void CleanUpAfterUploading();
 
     [[nodiscard]] VkBuffer GetRaw() const;
+    [[nodiscard]] std::shared_ptr<VulkanBuffer> Get() const;
 
 private:
     std::shared_ptr<VulkanMemory> Memory;
 
     std::unique_ptr<VulkanBuffer> StagingBuffer;
-    std::unique_ptr<VulkanBuffer> InternalIndexBuffer;
+    std::shared_ptr<VulkanBuffer> InternalIndexBuffer;
 };
 
 #endif //CLUSEK_RT_VULKANINDEXBUFFER_H

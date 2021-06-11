@@ -11,6 +11,7 @@
 #include "../../renderer/core/VulkanIndexBuffer.h"
 #include "../../renderer/core/VulkanCommandBuffer.h"
 #include "../../renderer/core/VulkanCommandPool.h"
+#include "../../renderer/core/VulkanShaderModule.h"
 #include "../../renderer/vertex/FatVertex.h"
 
 std::string RenderSystem::GetName()
@@ -64,7 +65,7 @@ void RenderSystem::OnStart()
     const auto transferQueues = Queues->GetTransferQueues();
 
     PresentationQueue = graphicQueues->at(0);
-    RayTracingMainQueue = graphicQueues->at(1);
+    GraphicsMainQueue = graphicQueues->at(1);
 
     TransferMainQueue = graphicQueues->at(0);
 
@@ -107,6 +108,14 @@ void RenderSystem::OnStart()
                                                            VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
     vulkanCommandBufferForTests.BeginRecording(true, false, false);
+
+    // Shader modules testing code
+
+    const auto exampleShaderModule = VulkanShaderModule(LogicalDevice,
+                                                        "./data/shaders/example_fragment_shader_for_testing_purposes.spv",
+                                                        VK_SHADER_STAGE_FRAGMENT_BIT,
+                                                        "main");
+    const auto exampleShaderStageCreateInfo = exampleShaderModule.GenerateShaderStageCreateInfo();
 
     // Vertex Buffer testing code
 
