@@ -115,6 +115,7 @@ void RenderSystem::OnStart()
                                                         "./data/shaders/example_fragment_shader_for_testing_purposes.spv",
                                                         VK_SHADER_STAGE_FRAGMENT_BIT,
                                                         "main");
+    const auto exampleShaderStageCreateInfo = exampleShaderModule.GenerateShaderStageCreateInfo();
 
     // Vertex Buffer testing code
 
