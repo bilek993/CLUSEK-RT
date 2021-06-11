@@ -112,7 +112,9 @@ void RenderSystem::OnStart()
     // Shader modules testing code
 
     const auto exampleShaderModule = VulkanShaderModule(LogicalDevice,
-                                                        "./data/shaders/example_fragment_shader_for_testing_purposes.spv");
+                                                        "./data/shaders/example_fragment_shader_for_testing_purposes.spv",
+                                                        VK_SHADER_STAGE_FRAGMENT_BIT,
+                                                        "main");
 
     // Vertex Buffer testing code
 

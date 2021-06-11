@@ -9,18 +9,27 @@
 #include <fstream>
 #include <utility>
 
-VulkanShaderModule::VulkanShaderModule(std::shared_ptr<VulkanLogicalDevice> logicalDevice, const std::string& filepath)
+VulkanShaderModule::VulkanShaderModule(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
+                                       const std::string& filepath,
+                                       VkShaderStageFlagBits stage,
+                                       const std::string& entryPointName)
 {
     LogicalDevice = std::move(logicalDevice);
+    Stage = stage;
+    EntryPointName = entryPointName;
 
     const auto data = ReadFile(filepath);
     CreateInternalInstance(data);
 }
 
 VulkanShaderModule::VulkanShaderModule(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
-                                       const std::vector<char>& data)
+                                       const std::vector<char>& data,
+                                       VkShaderStageFlagBits stage,
+                                       const std::string& entryPointName)
 {
     LogicalDevice = std::move(logicalDevice);
+    Stage = stage;
+    EntryPointName = entryPointName;
 
     CreateInternalInstance(data);
 }
@@ -29,6 +38,17 @@ VulkanShaderModule::~VulkanShaderModule()
 {
     if (InternalShaderModule != VK_NULL_HANDLE)
         vkDestroyShaderModule(LogicalDevice->GetRaw(), InternalShaderModule, nullptr);
+}
+
+VkPipelineShaderStageCreateInfo VulkanShaderModule::GenerateShaderStageCreateInfo() const
+{
+    VkPipelineShaderStageCreateInfo shaderStageCreateInfo{};
+    shaderStageCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    shaderStageCreateInfo.stage = Stage;
+    shaderStageCreateInfo.module = InternalShaderModule;
+    shaderStageCreateInfo.pName = EntryPointName.c_str();
+
+    return shaderStageCreateInfo;
 }
 
 VkShaderModule VulkanShaderModule::GetRaw() const
