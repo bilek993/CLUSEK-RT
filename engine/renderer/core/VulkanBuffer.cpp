@@ -62,6 +62,11 @@ VkDeviceSize VulkanBuffer::GetSize() const
 
 VkDeviceSize VulkanBuffer::GetOffset()
 {
+    // According to the VMA documentation, we don't need offset, because the buffer should always point to the beginning
+    // of the resource. That's why `0` is always returned from this getter. This getter has been reserved for easier
+    // code refactoring in the future.
+    //
+    // https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/struct_vma_allocation_info.html#a4a3c732388dbdc7a23f9365b00825268
     return 0;
 }
 
