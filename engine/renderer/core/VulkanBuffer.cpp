@@ -10,10 +10,11 @@ VulkanBuffer::VulkanBuffer(std::shared_ptr<VulkanMemory> memory,
                            const VkDeviceSize& bufferSize)
 {
     Memory = std::move(memory);
+    Size = bufferSize;
 
     VkBufferCreateInfo bufferCreateInfo{};
     bufferCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferCreateInfo.size = bufferSize;
+    bufferCreateInfo.size = Size;
     bufferCreateInfo.usage = bufferUsage;
     bufferCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
@@ -52,6 +53,16 @@ void VulkanBuffer::UnmapBuffer() const
         throw std::runtime_error("This buffer is not unmappable!");
 
     vmaUnmapMemory(Memory->GetRaw(), InternalAllocation);
+}
+
+VkDeviceSize VulkanBuffer::GetSize() const
+{
+    return Size;
+}
+
+VkDeviceSize VulkanBuffer::GetOffset()
+{
+    return 0;
 }
 
 VmaAllocation VulkanBuffer::GetAllocation() const
