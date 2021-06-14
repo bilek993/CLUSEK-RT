@@ -104,28 +104,6 @@ add_executable(
         engine/renderer/core/VulkanShaderModule.cpp
         engine/renderer/core/VulkanShaderModule.h)
 
-add_custom_command(
-        TARGET ${PROJECT_NAME} PRE_BUILD
-        COMMAND node ./scripts/js/format_json_files.js ./bin/
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-
-add_custom_command(
-        TARGET ${PROJECT_NAME} PRE_BUILD
-        COMMAND node ./scripts/js/compile_shaders.js ${Vulkan_GLSLC_EXECUTABLE} ./shaders/ ./bin/data/shaders/
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-
-add_custom_command(
-        OUTPUT ./engine/generated/ObjectSerializers.h
-        COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    add_custom_command(
-            TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ ${CMAKE_PROJECT_VERSION} ${CMAKE_PROJECT_NAME}
-            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-endif ()
-
 #  _      _  _                         _
 # | |    (_)| |                       (_)
 # | |     _ | |__   _ __   __ _  _ __  _   ___  ___
@@ -205,3 +183,34 @@ add_compile_definitions(GLM_FORCE_DEPTH_ZERO_TO_ONE)
 # Argh!
 
 include_directories(libraries/argh)
+
+#  _____              _         _
+# /  ___|            (_)       | |
+# \ `--.   ___  _ __  _  _ __  | |_  ___
+#  `--. \ / __|| '__|| || '_ \ | __|/ __|
+# /\__/ /| (__ | |   | || |_) || |_ \__ \
+# \____/  \___||_|   |_|| .__/  \__||___/
+#                       | |
+#                       |_|
+
+add_custom_command(
+        TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND node ./scripts/js/format_json_files.js ./bin/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_command(
+        TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND node ./scripts/js/compile_shaders.js ${Vulkan_GLSLC_EXECUTABLE} ./shaders/ ./bin/data/shaders/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_command(
+        OUTPUT ./engine/generated/ObjectSerializers.h
+        COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND node ./scripts/js/redistribute_engine.js ./bin/ ${CMAKE_PROJECT_VERSION} ${CMAKE_PROJECT_NAME}
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+endif ()
