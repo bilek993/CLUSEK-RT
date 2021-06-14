@@ -4,6 +4,8 @@
 
 #include "VulkanIndexBuffer.h"
 
+#include <cstring>
+
 #include "../../common/debug/Logger.h"
 
 VulkanIndexBuffer::VulkanIndexBuffer(std::shared_ptr<VulkanMemory> memory)

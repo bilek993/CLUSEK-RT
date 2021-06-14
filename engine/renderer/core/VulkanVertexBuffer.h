@@ -6,6 +6,7 @@
 #define CLUSEK_RT_VULKANVERTEXBUFFER_H
 
 #include <memory>
+#include <cstring>
 #include <vulkan/vulkan.h>
 
 #include "../allocator/VulkanMemory.h"
