@@ -65,6 +65,16 @@ ImageMemoryBarrierBuilder& ImageMemoryBarrierBuilder::SetSubresourceRange(VkImag
     return *this;
 }
 
+ImageMemoryBarrierBuilder& ImageMemoryBarrierBuilder::SetSubresourceRange(const VulkanImageView& imageView)
+{
+    InternalImageMemoryBarrier.subresourceRange.aspectMask = imageView.GetAspectMask();
+    InternalImageMemoryBarrier.subresourceRange.baseMipLevel = imageView.GetBaseMipLevel();
+    InternalImageMemoryBarrier.subresourceRange.levelCount = imageView.GetLayerCount();
+    InternalImageMemoryBarrier.subresourceRange.baseArrayLayer = imageView.GetBaseArrayLayer();
+    InternalImageMemoryBarrier.subresourceRange.layerCount = imageView.GetLayerCount();
+    return *this;
+}
+
 VkImageMemoryBarrier ImageMemoryBarrierBuilder::Build() const
 {
     return InternalImageMemoryBarrier;
