@@ -10,10 +10,11 @@ VulkanBuffer::VulkanBuffer(std::shared_ptr<VulkanMemory> memory,
                            const VkDeviceSize& bufferSize)
 {
     Memory = std::move(memory);
+    Size = bufferSize;
 
     VkBufferCreateInfo bufferCreateInfo{};
     bufferCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferCreateInfo.size = bufferSize;
+    bufferCreateInfo.size = Size;
     bufferCreateInfo.usage = bufferUsage;
     bufferCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
@@ -52,6 +53,21 @@ void VulkanBuffer::UnmapBuffer() const
         throw std::runtime_error("This buffer is not unmappable!");
 
     vmaUnmapMemory(Memory->GetRaw(), InternalAllocation);
+}
+
+VkDeviceSize VulkanBuffer::GetSize() const
+{
+    return Size;
+}
+
+VkDeviceSize VulkanBuffer::GetOffset()
+{
+    // According to the VMA documentation, we don't need offset, because the buffer should always point to the beginning
+    // of the resource. That's why `0` is always returned from this getter. This getter has been reserved for easier
+    // code refactoring in the future.
+    //
+    // https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/struct_vma_allocation_info.html#a4a3c732388dbdc7a23f9365b00825268
+    return 0;
 }
 
 VmaAllocation VulkanBuffer::GetAllocation() const

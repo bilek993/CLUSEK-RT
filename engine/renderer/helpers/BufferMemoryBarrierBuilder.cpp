@@ -39,11 +39,9 @@ BufferMemoryBarrierBuilder& BufferMemoryBarrierBuilder::SetOwnershipTransferIfNe
 
 BufferMemoryBarrierBuilder& BufferMemoryBarrierBuilder::SetBufferData(const VulkanBuffer& buffer)
 {
-    const auto bufferAllocationInfo = buffer.GetAllocationInfo();
-
     InternalBufferMemoryBarrier.buffer = buffer.GetRaw();
-    InternalBufferMemoryBarrier.offset = bufferAllocationInfo.offset;
-    InternalBufferMemoryBarrier.size = bufferAllocationInfo.size;
+    InternalBufferMemoryBarrier.offset = buffer.GetOffset();
+    InternalBufferMemoryBarrier.size = buffer.GetSize();
 
     return *this;
 }

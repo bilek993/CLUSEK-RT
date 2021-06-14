@@ -9,6 +9,7 @@
 
 #include "../core/VulkanQueue.h"
 #include "../core/VulkanImage.h"
+#include "../core/VulkanImageView.h"
 
 class ImageMemoryBarrierBuilder final
 {
@@ -27,6 +28,7 @@ public:
                                                    uint32_t levelCount,
                                                    uint32_t baseArrayLayer,
                                                    uint32_t layerCount);
+    ImageMemoryBarrierBuilder& SetSubresourceRange(const VulkanImageView& imageView);
 
     [[nodiscard]] VkImageMemoryBarrier Build() const;
 

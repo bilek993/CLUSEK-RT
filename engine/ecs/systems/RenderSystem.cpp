@@ -7,6 +7,7 @@
 #include "../../common/debug/Logger.h"
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
 #include "../../renderer/helpers/DebugExtender.h"
+#include "../../renderer/helpers/BufferMemoryBarrierBuilder.h"
 #include "../../renderer/core/VulkanVertexBuffer.h"
 #include "../../renderer/core/VulkanIndexBuffer.h"
 #include "../../renderer/core/VulkanCommandBuffer.h"
@@ -99,10 +100,10 @@ void RenderSystem::OnStart()
 
     // Preparing code
 
-    std::shared_ptr<VulkanCommandPool> vulkanCommandPoolForTests = std::make_shared<VulkanCommandPool>(LogicalDevice,
-                                                                                                       TransferMainQueue,
-                                                                                                       true,
-                                                                                                       false);
+    const auto vulkanCommandPoolForTests = std::make_shared<VulkanCommandPool>(LogicalDevice,
+                                                                               TransferMainQueue,
+                                                                               true,
+                                                                               false);
     auto vulkanCommandBufferForTests = VulkanCommandBuffer(LogicalDevice,
                                                            vulkanCommandPoolForTests,
                                                            VK_COMMAND_BUFFER_LEVEL_PRIMARY);
@@ -119,7 +120,7 @@ void RenderSystem::OnStart()
 
     // Vertex Buffer testing code
 
-    std::shared_ptr<std::vector<FatVertex>> exampleVertices = std::make_shared<std::vector<FatVertex>>();
+    auto exampleVertices = std::make_shared<std::vector<FatVertex>>();
     exampleVertices->emplace_back(FatVertex{{ 0, 1, 2 }});
     exampleVertices->emplace_back(FatVertex{{ 2, 1, 0 }});
     exampleVertices->emplace_back(FatVertex{{ 0, 2, 1 }});
@@ -133,6 +134,25 @@ void RenderSystem::OnStart()
 
     VulkanIndexBuffer exampleIndexBuffer{ MemoryAllocator };
     exampleIndexBuffer.UploadData(vulkanCommandBufferForTests, indices.data(), indices.size());
+
+    // Transfer ownership from transfer queue to graphics queue
+
+    const auto exampleVertexBufferBarrier = BufferMemoryBarrierBuilder()
+            .SetBufferData(*exampleVertexBuffer.Get())
+            .SetOwnershipTransferIfNeeded(TransferMainQueue, GraphicsMainQueue)
+            .Build();
+
+    const auto exampleIndexBufferBarrier = BufferMemoryBarrierBuilder()
+            .SetBufferData(*exampleIndexBuffer.Get())
+            .SetOwnershipTransferIfNeeded(TransferMainQueue, GraphicsMainQueue)
+            .Build();
+
+    vulkanCommandBufferForTests.AddBarrier(VK_PIPELINE_STAGE_TRANSFER_BIT,
+                                           VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+                                           0,
+                                           {},
+                                           { exampleVertexBufferBarrier, exampleIndexBufferBarrier },
+                                           {});
 
     // Cleaning up
 

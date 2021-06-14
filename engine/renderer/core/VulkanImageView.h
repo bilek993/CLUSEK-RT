@@ -25,10 +25,22 @@ public:
                     uint32_t layerCount);
     virtual ~VulkanImageView();
 
+    [[nodiscard]] VkImageAspectFlags GetAspectMask() const;
+    [[nodiscard]] uint32_t GetBaseMipLevel() const;
+    [[nodiscard]] uint32_t GetLevelCount() const;
+    [[nodiscard]] uint32_t GetBaseArrayLayer() const;
+    [[nodiscard]] uint32_t GetLayerCount() const;
+
     [[nodiscard]] VkImageView GetRaw() const;
 private:
     VkImageView InternalImageView = VK_NULL_HANDLE;
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
+
+    VkImageAspectFlags AspectMask;
+    uint32_t BaseMipLevel;
+    uint32_t LevelCount;
+    uint32_t BaseArrayLayer;
+    uint32_t LayerCount;
 };
 
 

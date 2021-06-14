@@ -23,6 +23,9 @@ public:
     void MapBuffer(void** mappedData) const;
     void UnmapBuffer() const;
 
+    [[nodiscard]] VkDeviceSize GetSize() const;
+    [[nodiscard]] static VkDeviceSize GetOffset();
+
     [[nodiscard]] VmaAllocation GetAllocation() const;
     [[nodiscard]] VmaAllocationInfo GetAllocationInfo() const;
 
@@ -32,6 +35,7 @@ private:
     VkBuffer InternalBuffer = VK_NULL_HANDLE;
     VmaAllocation InternalAllocation = VK_NULL_HANDLE;
     VmaAllocationInfo InternalAllocationInfo{};
+    VkDeviceSize Size;
 
     std::shared_ptr<VulkanMemory> Memory;
 };
