@@ -102,7 +102,7 @@ add_executable(
         engine/renderer/helpers/BufferMemoryBarrierBuilder.cpp
         engine/renderer/helpers/BufferMemoryBarrierBuilder.h
         engine/renderer/core/VulkanShaderModule.cpp
-        engine/renderer/core/VulkanShaderModule.h engine/renderer/core/VulkanRasterizationPipeline.cpp engine/renderer/core/VulkanRasterizationPipeline.h)
+        engine/renderer/core/VulkanShaderModule.h engine/renderer/core/VulkanRasterizationPipeline.cpp engine/renderer/core/VulkanRasterizationPipeline.h engine/renderer/core/VulkanRayTracingPipeline.cpp engine/renderer/core/VulkanRayTracingPipeline.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
