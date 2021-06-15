@@ -1,0 +1,15 @@
+//
+// Created by jbili on 15.06.2021.
+//
+
+#ifndef CLUSEK_RT_VULKANRASTERIZATIONPIPELINE_H
+#define CLUSEK_RT_VULKANRASTERIZATIONPIPELINE_H
+
+
+class VulkanRasterizationPipeline final
+{
+
+};
+
+
+#endif //CLUSEK_RT_VULKANRASTERIZATIONPIPELINE_H
