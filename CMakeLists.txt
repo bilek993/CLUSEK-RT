@@ -106,7 +106,9 @@ add_executable(
         engine/renderer/core/VulkanRasterizationPipeline.cpp
         engine/renderer/core/VulkanRasterizationPipeline.h
         engine/renderer/core/VulkanRayTracingPipeline.cpp
-        engine/renderer/core/VulkanRayTracingPipeline.h)
+        engine/renderer/core/VulkanRayTracingPipeline.h
+        engine/renderer/core/VulkanComputePipeline.cpp
+        engine/renderer/core/VulkanComputePipeline.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
