@@ -56,7 +56,7 @@ function generateObjectData(readData, pathToSerializer, pathToSerializedObject) 
 
   let serializableObjectsData = [];
 
-  itereateThroughCompatibleFiles(searchPath, SERIALIZER_FILE_DECORATOR, (filePath, readFileData) => {
+  await itereateThroughCompatibleFiles(searchPath, SERIALIZER_FILE_DECORATOR, (filePath, readFileData) => {
     console.log("Found compatible object at '" + filePath + "'...");
 
     const objectData = generateObjectData(readFileData, serializerPath, filePath);
