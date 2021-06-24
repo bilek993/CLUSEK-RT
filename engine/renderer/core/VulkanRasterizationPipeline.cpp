@@ -11,9 +11,9 @@ VulkanRasterizationPipeline::VulkanRasterizationPipeline(std::shared_ptr<VulkanL
     const auto result = vkCreateGraphicsPipelines(LogicalDevice->GetRaw(),
                                                   VK_NULL_HANDLE,
                                                   1,
-                                                  PIPELINE_INFO_HERE,
+                                                  nullptr, // TODO: Change this
                                                   nullptr,
-                                                  InternalPipeline);
+                                                  &InternalPipeline);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Vulkan rasterization pipeline creation failed!");
 }
