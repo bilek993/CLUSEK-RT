@@ -1,5 +1,4 @@
-const { checkIfIsSerializable, generateGuardName } = require('./user_modules/generators_helper');
-const { getFiles } = require('./user_modules/files_helper');
+const { generateGuardName, itereateThroughCompatibleFiles } = require('./user_modules/generators_helper');
 const { readFileSync, writeFileSync } = require('fs');
 const mustache = require('mustache');
 const path = require('path');
@@ -46,7 +45,6 @@ function generateObjectData(readData, pathToSerializer, pathToSerializedObject) 
     includeObjectPath: includeObjectPath,
     serializableFields: serializableFields,
   };
-
 }
 
 (async () => {
@@ -58,18 +56,12 @@ function generateObjectData(readData, pathToSerializer, pathToSerializedObject) 
 
   let serializableObjectsData = [];
 
-  for await (const filePath of getFiles(searchPath)) {
-    if (filePath.toLowerCase().endsWith('.h')) {
-      const readFileData = readFileSync(filePath);
+  itereateThroughCompatibleFiles(searchPath, SERIALIZER_FILE_DECORATOR, (filePath, readFileData) => {
+    console.log("Found compatible object at '" + filePath + "'...");
 
-      if (checkIfIsSerializable(readFileData, SERIALIZER_FILE_DECORATOR)) {
-        console.log("Found compatible object at '" + filePath + "'...");
-
-        const objectData = generateObjectData(readFileData, serializerPath, filePath);
-        serializableObjectsData.push(objectData);
-      }
-    }
-  }
+    const objectData = generateObjectData(readFileData, serializerPath, filePath);
+    serializableObjectsData.push(objectData);
+  });
 
   generateOutputFile(serializerNamespace, serializerPath, serializableObjectsData);
 
