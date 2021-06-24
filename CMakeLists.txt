@@ -216,6 +216,11 @@ add_custom_command(
         COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
+add_custom_command(
+        OUTPUT ./engine/generated/VertexInputAttributeDescriptions.h
+        COMMAND node ./scripts/js/generate_vertex_attribute_descriptors.js ./engine/generated/ VertexInputAttributeDescriptions ./engine/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
     add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
