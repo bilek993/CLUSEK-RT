@@ -109,7 +109,8 @@ add_executable(
         engine/renderer/core/VulkanRayTracingPipeline.h
         engine/renderer/core/VulkanComputePipeline.cpp
         engine/renderer/core/VulkanComputePipeline.h
-        engine/renderer/helpers/VertexBindingDescriptorGenerator.h)
+        engine/renderer/helpers/VertexBindingDescriptorGenerator.h
+        engine/common/generators/VertexMacros.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
