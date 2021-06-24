@@ -8,6 +8,7 @@
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
 #include "../../renderer/helpers/DebugExtender.h"
 #include "../../renderer/helpers/BufferMemoryBarrierBuilder.h"
+#include "../../renderer/helpers/VertexBindingDescriptorGenerator.h"
 #include "../../renderer/core/VulkanVertexBuffer.h"
 #include "../../renderer/core/VulkanIndexBuffer.h"
 #include "../../renderer/core/VulkanCommandBuffer.h"
@@ -127,6 +128,8 @@ void RenderSystem::OnStart()
 
     VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
     exampleVertexBuffer.UploadData(vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
+
+    const auto vertexBindingDescription = VertexBindingDescriptorGenerator::Generate<FatVertex>();
 
     // Index Buffer testing code
 
