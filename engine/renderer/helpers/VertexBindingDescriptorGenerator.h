@@ -29,7 +29,6 @@ namespace VertexBindingDescriptorGenerator
     //  \___/ \_|  |_/\_|    \_____/\____/ \_|  |_/\____/ \_| \_/  \_/  \_| |_/  \_/   \___/  \___/ \_| \_/
     //
 
-
     template<class T>
     VkVertexInputBindingDescription Generate(uint32_t indexOfBinding,
                                              VkVertexInputRate inputRate)
