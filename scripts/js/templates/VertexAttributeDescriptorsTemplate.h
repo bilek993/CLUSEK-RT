@@ -15,6 +15,32 @@
 #ifndef {{ guardName }}
 #define {{ guardName }}
 
-// TODO: Add code here
+#include <cstddef>
+#include <vector>
+#include <vulkan/vulkan.h>
+
+{{ #vertexStructures }}
+#include "{{{ includePath }}}"
+{{ /vertexStructures }}
+
+namespace {{ namespace }}
+{
+{{ #vertexStructures }}
+    static std::vector<VkVertexInputAttributeDescription> GetDescriptionFor{{ structName }}()
+    {
+        std::vector<VkVertexInputAttributeDescription> attributeDescriptions{};
+
+        {{ #vertexAttributes }}
+        // {{ structName }}::{{ name }}
+        attributeDescriptions[0].binding = {{ binding }};
+        attributeDescriptions[0].location = {{ location }};
+        attributeDescriptions[0].format = {{ format }};
+        attributeDescriptions[0].offset = offsetof({{ structName }}, {{ name }});
+        {{ /vertexAttributes }}
+
+        return attributeDescriptions;
+    }
+{{ /vertexStructures }}
+}
 
 #endif //{{ guardName }}
