@@ -18,6 +18,7 @@ async function itereateThroughCompatibleFiles(searchPath, requiredFileDecorator,
       const readFileData = readFileSync(filePath);
 
       if (checkIfIsSerializable(readFileData, requiredFileDecorator)) {
+        console.log("Found compatible object at '" + filePath + "'...");
         callback(filePath, readFileData);
       }
     }
