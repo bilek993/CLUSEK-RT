@@ -14,6 +14,7 @@
 #include "../../renderer/core/VulkanCommandBuffer.h"
 #include "../../renderer/core/VulkanCommandPool.h"
 #include "../../renderer/core/VulkanShaderModule.h"
+#include "../../renderer/core/VulkanRasterizationPipeline.h"
 #include "../../renderer/vertex/FatVertex.h"
 
 std::string RenderSystem::GetName()
@@ -113,11 +114,17 @@ void RenderSystem::OnStart()
 
     // Shader modules testing code
 
-    const auto exampleShaderModule = VulkanShaderModule(LogicalDevice,
-                                                        "./data/shaders/example_fragment_shader_for_testing_purposes.spv",
-                                                        VK_SHADER_STAGE_FRAGMENT_BIT,
-                                                        "main");
-    const auto exampleShaderStageCreateInfo = exampleShaderModule.GenerateShaderStageCreateInfo();
+    const auto exampleVertexShaderModule = VulkanShaderModule(LogicalDevice,
+                                                              "./data/shaders/example_vs.spv",
+                                                              VK_SHADER_STAGE_VERTEX_BIT,
+                                                              "main");
+    const auto exampleVertexShaderStageCreateInfo = exampleVertexShaderModule.GenerateShaderStageCreateInfo();
+
+    const auto exampleFragmentShaderModule = VulkanShaderModule(LogicalDevice,
+                                                                "./data/shaders/example_fs.spv",
+                                                                VK_SHADER_STAGE_FRAGMENT_BIT,
+                                                                "main");
+    const auto exampleFragmentShaderStageCreateInfo = exampleFragmentShaderModule.GenerateShaderStageCreateInfo();
 
     // Vertex Buffer testing code
 
