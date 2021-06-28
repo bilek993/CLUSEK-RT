@@ -111,7 +111,11 @@ add_executable(
         engine/renderer/core/VulkanComputePipeline.h
         engine/renderer/helpers/VertexBindingDescriptorGenerator.h
         engine/common/generators/VertexMacros.h
-        engine/generated/VertexInputAttributeDescriptions.h)
+        engine/generated/VertexInputAttributeDescriptions.h
+        engine/renderer/core/VulkanRenderPass.cpp
+        engine/renderer/core/VulkanRenderPass.h
+        engine/renderer/core/VulkanPipelineLayout.cpp
+        engine/renderer/core/VulkanPipelineLayout.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
