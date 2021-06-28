@@ -32,10 +32,12 @@ namespace {{ namespace }}
 
         {{ #vertexAttributes }}
         // {{ structName }}::{{ name }}
-        attributeDescriptions[0].binding = {{ binding }};
-        attributeDescriptions[0].location = {{ location }};
-        attributeDescriptions[0].format = {{ format }};
-        attributeDescriptions[0].offset = offsetof({{ structName }}, {{ name }});
+        VkVertexInputAttributeDescription desc{{ structName }}{{ name }}{};
+        desc{{ structName }}{{ name }}.binding = {{ binding }};
+        desc{{ structName }}{{ name }}.location = {{ location }};
+        desc{{ structName }}{{ name }}.format = {{ format }};
+        desc{{ structName }}{{ name }}.offset = offsetof({{ structName }}, {{ name }});
+        attributeDescriptions.emplace_back(desc{{ structName }}{{ name }});
         {{ /vertexAttributes }}
 
         return attributeDescriptions;
