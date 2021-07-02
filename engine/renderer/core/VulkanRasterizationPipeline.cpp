@@ -4,14 +4,43 @@
 
 #include "VulkanRasterizationPipeline.h"
 
-VulkanRasterizationPipeline::VulkanRasterizationPipeline(std::shared_ptr<VulkanLogicalDevice> logicalDevice)
+VulkanRasterizationPipeline::VulkanRasterizationPipeline(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
+                                                         const VkPipelineCache& pipelineCache,
+                                                         const std::vector<VkPipelineShaderStageCreateInfo>& shaderStages,
+                                                         const VkPipelineVertexInputStateCreateInfo& vertexInputState,
+                                                         const VkPipelineInputAssemblyStateCreateInfo& inputAssemblyState,
+                                                         const VkPipelineTessellationStateCreateInfo& tessellationState,
+                                                         const VkPipelineRasterizationStateCreateInfo& rasterizationState,
+                                                         const VkPipelineMultisampleStateCreateInfo& multisampleState,
+                                                         const VkPipelineDepthStencilStateCreateInfo& depthStencilState,
+                                                         const VkPipelineColorBlendStateCreateInfo& colorBlendState,
+                                                         const VkPipelineLayout& pipelineLayout,
+                                                         const VkRenderPass& renderPass,
+                                                         uint32_t subpassIndex)
 {
     LogicalDevice = std::move(logicalDevice);
 
+    VkGraphicsPipelineCreateInfo pipelineCreateInfo{};
+    pipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    pipelineCreateInfo.stageCount = shaderStages.size();
+    pipelineCreateInfo.pStages = shaderStages.data();
+    pipelineCreateInfo.pVertexInputState = &vertexInputState;
+    pipelineCreateInfo.pInputAssemblyState = &inputAssemblyState;
+    pipelineCreateInfo.pTessellationState = &tessellationState;
+    pipelineCreateInfo.pViewportState = nullptr;
+    pipelineCreateInfo.pRasterizationState = &rasterizationState;
+    pipelineCreateInfo.pMultisampleState = &multisampleState;
+    pipelineCreateInfo.pDepthStencilState = &depthStencilState;
+    pipelineCreateInfo.pColorBlendState = &colorBlendState;
+    pipelineCreateInfo.pDynamicState = nullptr;
+    pipelineCreateInfo.layout = pipelineLayout;
+    pipelineCreateInfo.renderPass = renderPass;
+    pipelineCreateInfo.subpass = subpassIndex;
+
     const auto result = vkCreateGraphicsPipelines(LogicalDevice->GetRaw(),
-                                                  VK_NULL_HANDLE,
+                                                  pipelineCache,
                                                   1,
-                                                  nullptr, // TODO: Change this
+                                                  &pipelineCreateInfo,
                                                   nullptr,
                                                   &InternalPipeline);
     if (result != VK_SUCCESS)

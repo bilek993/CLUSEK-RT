@@ -12,7 +12,19 @@
 class VulkanRasterizationPipeline final
 {
 public:
-    VulkanRasterizationPipeline(std::shared_ptr<VulkanLogicalDevice> logicalDevice);
+    VulkanRasterizationPipeline(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
+                                const VkPipelineCache& pipelineCache,
+                                const std::vector<VkPipelineShaderStageCreateInfo>& shaderStages,
+                                const VkPipelineVertexInputStateCreateInfo& vertexInputState,
+                                const VkPipelineInputAssemblyStateCreateInfo& inputAssemblyState,
+                                const VkPipelineTessellationStateCreateInfo& tessellationState,
+                                const VkPipelineRasterizationStateCreateInfo& rasterizationState,
+                                const VkPipelineMultisampleStateCreateInfo& multisampleState,
+                                const VkPipelineDepthStencilStateCreateInfo& depthStencilState,
+                                const VkPipelineColorBlendStateCreateInfo& colorBlendState,
+                                const VkPipelineLayout& pipelineLayout,
+                                const VkRenderPass& renderPass,
+                                uint32_t subpassIndex);
     ~VulkanRasterizationPipeline();
     VulkanRasterizationPipeline(const VulkanRasterizationPipeline& other) = delete;
     VulkanRasterizationPipeline(VulkanRasterizationPipeline&& other) noexcept = delete;
