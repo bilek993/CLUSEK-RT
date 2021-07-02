@@ -4,12 +4,15 @@
 
 #include "VulkanPipelineLayout.h"
 
-VulkanPipelineLayout::VulkanPipelineLayout()
+VulkanPipelineLayout::VulkanPipelineLayout(std::shared_ptr<VulkanLogicalDevice> logicalDevice)
 {
+    LogicalDevice = std::move(logicalDevice);
 
+    // TODO: Provide proper implementation here
 }
 
 VulkanPipelineLayout::~VulkanPipelineLayout()
 {
-
+    if (InternalPipelineLayout != VK_NULL_HANDLE)
+        vkDestroyPipelineLayout(LogicalDevice->GetRaw(), InternalPipelineLayout, nullptr);
 }
