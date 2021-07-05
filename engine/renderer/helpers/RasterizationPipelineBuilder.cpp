@@ -89,10 +89,12 @@ RasterizationPipelineBuilder::AddShaderStage(const std::vector<VkPipelineShaderS
 
 RasterizationPipelineBuilder&
 RasterizationPipelineBuilder::AddVertexInput(const VkVertexInputBindingDescription& inputBindingDescription,
-                                             const VkVertexInputAttributeDescription& inputAttributeDescription)
+                                             const std::vector<VkVertexInputAttributeDescription>& inputAttributeDescription)
 {
     VertexInputBindingDescriptions.emplace_back(inputBindingDescription);
-    VertexInputAttributeDescriptions.emplace_back(inputAttributeDescription);
+    VertexInputAttributeDescriptions.insert(VertexInputAttributeDescriptions.end(),
+                                            inputAttributeDescription.begin(),
+                                            inputAttributeDescription.end());
     return *this;
 }
 

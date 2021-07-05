@@ -27,7 +27,7 @@ public:
     RasterizationPipelineBuilder& AddShaderStage(const std::vector<VkPipelineShaderStageCreateInfo>& shaderStages);
 
     RasterizationPipelineBuilder& AddVertexInput(const VkVertexInputBindingDescription& inputBindingDescription,
-                                                 const VkVertexInputAttributeDescription& inputAttributeDescription);
+                                                 const std::vector<VkVertexInputAttributeDescription>& inputAttributeDescription);
 
     RasterizationPipelineBuilder& SetInputTopology(VkPrimitiveTopology topology);
     RasterizationPipelineBuilder& EnableInputPrimitiveRestart();
