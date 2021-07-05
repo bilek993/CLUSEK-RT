@@ -9,11 +9,14 @@ VulkanRasterizationPipeline::VulkanRasterizationPipeline(std::shared_ptr<VulkanL
                                                          const std::vector<VkPipelineShaderStageCreateInfo>& shaderStages,
                                                          const VkPipelineVertexInputStateCreateInfo& vertexInputState,
                                                          const VkPipelineInputAssemblyStateCreateInfo& inputAssemblyState,
+                                                         const VkPipelineViewportStateCreateInfo& constantViewportState,
+                                                         bool tesselationEnabled,
                                                          const VkPipelineTessellationStateCreateInfo& tessellationState,
                                                          const VkPipelineRasterizationStateCreateInfo& rasterizationState,
                                                          const VkPipelineMultisampleStateCreateInfo& multisampleState,
                                                          const VkPipelineDepthStencilStateCreateInfo& depthStencilState,
                                                          const VkPipelineColorBlendStateCreateInfo& colorBlendState,
+                                                         const VkPipelineDynamicStateCreateInfo& dynamicState,
                                                          const VkPipelineLayout& pipelineLayout,
                                                          const VkRenderPass& renderPass,
                                                          uint32_t subpassIndex)
@@ -26,8 +29,8 @@ VulkanRasterizationPipeline::VulkanRasterizationPipeline(std::shared_ptr<VulkanL
     pipelineCreateInfo.pStages = shaderStages.data();
     pipelineCreateInfo.pVertexInputState = &vertexInputState;
     pipelineCreateInfo.pInputAssemblyState = &inputAssemblyState;
-    pipelineCreateInfo.pTessellationState = &tessellationState;
-    pipelineCreateInfo.pViewportState = nullptr;
+    pipelineCreateInfo.pTessellationState = tesselationEnabled ? &tessellationState : nullptr;
+    pipelineCreateInfo.pViewportState = &constantViewportState;
     pipelineCreateInfo.pRasterizationState = &rasterizationState;
     pipelineCreateInfo.pMultisampleState = &multisampleState;
     pipelineCreateInfo.pDepthStencilState = &depthStencilState;

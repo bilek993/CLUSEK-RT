@@ -20,6 +20,7 @@ public:
     VulkanPipelineLayout& operator=(const VulkanPipelineLayout& other) = delete;
     VulkanPipelineLayout& operator=(VulkanPipelineLayout&& other) noexcept = delete;
 
+    [[nodiscard]] VkPipelineLayout GetRaw() const;
 private:
     VkPipelineLayout InternalPipelineLayout = VK_NULL_HANDLE;
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;

@@ -16,3 +16,8 @@ VulkanPipelineLayout::~VulkanPipelineLayout()
     if (InternalPipelineLayout != VK_NULL_HANDLE)
         vkDestroyPipelineLayout(LogicalDevice->GetRaw(), InternalPipelineLayout, nullptr);
 }
+
+VkPipelineLayout VulkanPipelineLayout::GetRaw() const
+{
+    return InternalPipelineLayout;
+}
