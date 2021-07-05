@@ -67,6 +67,12 @@ RasterizationPipelineBuilder::SetLogicalDevice(std::shared_ptr<VulkanLogicalDevi
     return *this;
 }
 
+RasterizationPipelineBuilder& RasterizationPipelineBuilder::AddShaderStage(const VulkanShaderModule& shaderModule)
+{
+    ShaderStages.emplace_back(shaderModule.GenerateShaderStageCreateInfo());
+    return *this;
+}
+
 RasterizationPipelineBuilder&
 RasterizationPipelineBuilder::AddShaderStage(const VkPipelineShaderStageCreateInfo& shaderStage)
 {

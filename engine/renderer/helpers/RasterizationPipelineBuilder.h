@@ -13,6 +13,7 @@
 #include "../core/VulkanRasterizationPipeline.h"
 #include "../core/VulkanPipelineLayout.h"
 #include "../core/VulkanRenderPass.h"
+#include "../core/VulkanShaderModule.h"
 
 class RasterizationPipelineBuilder final
 {
@@ -21,6 +22,7 @@ public:
 
     RasterizationPipelineBuilder& SetLogicalDevice(std::shared_ptr<VulkanLogicalDevice> logicalDevice);
 
+    RasterizationPipelineBuilder& AddShaderStage(const VulkanShaderModule& shaderModule);
     RasterizationPipelineBuilder& AddShaderStage(const VkPipelineShaderStageCreateInfo& shaderStage);
     RasterizationPipelineBuilder& AddShaderStage(const std::vector<VkPipelineShaderStageCreateInfo>& shaderStages);
 
