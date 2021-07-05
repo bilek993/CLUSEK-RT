@@ -25,7 +25,7 @@ RasterizationPipelineBuilder::RasterizationPipelineBuilder()
     RasterizationState.rasterizerDiscardEnable = VK_FALSE;
     RasterizationState.polygonMode = VK_POLYGON_MODE_FILL;
     RasterizationState.lineWidth = 1.0F;
-    RasterizationState.cullMode = VK_CULL_MODE_BACK_BIT;
+    RasterizationState.cullMode = VK_CULL_MODE_NONE;
     RasterizationState.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
     RasterizationState.depthBiasEnable = VK_FALSE;
     RasterizationState.depthBiasConstantFactor = 0.0f;
