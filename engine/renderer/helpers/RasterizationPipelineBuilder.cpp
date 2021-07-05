@@ -144,7 +144,7 @@ RasterizationPipelineBuilder& RasterizationPipelineBuilder::AddConstantViewportA
 
 RasterizationPipelineBuilder& RasterizationPipelineBuilder::AddDynamicViewportAndScissor()
 {
-    if (!ConstantViewportsEnabled)
+    if (!DynamicViewportEnabled)
         LOG_ERROR("Dynamic viewports are not enabled");
 
     Viewports.emplace_back(VkViewport{});
