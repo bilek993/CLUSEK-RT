@@ -35,7 +35,7 @@ VulkanRasterizationPipeline::VulkanRasterizationPipeline(std::shared_ptr<VulkanL
     pipelineCreateInfo.pMultisampleState = &multisampleState;
     pipelineCreateInfo.pDepthStencilState = &depthStencilState;
     pipelineCreateInfo.pColorBlendState = &colorBlendState;
-    pipelineCreateInfo.pDynamicState = nullptr;
+    pipelineCreateInfo.pDynamicState = &dynamicState;
     pipelineCreateInfo.layout = pipelineLayout;
     pipelineCreateInfo.renderPass = renderPass;
     pipelineCreateInfo.subpass = subpassIndex;
