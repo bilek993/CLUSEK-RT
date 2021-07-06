@@ -118,7 +118,9 @@ add_executable(
         engine/renderer/core/VulkanPipelineLayout.h
         engine/renderer/helpers/VulkanSubpass.h
         engine/renderer/helpers/RasterizationPipelineBuilder.cpp
-        engine/renderer/helpers/RasterizationPipelineBuilder.h)
+        engine/renderer/helpers/RasterizationPipelineBuilder.h
+        engine/renderer/core/VulkanFrameBuffer.cpp
+        engine/renderer/core/VulkanFrameBuffer.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
