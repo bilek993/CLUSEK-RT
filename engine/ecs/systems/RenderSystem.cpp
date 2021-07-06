@@ -5,15 +5,18 @@
 #include "RenderSystem.h"
 
 #include "../../common/debug/Logger.h"
+#include "../../generated/VertexInputAttributeDescriptions.h"
 #include "../../renderer/helpers/DeviceRequiredFeatures.h"
 #include "../../renderer/helpers/DebugExtender.h"
 #include "../../renderer/helpers/BufferMemoryBarrierBuilder.h"
 #include "../../renderer/helpers/VertexBindingDescriptorGenerator.h"
+#include "../../renderer/helpers/RasterizationPipelineBuilder.h"
 #include "../../renderer/core/VulkanVertexBuffer.h"
 #include "../../renderer/core/VulkanIndexBuffer.h"
 #include "../../renderer/core/VulkanCommandBuffer.h"
 #include "../../renderer/core/VulkanCommandPool.h"
 #include "../../renderer/core/VulkanShaderModule.h"
+#include "../../renderer/core/VulkanRenderPass.h"
 #include "../../renderer/core/VulkanRasterizationPipeline.h"
 #include "../../renderer/vertex/FatVertex.h"
 
@@ -118,13 +121,11 @@ void RenderSystem::OnStart()
                                                               "./data/shaders/example_vs.spv",
                                                               VK_SHADER_STAGE_VERTEX_BIT,
                                                               "main");
-    const auto exampleVertexShaderStageCreateInfo = exampleVertexShaderModule.GenerateShaderStageCreateInfo();
 
     const auto exampleFragmentShaderModule = VulkanShaderModule(LogicalDevice,
                                                                 "./data/shaders/example_fs.spv",
                                                                 VK_SHADER_STAGE_FRAGMENT_BIT,
                                                                 "main");
-    const auto exampleFragmentShaderStageCreateInfo = exampleFragmentShaderModule.GenerateShaderStageCreateInfo();
 
     // Vertex Buffer testing code
 
@@ -135,8 +136,6 @@ void RenderSystem::OnStart()
 
     VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
     exampleVertexBuffer.UploadData(vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
-
-    const auto vertexBindingDescription = VertexBindingDescriptorGenerator::Generate<FatVertex>();
 
     // Index Buffer testing code
 
@@ -164,12 +163,65 @@ void RenderSystem::OnStart()
                                            { exampleVertexBufferBarrier, exampleIndexBufferBarrier },
                                            {});
 
-    // Cleaning up
-
     vulkanCommandBufferForTests.EndRecording();
 
     TransferMainQueue.Submit({ &vulkanCommandBufferForTests });
     TransferMainQueue.WaitIdle();
+
+    // Rasterization pipeline testing code
+
+    VkAttachmentDescription colorAttachmentDescription{};
+    colorAttachmentDescription.format = SwapChain->GetUsedFormat().format;
+    colorAttachmentDescription.samples = VK_SAMPLE_COUNT_1_BIT;
+    colorAttachmentDescription.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    colorAttachmentDescription.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    colorAttachmentDescription.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    colorAttachmentDescription.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    colorAttachmentDescription.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    colorAttachmentDescription.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+    VkSubpassDependency testSubpassDependency{};
+    testSubpassDependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+    testSubpassDependency.dstSubpass = 0;
+    testSubpassDependency.srcStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+    testSubpassDependency.dstStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+    testSubpassDependency.srcAccessMask = 0;
+    testSubpassDependency.dstAccessMask =
+            VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+
+    const auto testRenderPass = VulkanRenderPass(LogicalDevice,
+                                                 {
+                                                         colorAttachmentDescription,
+                                                 },
+                                                 false,
+                                                 {
+                                                         testSubpassDependency,
+                                                 },
+                                                 {
+                                                         {{ 0 }, false },
+                                                 });
+
+    const auto testPipelineLayout = VulkanPipelineLayout(LogicalDevice);
+
+    const auto testPipeline = RasterizationPipelineBuilder()
+            .SetLogicalDevice(LogicalDevice)
+            .AddShaderStage(exampleVertexShaderModule)
+            .AddShaderStage(exampleFragmentShaderModule)
+            .AddVertexInput(VertexBindingDescriptorGenerator::Generate<FatVertex>(),
+                            VertexInputAttributeDescriptions::GetDescriptionForFatVertex())
+            .EnableDynamicViewport()
+            .AddDynamicViewportAndScissor()
+            .SetCullMode(VK_CULL_MODE_BACK_BIT)
+            .AddBlendAttachmentWithDisabledBlending(VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
+                                                    VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT)
+            .SetPipelineLayout(testPipelineLayout)
+            .SetRenderPass(testRenderPass)
+            .SetSubpassIndex(0)
+            .Build();
+
+    // Cleaning up
 
     exampleVertexBuffer.CleanUpAfterUploading();
     exampleIndexBuffer.CleanUpAfterUploading();
