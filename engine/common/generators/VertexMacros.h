@@ -1,0 +1,15 @@
+//
+// Created by jbili on 24.06.2021.
+//
+
+#ifndef CLUSEK_RT_VERTEXMACROS_H
+#define CLUSEK_RT_VERTEXMACROS_H
+
+#include "CommonMacros.h"
+
+GENERATOR_SKIP_THIS_FILE()
+
+#define VERTEX_STRUCTURE(NAME)
+#define GENERATE_ATTRIBUTE(NAME, BINDING, LOCATION, FORMAT)
+
+#endif //CLUSEK_RT_VERTEXMACROS_H

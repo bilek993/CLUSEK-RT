@@ -102,7 +102,23 @@ add_executable(
         engine/renderer/helpers/BufferMemoryBarrierBuilder.cpp
         engine/renderer/helpers/BufferMemoryBarrierBuilder.h
         engine/renderer/core/VulkanShaderModule.cpp
-        engine/renderer/core/VulkanShaderModule.h)
+        engine/renderer/core/VulkanShaderModule.h
+        engine/renderer/core/VulkanRasterizationPipeline.cpp
+        engine/renderer/core/VulkanRasterizationPipeline.h
+        engine/renderer/core/VulkanRayTracingPipeline.cpp
+        engine/renderer/core/VulkanRayTracingPipeline.h
+        engine/renderer/core/VulkanComputePipeline.cpp
+        engine/renderer/core/VulkanComputePipeline.h
+        engine/renderer/helpers/VertexBindingDescriptorGenerator.h
+        engine/common/generators/VertexMacros.h
+        engine/generated/VertexInputAttributeDescriptions.h
+        engine/renderer/core/VulkanRenderPass.cpp
+        engine/renderer/core/VulkanRenderPass.h
+        engine/renderer/core/VulkanPipelineLayout.cpp
+        engine/renderer/core/VulkanPipelineLayout.h
+        engine/renderer/helpers/VulkanSubpass.h
+        engine/renderer/helpers/RasterizationPipelineBuilder.cpp
+        engine/renderer/helpers/RasterizationPipelineBuilder.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
@@ -206,6 +222,11 @@ add_custom_command(
 add_custom_command(
         OUTPUT ./engine/generated/ObjectSerializers.h
         COMMAND node ./scripts/js/generate_serializers.js ./engine/generated/ ObjectSerializers ./engine/
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_command(
+        OUTPUT ./engine/generated/VertexInputAttributeDescriptions.h
+        COMMAND node ./scripts/js/generate_vertex_attribute_descriptors.js ./engine/generated/ VertexInputAttributeDescriptions ./engine/
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")

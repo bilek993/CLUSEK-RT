@@ -1,21 +1,15 @@
-const { getFiles } = require('./user_modules/files_helper');
+const { generateGuardName, itereateThroughCompatibleFiles } = require('./user_modules/generators_helper');
 const { readFileSync, writeFileSync } = require('fs');
 const mustache = require('mustache');
 const path = require('path');
 
 const TEMPLATE_HEADER_PATH = '/templates/ConfigGeneratorTemplate.h';
-const SKIP_FILE_DECORATOR = 'GENERATOR_SKIP_THIS_FILE';
 const SERIALIZER_FILE_DECORATOR = 'SERIALIZE_OBJECT';
-const GUARD_PREFIX = 'CLUSEK_RT_';
-
-function checkIfIsSerializable(data) {
-  return data.includes(SERIALIZER_FILE_DECORATOR) && !data.includes(SKIP_FILE_DECORATOR);
-}
 
 function generateOutputFileData(namespace, serializableObjectsData) {
   const view = {
     namespace: namespace,
-    guardName: GUARD_PREFIX + namespace.toUpperCase() + '_H',
+    guardName: generateGuardName(namespace),
     serializableObjects: serializableObjectsData,
   };
 
@@ -51,7 +45,6 @@ function generateObjectData(readData, pathToSerializer, pathToSerializedObject) 
     includeObjectPath: includeObjectPath,
     serializableFields: serializableFields,
   };
-
 }
 
 (async () => {
@@ -63,18 +56,10 @@ function generateObjectData(readData, pathToSerializer, pathToSerializedObject) 
 
   let serializableObjectsData = [];
 
-  for await (const filePath of getFiles(searchPath)) {
-    if (filePath.toLowerCase().endsWith('.h')) {
-      const readFileData = readFileSync(filePath);
-
-      if (checkIfIsSerializable(readFileData)) {
-        console.log("Found compatible object at '" + filePath + "'...");
-
-        const objectData = generateObjectData(readFileData, serializerPath, filePath);
-        serializableObjectsData.push(objectData);
-      }
-    }
-  }
+  await itereateThroughCompatibleFiles(searchPath, SERIALIZER_FILE_DECORATOR, (filePath, readFileData) => {
+    const objectData = generateObjectData(readFileData, serializerPath, filePath);
+    serializableObjectsData.push(objectData);
+  });
 
   generateOutputFile(serializerNamespace, serializerPath, serializableObjectsData);
 
