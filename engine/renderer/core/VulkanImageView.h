@@ -23,7 +23,11 @@ public:
                     uint32_t levelCount,
                     uint32_t baseArrayLayer,
                     uint32_t layerCount);
-    virtual ~VulkanImageView();
+    ~VulkanImageView();
+    VulkanImageView(const VulkanImageView& other) = delete;
+    VulkanImageView(VulkanImageView&& other) noexcept = delete;
+    VulkanImageView& operator=(const VulkanImageView& other) = delete;
+    VulkanImageView& operator=(VulkanImageView&& other) noexcept = delete;
 
     [[nodiscard]] VkImageAspectFlags GetAspectMask() const;
     [[nodiscard]] uint32_t GetBaseMipLevel() const;
