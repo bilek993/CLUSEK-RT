@@ -17,7 +17,7 @@ VulkanFrameBuffer::VulkanFrameBuffer(std::shared_ptr<VulkanLogicalDevice> logica
 
     std::vector<VkImageView> vulkanAttachments{};
     std::transform(attachments.begin(), attachments.end(),
-                   std::back_inserter(vulkanAttachments), [](VulkanImageView& attachment)
+                   std::back_inserter(vulkanAttachments), [](const VulkanImageView& attachment)
                    { return attachment.GetRaw(); });
 
     VkFramebufferCreateInfo framebufferCreateInfo{};
