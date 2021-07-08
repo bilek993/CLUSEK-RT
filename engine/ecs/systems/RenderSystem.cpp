@@ -221,6 +221,20 @@ void RenderSystem::OnStart()
             .SetSubpassIndex(0)
             .Build();
 
+    // Framebuffer testing code
+
+    for (auto i = 0; i < SwapChain->GetImageViewCount(); i++)
+    {
+        const std::vector<VulkanImageView*> frameBufferImageView{ SwapChain->GetImageView(i).get() };
+        const auto temporaryFrameBuffer = std::make_shared<VulkanFrameBuffer>(LogicalDevice,
+                                                                              testRenderPass,
+                                                                              frameBufferImageView,
+                                                                              SwapChain->GetUsedExtent().width,
+                                                                              SwapChain->GetUsedExtent().height,
+                                                                              1);
+        FrameBuffers.emplace_back(temporaryFrameBuffer);
+    }
+
     // Cleaning up
 
     exampleVertexBuffer.CleanUpAfterUploading();
