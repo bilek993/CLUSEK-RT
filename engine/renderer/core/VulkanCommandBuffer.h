@@ -34,6 +34,9 @@ public:
 
     [[nodiscard]] bool IsRecording() const;
 
+    void BeginRenderPass(const VkRenderPassBeginInfo& renderPassBeginInfo);
+    void EndRenderPass();
+
     void CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize);
 
     void AddBarrier(VkPipelineStageFlags srcStageMask,
@@ -51,6 +54,8 @@ private:
 
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice;
     std::shared_ptr<VulkanCommandPool> CommandPool;
+
+    VkCommandBufferLevel CommandBufferLevel;
 
     bool RecordingInProgress = false;
 };

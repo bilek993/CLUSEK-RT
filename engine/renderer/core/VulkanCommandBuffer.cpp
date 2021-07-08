@@ -12,11 +12,12 @@ VulkanCommandBuffer::VulkanCommandBuffer(std::shared_ptr<VulkanLogicalDevice> lo
 {
     LogicalDevice = std::move(logicalDevice);
     CommandPool = std::move(commandPool);
+    CommandBufferLevel = level;
 
     VkCommandBufferAllocateInfo commandBufferAllocateInfo{};
     commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     commandBufferAllocateInfo.commandPool = CommandPool->GetRaw();
-    commandBufferAllocateInfo.level = level;
+    commandBufferAllocateInfo.level = CommandBufferLevel;
     commandBufferAllocateInfo.commandBufferCount = 1;
 
     const auto result = vkAllocateCommandBuffers(LogicalDevice->GetRaw(),
@@ -81,6 +82,32 @@ void VulkanCommandBuffer::EndRecording()
 bool VulkanCommandBuffer::IsRecording() const
 {
     return RecordingInProgress;
+}
+
+void VulkanCommandBuffer::BeginRenderPass(const VkRenderPassBeginInfo& renderPassBeginInfo)
+{
+    VkSubpassContents contents{};
+    switch (CommandBufferLevel)
+    {
+    case VK_COMMAND_BUFFER_LEVEL_PRIMARY:
+        contents = VK_SUBPASS_CONTENTS_INLINE;
+        break;
+    case VK_COMMAND_BUFFER_LEVEL_SECONDARY:
+        contents = VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS;
+        break;
+    case VK_COMMAND_BUFFER_LEVEL_MAX_ENUM:
+        contents = VK_SUBPASS_CONTENTS_MAX_ENUM;
+        break;
+    default:
+        throw std::invalid_argument("Problem detecting correct subpass content.");
+    }
+
+    vkCmdBeginRenderPass(InternalCommandBuffer, &renderPassBeginInfo, contents);
+}
+
+void VulkanCommandBuffer::EndRenderPass()
+{
+    vkCmdEndRenderPass(InternalCommandBuffer);
 }
 
 void VulkanCommandBuffer::CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize)
