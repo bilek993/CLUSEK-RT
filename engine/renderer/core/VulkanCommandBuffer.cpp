@@ -110,6 +110,15 @@ void VulkanCommandBuffer::EndRenderPass()
     vkCmdEndRenderPass(InternalCommandBuffer);
 }
 
+void VulkanCommandBuffer::Draw(uint32_t indexCount,
+                               uint32_t instanceCount,
+                               uint32_t firstIndex,
+                               int32_t vertexOffset,
+                               uint32_t firstInstance)
+{
+    vkCmdDrawIndexed(InternalCommandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+}
+
 void VulkanCommandBuffer::CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize)
 {
     VkBufferCopy copyRegion{};

@@ -40,6 +40,12 @@ public:
     template<class P>
     void BindPipeline(const P& pipeline, VkPipelineBindPoint bindPoint);
 
+    void Draw(uint32_t indexCount,
+              uint32_t instanceCount,
+              uint32_t firstIndex = 0,
+              int32_t vertexOffset = 0,
+              uint32_t firstInstance = 0);
+
     void CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize);
 
     void AddBarrier(VkPipelineStageFlags srcStageMask,
