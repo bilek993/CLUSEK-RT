@@ -5,6 +5,7 @@
 #include "VulkanRenderPass.h"
 
 #include "../../common/debug/Logger.h"
+#include "VulkanFrameBuffer.h"
 
 VulkanRenderPass::VulkanRenderPass(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
                                    const std::vector<VkAttachmentDescription>& attachmentDescriptions,
@@ -80,15 +81,15 @@ VkRenderPass VulkanRenderPass::GetRaw() const
 
 VkRenderPassBeginInfo VulkanRenderPass::GenerateRenderPassBeginInfo(const VulkanFrameBuffer& frameBuffer,
                                                                     const VkRect2D& renderArea,
-                                                                    const std::vector<VkClearValue>& clearValues) const
+                                                                    const std::vector<VkClearValue>* clearValues) const
 {
     VkRenderPassBeginInfo renderPassBeginInfo{};
     renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     renderPassBeginInfo.renderPass = InternalRenderPass;
     renderPassBeginInfo.framebuffer = frameBuffer.GetRaw();
     renderPassBeginInfo.renderArea = renderArea;
-    renderPassBeginInfo.clearValueCount = clearValues.size();
-    renderPassBeginInfo.pClearValues = clearValues.data();
+    renderPassBeginInfo.clearValueCount = clearValues->size();
+    renderPassBeginInfo.pClearValues = clearValues->data();
 
-    return VkRenderPassBeginInfo();
+    return renderPassBeginInfo;
 }
