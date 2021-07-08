@@ -77,3 +77,18 @@ VkRenderPass VulkanRenderPass::GetRaw() const
 {
     return InternalRenderPass;
 }
+
+VkRenderPassBeginInfo VulkanRenderPass::GenerateRenderPassBeginInfo(const VulkanFrameBuffer& frameBuffer,
+                                                                    const VkRect2D& renderArea,
+                                                                    const std::vector<VkClearValue>& clearValues) const
+{
+    VkRenderPassBeginInfo renderPassBeginInfo{};
+    renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+    renderPassBeginInfo.renderPass = InternalRenderPass;
+    renderPassBeginInfo.framebuffer = frameBuffer.GetRaw();
+    renderPassBeginInfo.renderArea = renderArea;
+    renderPassBeginInfo.clearValueCount = clearValues.size();
+    renderPassBeginInfo.pClearValues = clearValues.data();
+
+    return VkRenderPassBeginInfo();
+}

@@ -11,6 +11,7 @@
 
 #include "../helpers/VulkanSubpass.h"
 #include "VulkanLogicalDevice.h"
+#include "VulkanFrameBuffer.h"
 
 class VulkanRenderPass final
 {
@@ -26,7 +27,12 @@ public:
     VulkanRenderPass& operator=(const VulkanRenderPass& other) = delete;
     VulkanRenderPass& operator=(VulkanRenderPass&& other) noexcept = delete;
 
-    [[nodiscard]] VkRenderPass GetRaw() const;
+    [[nodiscard]] VkRenderPassBeginInfo GenerateRenderPassBeginInfo(const VulkanFrameBuffer& frameBuffer,
+                                                                    const VkRect2D& renderArea,
+                                                                    const std::vector<VkClearValue>& clearValues) const;
+
+    [[nodiscard]] VkRenderPass
+    GetRaw() const;
 
 private:
     VkRenderPass InternalRenderPass = VK_NULL_HANDLE;
