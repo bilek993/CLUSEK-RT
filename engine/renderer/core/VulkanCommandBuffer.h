@@ -37,6 +37,9 @@ public:
     void BeginRenderPass(const VkRenderPassBeginInfo& renderPassBeginInfo);
     void EndRenderPass();
 
+    template<class P>
+    void BindPipeline(const P& pipeline, VkPipelineBindPoint bindPoint);
+
     void CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize);
 
     void AddBarrier(VkPipelineStageFlags srcStageMask,
@@ -60,5 +63,10 @@ private:
     bool RecordingInProgress = false;
 };
 
+template<class P>
+void VulkanCommandBuffer::BindPipeline(const P& pipeline, VkPipelineBindPoint bindPoint)
+{
+    vkCmdBindPipeline(InternalCommandBuffer, bindPoint, pipeline.GetRaw());
+}
 
 #endif //CLUSEK_RT_VULKANCOMMANDBUFFER_H
