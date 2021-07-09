@@ -53,6 +53,9 @@ public:
     void BindIndexBuffer(const VulkanIndexBuffer& indexBuffer,
                          VkDeviceSize offset = 0);
 
+    void SetDynamicViewportsAndScissors(const std::vector<VkViewport>& viewports,
+                                        const std::vector<VkRect2D>& scissors);
+
     void Draw(uint32_t indexCount,
               uint32_t instanceCount = 1,
               uint32_t firstIndex = 0,

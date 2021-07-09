@@ -117,6 +117,17 @@ void VulkanCommandBuffer::BindIndexBuffer(const VulkanIndexBuffer& indexBuffer,
     vkCmdBindIndexBuffer(InternalCommandBuffer, indexBuffer.GetRaw(), offset, indexBuffer.GetIndexType());
 }
 
+void
+VulkanCommandBuffer::SetDynamicViewportsAndScissors(const std::vector<VkViewport>& viewports,
+                                                    const std::vector<VkRect2D>& scissors)
+{
+    if (viewports.size() != scissors.size())
+        throw std::invalid_argument("Number of scissors and viewports is not equal!");
+
+    vkCmdSetViewport(InternalCommandBuffer, 0, viewports.size(), viewports.data());
+    vkCmdSetScissor(InternalCommandBuffer, 0, scissors.size(), scissors.data());
+}
+
 void VulkanCommandBuffer::Draw(uint32_t indexCount,
                                uint32_t instanceCount,
                                uint32_t firstIndex,
