@@ -14,9 +14,14 @@ VulkanIndexBuffer::VulkanIndexBuffer(std::shared_ptr<VulkanMemory> memory)
     Memory = std::move(memory);
 }
 
-void VulkanIndexBuffer::UploadData(VulkanCommandBuffer& commandBuffer, uint32_t* indexData, uint32_t indexCount)
+void VulkanIndexBuffer::UploadData(VulkanCommandBuffer& commandBuffer,
+                                   uint32_t* indexData,
+                                   uint32_t indexCount,
+                                   const VkIndexType indexUnitType)
 {
     LOG_DEBUG("Preparing data to be uploaded in index buffer...");
+
+    IndexUnitType = indexUnitType;
 
     const auto bufferSize = indexCount * sizeof(uint32_t);
 
@@ -43,6 +48,11 @@ void VulkanIndexBuffer::CleanUpAfterUploading()
 {
     LOG_DEBUG("Cleaning index buffer data after uploading...");
     StagingBuffer = nullptr;
+}
+
+VkIndexType VulkanIndexBuffer::GetIndexType() const
+{
+    return IndexUnitType;
 }
 
 VkBuffer VulkanIndexBuffer::GetRaw() const

@@ -21,8 +21,13 @@ public:
     VulkanIndexBuffer& operator=(const VulkanIndexBuffer& other) = delete;
     VulkanIndexBuffer& operator=(VulkanIndexBuffer&& other) noexcept = delete;
 
-    void UploadData(VulkanCommandBuffer& commandBuffer, uint32_t* indexData, uint32_t indexCount);
+    void UploadData(VulkanCommandBuffer& commandBuffer,
+                    uint32_t* indexData,
+                    uint32_t indexCount,
+                    VkIndexType indexUnitType);
     void CleanUpAfterUploading();
+
+    [[nodiscard]] VkIndexType GetIndexType() const;
 
     [[nodiscard]] VkBuffer GetRaw() const;
     [[nodiscard]] std::shared_ptr<VulkanBuffer> Get() const;
@@ -32,6 +37,8 @@ private:
 
     std::unique_ptr<VulkanBuffer> StagingBuffer;
     std::shared_ptr<VulkanBuffer> InternalIndexBuffer;
+
+    VkIndexType IndexUnitType;
 };
 
 #endif //CLUSEK_RT_VULKANINDEXBUFFER_H

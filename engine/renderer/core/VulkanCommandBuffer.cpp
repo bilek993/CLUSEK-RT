@@ -4,6 +4,7 @@
 
 #include "VulkanCommandBuffer.h"
 
+#include "VulkanIndexBuffer.h"
 #include "../../common/debug/Logger.h"
 
 VulkanCommandBuffer::VulkanCommandBuffer(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
@@ -108,6 +109,12 @@ void VulkanCommandBuffer::BeginRenderPass(const VkRenderPassBeginInfo& renderPas
 void VulkanCommandBuffer::EndRenderPass()
 {
     vkCmdEndRenderPass(InternalCommandBuffer);
+}
+
+void VulkanCommandBuffer::BindIndexBuffer(const VulkanIndexBuffer& indexBuffer,
+                                          VkDeviceSize offset)
+{
+    vkCmdBindIndexBuffer(InternalCommandBuffer, indexBuffer.GetRaw(), offset, indexBuffer.GetIndexType());
 }
 
 void VulkanCommandBuffer::Draw(uint32_t indexCount,
