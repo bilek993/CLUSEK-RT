@@ -18,6 +18,8 @@
 #include "../../renderer/core/VulkanSurface.h"
 #include "../../renderer/core/VulkanSwapChain.h"
 #include "../../renderer/core/VulkanFrameBuffer.h"
+#include "../../renderer/core/VulkanCommandBuffer.h"
+#include "../../renderer/core/VulkanCommandPool.h"
 #include "../../renderer/allocator//VulkanMemory.h"
 
 class RenderSystem final : public BaseSystem
@@ -37,11 +39,14 @@ private:
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice = nullptr;
     std::shared_ptr<VulkanSwapChain> SwapChain = nullptr;
     std::shared_ptr<VulkanMemory> MemoryAllocator = nullptr;
-    std::vector<std::shared_ptr<VulkanFrameBuffer>> FrameBuffers{};
+    std::vector<std::shared_ptr<VulkanFrameBuffer>> ScreenFrameBuffers{}; // TODO: Remove this! For testing purposes only
 
     VulkanQueue PresentationQueue;
     VulkanQueue GraphicsMainQueue;
     VulkanQueue TransferMainQueue;
+
+    std::shared_ptr<VulkanCommandPool> TriangleCommandPool{}; // TODO: Remove this! For testing purposes only
+    std::vector<std::shared_ptr<VulkanCommandBuffer>> TriangleCommandBuffers{}; // TODO: Remove this! For testing purposes only
 
     std::vector<const char*> LogicalDeviceRequiredExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME

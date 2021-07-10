@@ -13,8 +13,6 @@
 #include "../../renderer/helpers/RasterizationPipelineBuilder.h"
 #include "../../renderer/core/VulkanVertexBuffer.h"
 #include "../../renderer/core/VulkanIndexBuffer.h"
-#include "../../renderer/core/VulkanCommandBuffer.h"
-#include "../../renderer/core/VulkanCommandPool.h"
 #include "../../renderer/core/VulkanShaderModule.h"
 #include "../../renderer/core/VulkanRenderPass.h"
 #include "../../renderer/core/VulkanRasterizationPipeline.h"
@@ -142,7 +140,7 @@ void RenderSystem::OnStart()
     std::vector<uint32_t> indices{ 0, 1, 2 };
 
     VulkanIndexBuffer exampleIndexBuffer{ MemoryAllocator };
-    exampleIndexBuffer.UploadData(vulkanCommandBufferForTests, indices.data(), indices.size());
+    exampleIndexBuffer.UploadData(vulkanCommandBufferForTests, indices.data(), indices.size(), VK_INDEX_TYPE_UINT16);
 
     // Transfer ownership from transfer queue to graphics queue
 
@@ -232,7 +230,61 @@ void RenderSystem::OnStart()
                                                                               SwapChain->GetUsedExtent().width,
                                                                               SwapChain->GetUsedExtent().height,
                                                                               1);
-        FrameBuffers.emplace_back(temporaryFrameBuffer);
+        ScreenFrameBuffers.emplace_back(temporaryFrameBuffer);
+    }
+
+    // Triangle command pool code
+
+    TriangleCommandPool = std::make_shared<VulkanCommandPool>(LogicalDevice,
+                                                              GraphicsMainQueue,
+                                                              false,
+                                                              true);
+
+    // Triangle command buffer code
+
+    for (auto i = 0; i < SwapChain->GetImageViewCount(); i++)
+    {
+        const auto temporaryCommandBuffer = std::make_shared<VulkanCommandBuffer>(LogicalDevice,
+                                                                                  TriangleCommandPool,
+                                                                                  VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+
+        temporaryCommandBuffer->BeginRecording(false, false, false);
+
+        const auto clearValues = std::vector<VkClearValue>{{ 0.0f, 0.0f, 0.0f, 1.0f },
+                                                           { 1.0f, 0 }};
+        const auto renderPassBeginInfo = testRenderPass.GenerateRenderPassBeginInfo(*ScreenFrameBuffers[i],
+                                                                                    {{ 0, 0 },
+                                                                                     SwapChain->GetUsedExtent() },
+                                                                                    &clearValues);
+        temporaryCommandBuffer->BeginRenderPass(renderPassBeginInfo);
+
+        temporaryCommandBuffer->BindPipeline(testPipeline, VK_PIPELINE_BIND_POINT_GRAPHICS);
+
+        const std::vector<VulkanVertexBuffer<FatVertex>*> verticesForDrawing = { &exampleVertexBuffer };
+        const std::vector<VkDeviceSize> offsets = { 0 };
+
+        VkViewport testViewport{};
+        testViewport.x = 0.0F;
+        testViewport.y = static_cast<float>(SwapChain->GetUsedExtent().height);
+        testViewport.width = static_cast<float>(SwapChain->GetUsedExtent().width);
+        testViewport.height = -static_cast<float>(SwapChain->GetUsedExtent().height);
+        testViewport.minDepth = 0.0F;
+        testViewport.maxDepth = 1.0F;
+
+        VkRect2D testScissor{};
+        testScissor.offset = { 0, 0 };
+        testScissor.extent = SwapChain->GetUsedExtent();
+
+        temporaryCommandBuffer->BindIndexBuffer(exampleIndexBuffer);
+        temporaryCommandBuffer->BindVertexBuffer<FatVertex>(verticesForDrawing, offsets);
+        temporaryCommandBuffer->SetDynamicViewportsAndScissors({ testViewport }, { testScissor });
+        temporaryCommandBuffer->Draw(indices.size());
+
+        temporaryCommandBuffer->EndRenderPass();
+
+        temporaryCommandBuffer->EndRecording();
+
+        TriangleCommandBuffers.emplace_back(temporaryCommandBuffer);
     }
 
     // Cleaning up
