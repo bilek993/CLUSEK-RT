@@ -4,6 +4,8 @@
 
 #include "VulkanLogicalDevice.h"
 
+#include <algorithm>
+
 #include "../helpers/DebugExtender.h"
 
 VulkanLogicalDevice::VulkanLogicalDevice(bool enableValidationLayers,
@@ -73,6 +75,20 @@ void VulkanLogicalDevice::WaitIdle()
     const auto result = vkDeviceWaitIdle(InternalLogicalDevice);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Waiting for logical device failed!");
+}
+
+void VulkanLogicalDevice::WaitFences(const std::vector<VulkanFence*>& fences, bool waitForAll, uint64_t timeout)
+{
+    std::vector<VkFence> vulkanFences{};
+    std::transform(fences.begin(), fences.end(),
+                   std::back_inserter(vulkanFences), [](const VulkanFence* fence)
+                   { return fence->GetRaw(); });
+
+    vkWaitForFences(InternalLogicalDevice,
+                    vulkanFences.size(),
+                    vulkanFences.data(),
+                    waitForAll,
+                    timeout);
 }
 
 VkDevice VulkanLogicalDevice::GetRaw() const
