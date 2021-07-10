@@ -212,3 +212,19 @@ VkExtent2D VulkanSwapChain::GenerateExtent(const VkSurfaceCapabilitiesKHR& capab
 
     return { width, height };
 }
+
+VkResult VulkanSwapChain::AcquireNextImage(const VulkanSemaphore& semaphore,
+                                           const VulkanFence& fence,
+                                           uint32_t* outputImageIndex,
+                                           const uint64_t timeout)
+{
+    if (outputImageIndex == nullptr)
+        throw std::invalid_argument("`outputImageIndex` parameter cannot be nullptr!");
+
+    return vkAcquireNextImageKHR(LogicalDevice->GetRaw(),
+                                 InternalSwapchain,
+                                 timeout,
+                                 semaphore.GetRaw(),
+                                 fence.GetRaw(),
+                                 outputImageIndex);
+}
