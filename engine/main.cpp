@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
             engine.Update();
 
         LOG_DEBUG("Finishing CLUSEK-RT engine...");
+        engine.Finalize();
     }
     catch (const std::exception& e)
     {

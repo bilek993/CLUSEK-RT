@@ -24,8 +24,11 @@ public:
     Engine& operator=(Engine&& other) noexcept = delete;
 
     void Initialize(std::shared_ptr<ConfigData> configData);
+
     [[nodiscard]] bool ShouldUpdate() const;
     void Update();
+
+    void Finalize();
 
 private:
     void CreateSystems();

@@ -298,3 +298,8 @@ void RenderSystem::OnUpdate(float deltaTime)
 
 }
 
+void RenderSystem::OnFinish()
+{
+    LogicalDevice->WaitIdle();
+}
+

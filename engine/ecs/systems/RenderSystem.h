@@ -30,6 +30,7 @@ public:
 protected:
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
+    void OnFinish() override;
 
 private:
     std::shared_ptr<VulkanInstance> Instance = nullptr;
