@@ -20,6 +20,8 @@ public:
     VulkanFence& operator=(const VulkanFence& other) = delete;
     VulkanFence& operator=(VulkanFence&& other) noexcept = delete;
 
+    void Reset();
+
     [[nodiscard]] VkFence GetRaw() const;
 
 private:

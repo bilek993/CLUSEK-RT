@@ -21,6 +21,13 @@ VulkanFence::~VulkanFence()
         vkDestroyFence(LogicalDevice->GetRaw(), InternalFence, nullptr);
 }
 
+void VulkanFence::Reset()
+{
+    const auto result = vkResetFences(LogicalDevice->GetRaw(), 1, &InternalFence);
+    if (result != VK_SUCCESS)
+        throw std::runtime_error("Resetting fence failed!");
+}
+
 VkFence VulkanFence::GetRaw() const
 {
     return InternalFence;
