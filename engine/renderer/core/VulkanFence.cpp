@@ -21,6 +21,18 @@ VulkanFence::~VulkanFence()
         vkDestroyFence(LogicalDevice->GetRaw(), InternalFence, nullptr);
 }
 
+bool VulkanFence::Wait(uint64_t timeout)
+{
+    const auto result = vkWaitForFences(LogicalDevice->GetRaw(), 1, &InternalFence, VK_TRUE, timeout);
+
+    if (result == VK_TIMEOUT)
+        return false;
+    else if (result != VK_SUCCESS)
+        throw std::runtime_error("Resetting fence failed!");
+
+    return true;
+}
+
 void VulkanFence::Reset()
 {
     const auto result = vkResetFences(LogicalDevice->GetRaw(), 1, &InternalFence);
