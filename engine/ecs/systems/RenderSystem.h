@@ -53,6 +53,9 @@ private:
             VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
     uint32_t VulkanApiVersion = VK_API_VERSION_1_2;
+
+    void Recreate();
+    void Draw(float deltaTime);
 };
 
 

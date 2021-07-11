@@ -293,7 +293,7 @@ void RenderSystem::OnStart()
     exampleIndexBuffer.CleanUpAfterUploading();
 }
 
-void RenderSystem::OnUpdate(float deltaTime)
+void RenderSystem::OnUpdate(const float deltaTime)
 {
 
 }
@@ -303,3 +303,12 @@ void RenderSystem::OnFinish()
     LogicalDevice->WaitIdle();
 }
 
+void RenderSystem::Recreate()
+{
+
+}
+
+void RenderSystem::Draw(const float deltaTime)
+{
+
+}
