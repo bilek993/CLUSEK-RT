@@ -20,7 +20,7 @@ public:
     VulkanFence& operator=(const VulkanFence& other) = delete;
     VulkanFence& operator=(VulkanFence&& other) noexcept = delete;
 
-    bool Wait(uint64_t timeout);
+    bool Wait(uint64_t timeout = UINT64_MAX);
     void Reset();
 
     [[nodiscard]] VkFence GetRaw() const;
