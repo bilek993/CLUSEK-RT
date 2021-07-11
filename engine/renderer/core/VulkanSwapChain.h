@@ -43,6 +43,11 @@ public:
     [[nodiscard]] VkExtent2D GetUsedExtent() const;
     [[nodiscard]] VkSurfaceFormatKHR GetUsedFormat() const;
 
+    VkResult AcquireNextImageIndex(const VulkanSemaphore* semaphore,
+                                   const VulkanFence* fence,
+                                   uint32_t* outputImageIndex,
+                                   uint64_t timeout = UINT64_MAX);
+
     [[nodiscard]] VkSwapchainKHR GetRaw() const;
 
 private:
@@ -57,11 +62,6 @@ private:
                                                    const std::vector<VkPresentModeKHR>& requestedPresentationModes);
     static VkExtent2D GenerateExtent(const VkSurfaceCapabilitiesKHR& capabilities,
                                      Window& window);
-
-    VkResult AcquireNextImage(const VulkanSemaphore& semaphore,
-                              const VulkanFence& fence,
-                              uint32_t* outputImageIndex,
-                              uint64_t timeout = UINT64_MAX);
 
     VkSwapchainKHR InternalSwapchain = VK_NULL_HANDLE;
     VkExtent2D Extent;
