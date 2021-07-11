@@ -8,7 +8,7 @@
 #include <memory>
 #include <vulkan/vulkan.h>
 
-#include "VulkanLogicalDevice.h"
+class VulkanLogicalDevice;
 
 class VulkanFence final
 {

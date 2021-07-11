@@ -4,6 +4,8 @@
 
 #include "VulkanFence.h"
 
+#include "VulkanLogicalDevice.h"
+
 VulkanFence::VulkanFence(std::shared_ptr<VulkanLogicalDevice> logicalDevice, const bool createInSignaledState)
 {
     LogicalDevice = std::move(logicalDevice);
