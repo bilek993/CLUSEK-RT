@@ -382,7 +382,7 @@ RasterizationPipelineBuilder& RasterizationPipelineBuilder::SetSubpassIndex(cons
     return *this;
 }
 
-VulkanRasterizationPipeline RasterizationPipelineBuilder::Build() const
+std::shared_ptr<VulkanRasterizationPipeline> RasterizationPipelineBuilder::Build() const
 {
     if (LogicalDevice == nullptr)
         LOG_ERROR("Logical device must be passed to the builder!");
@@ -410,20 +410,20 @@ VulkanRasterizationPipeline RasterizationPipelineBuilder::Build() const
     colorBlendStateTmp.attachmentCount = BlendAttachmentStates.size();
     colorBlendStateTmp.pAttachments = BlendAttachmentStates.data();
 
-    return VulkanRasterizationPipeline(LogicalDevice,
-                                       VkPipelineCache{},
-                                       ShaderStages,
-                                       vertexInputStateCreateInfo,
-                                       InputAssemblyState,
-                                       viewportState,
-                                       TesselationEnabled,
-                                       TessellationState,
-                                       RasterizationState,
-                                       MultisampleState,
-                                       DepthStencilState,
-                                       colorBlendStateTmp,
-                                       dynamicState,
-                                       PipelineLayout,
-                                       RenderPass,
-                                       SubpassIndex);
+    return std::make_shared<VulkanRasterizationPipeline>(LogicalDevice,
+                                                         VkPipelineCache{},
+                                                         ShaderStages,
+                                                         vertexInputStateCreateInfo,
+                                                         InputAssemblyState,
+                                                         viewportState,
+                                                         TesselationEnabled,
+                                                         TessellationState,
+                                                         RasterizationState,
+                                                         MultisampleState,
+                                                         DepthStencilState,
+                                                         colorBlendStateTmp,
+                                                         dynamicState,
+                                                         PipelineLayout,
+                                                         RenderPass,
+                                                         SubpassIndex);
 }
