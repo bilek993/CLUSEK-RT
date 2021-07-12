@@ -25,6 +25,7 @@ Window::Window(const int width, const int height, const bool resizable, const bo
     WindowWidth = width;
     WindowHeight = height;
     CanBeClosed = canBeClosed;
+    Resized = false;
 
     glfwSetWindowUserPointer(InternalWindow, this);
     glfwSetFramebufferSizeCallback(InternalWindow, GlfwCallbackResizeFunction);
