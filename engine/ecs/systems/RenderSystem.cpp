@@ -138,7 +138,7 @@ void RenderSystem::OnStart()
     exampleVertices.emplace_back(FatVertex{{ 0.0f, 0.5f, 0.0f }});
 
     TriangleVertexBuffer = std::make_shared<VulkanVertexBuffer<FatVertex>>(MemoryAllocator);
-    TriangleVertexBuffer->UploadData(vulkanCommandBufferForTests, exampleVertices.data(), exampleVertices.size());
+    TriangleVertexBuffer->UploadData(vulkanCommandBufferForTests, exampleVertices);
 
     // Index Buffer testing code
 
