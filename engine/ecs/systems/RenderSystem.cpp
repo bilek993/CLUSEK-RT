@@ -133,9 +133,9 @@ void RenderSystem::OnStart()
     // Vertex Buffer testing code
 
     auto exampleVertices = std::vector<FatVertex>();
-    exampleVertices.emplace_back(FatVertex{{ 0, 1, 2 }});
-    exampleVertices.emplace_back(FatVertex{{ 2, 1, 0 }});
-    exampleVertices.emplace_back(FatVertex{{ 0, 2, 1 }});
+    exampleVertices.emplace_back(FatVertex{{ -0.5f, -0.5f, 0.0f }});
+    exampleVertices.emplace_back(FatVertex{{ 0.5f, -0.5f, 0.0f }});
+    exampleVertices.emplace_back(FatVertex{{ 0.0f, 0.5f, 0.0f }});
 
     TriangleVertexBuffer = std::make_shared<VulkanVertexBuffer<FatVertex>>(MemoryAllocator);
     TriangleVertexBuffer->UploadData(vulkanCommandBufferForTests, exampleVertices.data(), exampleVertices.size());
