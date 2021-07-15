@@ -142,10 +142,10 @@ void RenderSystem::OnStart()
 
     // Index Buffer testing code
 
-    std::vector<uint32_t> indices{ 0, 1, 2 };
+    std::vector<uint16_t> indices{ 0, 1, 2 };
 
     TriangleIndexBuffer = std::make_shared<VulkanIndexBuffer>(MemoryAllocator);
-    TriangleIndexBuffer->UploadData(vulkanCommandBufferForTests, indices.data(), indices.size(), VK_INDEX_TYPE_UINT16);
+    TriangleIndexBuffer->UploadData(vulkanCommandBufferForTests, indices, VK_INDEX_TYPE_UINT16);
 
     // Transfer ownership from transfer queue to graphics queue
 
