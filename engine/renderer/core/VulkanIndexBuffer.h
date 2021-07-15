@@ -26,7 +26,7 @@ public:
 
     template<class T>
     void UploadData(VulkanCommandBuffer& commandBuffer,
-                    std::vector<T> data,
+                    const std::vector<T>& data,
                     VkIndexType indexUnitType);
     void CleanUpAfterUploading();
 
@@ -45,7 +45,8 @@ private:
 };
 
 template<class T>
-void VulkanIndexBuffer::UploadData(VulkanCommandBuffer& commandBuffer, std::vector<T> data, VkIndexType indexUnitType)
+void
+VulkanIndexBuffer::UploadData(VulkanCommandBuffer& commandBuffer, const std::vector<T>& data, VkIndexType indexUnitType)
 {
     LOG_DEBUG("Preparing data to be uploaded in index buffer...");
 

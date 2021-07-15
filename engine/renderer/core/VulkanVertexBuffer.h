@@ -33,7 +33,7 @@ public:
     VulkanVertexBuffer& operator=(const VulkanVertexBuffer& other) = delete;
     VulkanVertexBuffer& operator=(VulkanVertexBuffer&& other) noexcept = delete;
 
-    void UploadData(VulkanCommandBuffer& commandBuffer, std::vector<T> data);
+    void UploadData(VulkanCommandBuffer& commandBuffer, const std::vector<T>& data);
     void CleanUpAfterUploading();
 
     [[nodiscard]] VkBuffer GetRaw() const;
@@ -64,7 +64,7 @@ VulkanVertexBuffer<T>::VulkanVertexBuffer(std::shared_ptr<VulkanMemory> memory)
 }
 
 template<class T>
-void VulkanVertexBuffer<T>::UploadData(VulkanCommandBuffer& commandBuffer, std::vector<T> data)
+void VulkanVertexBuffer<T>::UploadData(VulkanCommandBuffer& commandBuffer, const std::vector<T>& data)
 {
     LOG_DEBUG("Preparing data to be uploaded in vertex buffer...");
 
