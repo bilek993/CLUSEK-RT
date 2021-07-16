@@ -15,6 +15,8 @@ class VulkanSemaphore;
 
 class VulkanFence;
 
+class VulkanSwapChain;
+
 class VulkanQueue final
 {
 public:
@@ -32,6 +34,10 @@ public:
                 const std::vector<VulkanSemaphore*>& signalSemaphores,
                 const VulkanFence* signalFence,
                 const VkPipelineStageFlags* waitDestinationStageMask);
+
+    VkResult Present(const std::vector<VulkanSemaphore*>& waitSemaphores,
+                     const std::vector<VulkanSwapChain*>& swapchains,
+                     const uint32_t* imageIndex);
 
     [[nodiscard]] VkQueue GetRaw() const;
     VkQueue* GetPointerToRaw();

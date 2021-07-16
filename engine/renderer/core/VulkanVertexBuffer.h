@@ -6,6 +6,7 @@
 #define CLUSEK_RT_VULKANVERTEXBUFFER_H
 
 #include <memory>
+#include <vector>
 #include <cstring>
 #include <vulkan/vulkan.h>
 
@@ -32,7 +33,7 @@ public:
     VulkanVertexBuffer& operator=(const VulkanVertexBuffer& other) = delete;
     VulkanVertexBuffer& operator=(VulkanVertexBuffer&& other) noexcept = delete;
 
-    void UploadData(VulkanCommandBuffer& commandBuffer, T* vertexData, uint32_t vertexCount);
+    void UploadData(VulkanCommandBuffer& commandBuffer, const std::vector<T>& data);
     void CleanUpAfterUploading();
 
     [[nodiscard]] VkBuffer GetRaw() const;
@@ -63,20 +64,20 @@ VulkanVertexBuffer<T>::VulkanVertexBuffer(std::shared_ptr<VulkanMemory> memory)
 }
 
 template<class T>
-void VulkanVertexBuffer<T>::UploadData(VulkanCommandBuffer& commandBuffer, T* vertexData, const uint32_t vertexCount)
+void VulkanVertexBuffer<T>::UploadData(VulkanCommandBuffer& commandBuffer, const std::vector<T>& data)
 {
     LOG_DEBUG("Preparing data to be uploaded in vertex buffer...");
 
-    const auto bufferSize = vertexCount * Stride;
+    const auto bufferSize = data.size() * Stride;
 
     StagingBuffer = std::make_unique<VulkanBuffer>(Memory,
                                                    VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
                                                    VMA_MEMORY_USAGE_CPU_ONLY,
                                                    bufferSize);
 
-    void* data;
-    StagingBuffer->MapBuffer(&data);
-    memcpy(data, vertexData, bufferSize);
+    void* pointerToBufferData;
+    StagingBuffer->MapBuffer(&pointerToBufferData);
+    memcpy(pointerToBufferData, data.data(), bufferSize);
     StagingBuffer->UnmapBuffer();
 
     InternalVertexBuffer = std::make_shared<VulkanBuffer>(Memory,

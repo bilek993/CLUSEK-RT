@@ -8,7 +8,7 @@
 
 VulkanFrameBuffer::VulkanFrameBuffer(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
                                      const VulkanRenderPass& renderPass,
-                                     const std::vector<VulkanImageView>& attachments,
+                                     const std::vector<VulkanImageView*>& attachments,
                                      const uint32_t width,
                                      const uint32_t height,
                                      const uint32_t layers)
@@ -17,8 +17,8 @@ VulkanFrameBuffer::VulkanFrameBuffer(std::shared_ptr<VulkanLogicalDevice> logica
 
     std::vector<VkImageView> vulkanAttachments{};
     std::transform(attachments.begin(), attachments.end(),
-                   std::back_inserter(vulkanAttachments), [](const VulkanImageView& attachment)
-                   { return attachment.GetRaw(); });
+                   std::back_inserter(vulkanAttachments), [](const VulkanImageView* attachment)
+                   { return attachment->GetRaw(); });
 
     VkFramebufferCreateInfo framebufferCreateInfo{};
     framebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;

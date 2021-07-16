@@ -13,6 +13,8 @@
 #include "VulkanSurface.h"
 #include "VulkanImage.h"
 #include "VulkanImageView.h"
+#include "VulkanSemaphore.h"
+#include "VulkanFence.h"
 #include "../../window/Window.h"
 
 class VulkanSwapChain final
@@ -40,6 +42,11 @@ public:
 
     [[nodiscard]] VkExtent2D GetUsedExtent() const;
     [[nodiscard]] VkSurfaceFormatKHR GetUsedFormat() const;
+
+    VkResult AcquireNextImageIndex(const VulkanSemaphore* semaphore,
+                                   const VulkanFence* fence,
+                                   uint32_t* outputImageIndex,
+                                   uint64_t timeout = UINT64_MAX);
 
     [[nodiscard]] VkSwapchainKHR GetRaw() const;
 

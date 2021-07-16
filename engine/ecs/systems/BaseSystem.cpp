@@ -36,6 +36,15 @@ void BaseSystem::Update(float deltaTime)
     SingleDeltaTime = UpdateTimer.GetDeltaTime();
 }
 
+void BaseSystem::Finish()
+{
+    LOG_DEBUG(fmt::format(FMT_COMPILE("Finishing '{}'..."), GetName()));
+
+    OnFinish();
+
+    LOG_DEBUG(fmt::format(FMT_COMPILE("Successfully finished '{}'..."), GetName()));
+}
+
 void BaseSystem::Enable()
 {
     Enabled = true;

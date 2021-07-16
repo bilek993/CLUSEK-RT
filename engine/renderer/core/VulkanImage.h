@@ -25,7 +25,11 @@ public:
                 VkImageTiling tiling,
                 VkImageUsageFlags usage,
                 const VmaMemoryUsage& memoryUsage);
-    virtual ~VulkanImage();
+    ~VulkanImage();
+    VulkanImage(const VulkanImage& other) = delete;
+    VulkanImage(VulkanImage&& other) noexcept = delete;
+    VulkanImage& operator=(const VulkanImage& other) = delete;
+    VulkanImage& operator=(VulkanImage&& other) noexcept = delete;
 
     [[nodiscard]] VkImage GetRaw() const;
 private:

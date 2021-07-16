@@ -11,14 +11,6 @@
 #include "../../renderer/helpers/BufferMemoryBarrierBuilder.h"
 #include "../../renderer/helpers/VertexBindingDescriptorGenerator.h"
 #include "../../renderer/helpers/RasterizationPipelineBuilder.h"
-#include "../../renderer/core/VulkanVertexBuffer.h"
-#include "../../renderer/core/VulkanIndexBuffer.h"
-#include "../../renderer/core/VulkanCommandBuffer.h"
-#include "../../renderer/core/VulkanCommandPool.h"
-#include "../../renderer/core/VulkanShaderModule.h"
-#include "../../renderer/core/VulkanRenderPass.h"
-#include "../../renderer/core/VulkanRasterizationPipeline.h"
-#include "../../renderer/vertex/FatVertex.h"
 
 std::string RenderSystem::GetName()
 {
@@ -95,6 +87,17 @@ void RenderSystem::OnStart()
                                                   requestedSwapChainFormat,
                                                   requestedPresentationModes);
 
+    LOG_DEBUG("Preparing to create synchronization for presentation mechanism...");
+
+    PresentationCompleteSemaphore = std::make_shared<VulkanSemaphore>(LogicalDevice);
+    RenderCompleteSemaphore = std::make_shared<VulkanSemaphore>(LogicalDevice);
+
+    for (size_t i = 0; i < SwapChain->GetImageCount(); i++)
+    {
+        const auto temporaryFence = std::make_shared<VulkanFence>(LogicalDevice, true);
+        InFlightFences.emplace_back(temporaryFence);
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -117,42 +120,42 @@ void RenderSystem::OnStart()
 
     // Shader modules testing code
 
-    const auto exampleVertexShaderModule = VulkanShaderModule(LogicalDevice,
-                                                              "./data/shaders/example_vs.spv",
-                                                              VK_SHADER_STAGE_VERTEX_BIT,
-                                                              "main");
-
-    const auto exampleFragmentShaderModule = VulkanShaderModule(LogicalDevice,
-                                                                "./data/shaders/example_fs.spv",
-                                                                VK_SHADER_STAGE_FRAGMENT_BIT,
+    TriangleVertexShader = std::make_shared<VulkanShaderModule>(LogicalDevice,
+                                                                "./data/shaders/example_vs.spv",
+                                                                VK_SHADER_STAGE_VERTEX_BIT,
                                                                 "main");
+
+    TrianglePixelShader = std::make_shared<VulkanShaderModule>(LogicalDevice,
+                                                               "./data/shaders/example_fs.spv",
+                                                               VK_SHADER_STAGE_FRAGMENT_BIT,
+                                                               "main");
 
     // Vertex Buffer testing code
 
-    auto exampleVertices = std::make_shared<std::vector<FatVertex>>();
-    exampleVertices->emplace_back(FatVertex{{ 0, 1, 2 }});
-    exampleVertices->emplace_back(FatVertex{{ 2, 1, 0 }});
-    exampleVertices->emplace_back(FatVertex{{ 0, 2, 1 }});
+    auto exampleVertices = std::vector<FatVertex>();
+    exampleVertices.emplace_back(FatVertex{{ -0.5f, -0.5f, 0.0f }});
+    exampleVertices.emplace_back(FatVertex{{ 0.5f, -0.5f, 0.0f }});
+    exampleVertices.emplace_back(FatVertex{{ 0.0f, 0.5f, 0.0f }});
 
-    VulkanVertexBuffer<FatVertex> exampleVertexBuffer{ MemoryAllocator };
-    exampleVertexBuffer.UploadData(vulkanCommandBufferForTests, exampleVertices->data(), exampleVertices->size());
+    TriangleVertexBuffer = std::make_shared<VulkanVertexBuffer<FatVertex>>(MemoryAllocator);
+    TriangleVertexBuffer->UploadData(vulkanCommandBufferForTests, exampleVertices);
 
     // Index Buffer testing code
 
-    std::vector<uint32_t> indices{ 0, 1, 2 };
+    std::vector<uint16_t> indices{ 0, 1, 2 };
 
-    VulkanIndexBuffer exampleIndexBuffer{ MemoryAllocator };
-    exampleIndexBuffer.UploadData(vulkanCommandBufferForTests, indices.data(), indices.size());
+    TriangleIndexBuffer = std::make_shared<VulkanIndexBuffer>(MemoryAllocator);
+    TriangleIndexBuffer->UploadData(vulkanCommandBufferForTests, indices, VK_INDEX_TYPE_UINT16);
 
     // Transfer ownership from transfer queue to graphics queue
 
     const auto exampleVertexBufferBarrier = BufferMemoryBarrierBuilder()
-            .SetBufferData(*exampleVertexBuffer.Get())
+            .SetBufferData(*TriangleVertexBuffer->Get())
             .SetOwnershipTransferIfNeeded(TransferMainQueue, GraphicsMainQueue)
             .Build();
 
     const auto exampleIndexBufferBarrier = BufferMemoryBarrierBuilder()
-            .SetBufferData(*exampleIndexBuffer.Get())
+            .SetBufferData(*TriangleIndexBuffer->Get())
             .SetOwnershipTransferIfNeeded(TransferMainQueue, GraphicsMainQueue)
             .Build();
 
@@ -191,24 +194,24 @@ void RenderSystem::OnStart()
     testSubpassDependency.dstAccessMask =
             VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
 
-    const auto testRenderPass = VulkanRenderPass(LogicalDevice,
-                                                 {
-                                                         colorAttachmentDescription,
-                                                 },
-                                                 false,
-                                                 {
-                                                         testSubpassDependency,
-                                                 },
-                                                 {
-                                                         {{ 0 }, false },
-                                                 });
+    TriangleRenderPass = std::make_shared<VulkanRenderPass>(LogicalDevice,
+                                                            std::vector<VkAttachmentDescription>{
+                                                                    colorAttachmentDescription,
+                                                            },
+                                                            false,
+                                                            std::vector<VkSubpassDependency>{
+                                                                    testSubpassDependency,
+                                                            },
+                                                            std::vector<VulkanSubpass>{
+                                                                    {{ 0 }, false },
+                                                            });
 
-    const auto testPipelineLayout = VulkanPipelineLayout(LogicalDevice);
+    TrianglePipelineLayout = std::make_shared<VulkanPipelineLayout>(LogicalDevice);
 
-    const auto testPipeline = RasterizationPipelineBuilder()
+    TrianglePipeline = RasterizationPipelineBuilder()
             .SetLogicalDevice(LogicalDevice)
-            .AddShaderStage(exampleVertexShaderModule)
-            .AddShaderStage(exampleFragmentShaderModule)
+            .AddShaderStage(*TriangleVertexShader)
+            .AddShaderStage(*TrianglePixelShader)
             .AddVertexInput(VertexBindingDescriptorGenerator::Generate<FatVertex>(),
                             VertexInputAttributeDescriptions::GetDescriptionForFatVertex())
             .EnableDynamicViewport()
@@ -216,19 +219,124 @@ void RenderSystem::OnStart()
             .SetCullMode(VK_CULL_MODE_BACK_BIT)
             .AddBlendAttachmentWithDisabledBlending(VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
                                                     VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT)
-            .SetPipelineLayout(testPipelineLayout)
-            .SetRenderPass(testRenderPass)
+            .SetPipelineLayout(*TrianglePipelineLayout)
+            .SetRenderPass(*TriangleRenderPass)
             .SetSubpassIndex(0)
             .Build();
 
+    // Framebuffer testing code
+
+    for (auto i = 0; i < SwapChain->GetImageViewCount(); i++)
+    {
+        const std::vector<VulkanImageView*> frameBufferImageView{ SwapChain->GetImageView(i).get() };
+        const auto temporaryFrameBuffer = std::make_shared<VulkanFrameBuffer>(LogicalDevice,
+                                                                              *TriangleRenderPass,
+                                                                              frameBufferImageView,
+                                                                              SwapChain->GetUsedExtent().width,
+                                                                              SwapChain->GetUsedExtent().height,
+                                                                              1);
+        ScreenFrameBuffers.emplace_back(temporaryFrameBuffer);
+    }
+
+    // Triangle command pool code
+
+    TriangleCommandPool = std::make_shared<VulkanCommandPool>(LogicalDevice,
+                                                              GraphicsMainQueue,
+                                                              false,
+                                                              true);
+
+    // Triangle command buffer code
+
+    for (auto i = 0; i < SwapChain->GetImageViewCount(); i++)
+    {
+        const auto temporaryCommandBuffer = std::make_shared<VulkanCommandBuffer>(LogicalDevice,
+                                                                                  TriangleCommandPool,
+                                                                                  VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+
+        temporaryCommandBuffer->BeginRecording(false, false, false);
+
+        const auto clearValues = std::vector<VkClearValue>{{ 0.0f, 0.0f, 0.0f, 1.0f },
+                                                           { 1.0f, 0 }};
+        const auto renderPassBeginInfo = TriangleRenderPass->GenerateRenderPassBeginInfo(*ScreenFrameBuffers[i],
+                                                                                         {{ 0, 0 },
+                                                                                          SwapChain->GetUsedExtent() },
+                                                                                         &clearValues);
+        temporaryCommandBuffer->BeginRenderPass(renderPassBeginInfo);
+
+        temporaryCommandBuffer->BindPipeline(*TrianglePipeline, VK_PIPELINE_BIND_POINT_GRAPHICS);
+
+        VkViewport testViewport{};
+        testViewport.x = 0.0F;
+        testViewport.y = static_cast<float>(SwapChain->GetUsedExtent().height);
+        testViewport.width = static_cast<float>(SwapChain->GetUsedExtent().width);
+        testViewport.height = -static_cast<float>(SwapChain->GetUsedExtent().height);
+        testViewport.minDepth = 0.0F;
+        testViewport.maxDepth = 1.0F;
+
+        VkRect2D testScissor{};
+        testScissor.offset = { 0, 0 };
+        testScissor.extent = SwapChain->GetUsedExtent();
+
+        temporaryCommandBuffer->BindIndexBuffer(*TriangleIndexBuffer);
+        temporaryCommandBuffer->BindVertexBuffer<FatVertex>({ TriangleVertexBuffer.get() }, { 0 });
+        temporaryCommandBuffer->SetDynamicViewportsAndScissors({ testViewport }, { testScissor });
+        temporaryCommandBuffer->Draw(indices.size());
+
+        temporaryCommandBuffer->EndRenderPass();
+
+        temporaryCommandBuffer->EndRecording();
+
+        TriangleCommandBuffers.emplace_back(temporaryCommandBuffer);
+    }
+
     // Cleaning up
 
-    exampleVertexBuffer.CleanUpAfterUploading();
-    exampleIndexBuffer.CleanUpAfterUploading();
+    TriangleVertexBuffer->CleanUpAfterUploading();
+    TriangleIndexBuffer->CleanUpAfterUploading();
 }
 
-void RenderSystem::OnUpdate(float deltaTime)
+void RenderSystem::OnUpdate(const float deltaTime)
 {
+    auto result = SwapChain->AcquireNextImageIndex(PresentationCompleteSemaphore.get(),
+                                                   nullptr,
+                                                   &CurrentFrameIndex);
 
+    InFlightFences[CurrentFrameIndex]->Wait();
+    InFlightFences[CurrentFrameIndex]->Reset();
+
+    if (result == VK_ERROR_OUT_OF_DATE_KHR)
+    {
+        Recreate();
+        return;
+    }
+    else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+    {
+        throw std::runtime_error("Error when acquiring next image...");
+    }
+
+    VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+    GraphicsMainQueue.Submit({ TriangleCommandBuffers[CurrentFrameIndex].get() },
+                             { PresentationCompleteSemaphore.get() },
+                             { RenderCompleteSemaphore.get() },
+                             InFlightFences[CurrentFrameIndex].get(),
+                             waitStages);
+
+    result = PresentationQueue.Present({ RenderCompleteSemaphore.get() },
+                                       { SwapChain.get() },
+                                       &CurrentFrameIndex);
+
+    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || MainWindow->HasBeenResized())
+        Recreate();
+    else if (result != VK_SUCCESS)
+        throw std::runtime_error("Failed to present result!");
 }
 
+void RenderSystem::OnFinish()
+{
+    LogicalDevice->WaitIdle();
+}
+
+void RenderSystem::Recreate() // TODO: Implement this function
+{
+    LOG_DEBUG("Preparing to recreate the resources...");
+}

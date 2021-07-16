@@ -27,6 +27,7 @@ public:
                std::shared_ptr<Window> mainWindow,
                std::weak_ptr<std::vector<std::shared_ptr<BaseSystem>>> systems);
     void Update(float deltaTime);
+    void Finish();
 
     void Enable();
     void Disable();
@@ -39,6 +40,7 @@ public:
 protected:
     virtual void OnStart() = 0;
     virtual void OnUpdate(float deltaTime) = 0;
+    virtual void OnFinish() = 0;
 
     std::shared_ptr<ConfigData> ConfigurationData;
     std::shared_ptr<Window> MainWindow;

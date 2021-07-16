@@ -17,7 +17,7 @@ class VulkanFrameBuffer final
 public:
     VulkanFrameBuffer(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
                       const VulkanRenderPass& renderPass,
-                      const std::vector<VulkanImageView>& attachments,
+                      const std::vector<VulkanImageView*>& attachments,
                       uint32_t width,
                       uint32_t height,
                       uint32_t layers);

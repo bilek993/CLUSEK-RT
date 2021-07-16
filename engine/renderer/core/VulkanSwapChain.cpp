@@ -124,6 +124,22 @@ VkSurfaceFormatKHR VulkanSwapChain::GetUsedFormat() const
     return Format;
 }
 
+VkResult VulkanSwapChain::AcquireNextImageIndex(const VulkanSemaphore* semaphore,
+                                                const VulkanFence* fence,
+                                                uint32_t* outputImageIndex,
+                                                const uint64_t timeout)
+{
+    if (outputImageIndex == nullptr)
+        throw std::invalid_argument("`outputImageIndex` parameter cannot be nullptr!");
+
+    return vkAcquireNextImageKHR(LogicalDevice->GetRaw(),
+                                 InternalSwapchain,
+                                 timeout,
+                                 semaphore == nullptr ? nullptr : semaphore->GetRaw(),
+                                 fence == nullptr ? nullptr : fence->GetRaw(),
+                                 outputImageIndex);
+}
+
 VkSwapchainKHR VulkanSwapChain::GetRaw() const
 {
     return InternalSwapchain;

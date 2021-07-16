@@ -8,7 +8,7 @@
 #include <memory>
 #include <vulkan/vulkan.h>
 
-#include "VulkanLogicalDevice.h"
+class VulkanLogicalDevice;
 
 class VulkanFence final
 {
@@ -19,6 +19,9 @@ public:
     VulkanFence(VulkanFence&& other) noexcept = delete;
     VulkanFence& operator=(const VulkanFence& other) = delete;
     VulkanFence& operator=(VulkanFence&& other) noexcept = delete;
+
+    bool Wait(uint64_t timeout = UINT64_MAX);
+    void Reset();
 
     [[nodiscard]] VkFence GetRaw() const;
 

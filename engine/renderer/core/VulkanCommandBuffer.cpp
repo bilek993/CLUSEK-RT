@@ -4,6 +4,7 @@
 
 #include "VulkanCommandBuffer.h"
 
+#include "VulkanIndexBuffer.h"
 #include "../../common/debug/Logger.h"
 
 VulkanCommandBuffer::VulkanCommandBuffer(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
@@ -12,11 +13,12 @@ VulkanCommandBuffer::VulkanCommandBuffer(std::shared_ptr<VulkanLogicalDevice> lo
 {
     LogicalDevice = std::move(logicalDevice);
     CommandPool = std::move(commandPool);
+    CommandBufferLevel = level;
 
     VkCommandBufferAllocateInfo commandBufferAllocateInfo{};
     commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     commandBufferAllocateInfo.commandPool = CommandPool->GetRaw();
-    commandBufferAllocateInfo.level = level;
+    commandBufferAllocateInfo.level = CommandBufferLevel;
     commandBufferAllocateInfo.commandBufferCount = 1;
 
     const auto result = vkAllocateCommandBuffers(LogicalDevice->GetRaw(),
@@ -81,6 +83,58 @@ void VulkanCommandBuffer::EndRecording()
 bool VulkanCommandBuffer::IsRecording() const
 {
     return RecordingInProgress;
+}
+
+void VulkanCommandBuffer::BeginRenderPass(const VkRenderPassBeginInfo& renderPassBeginInfo)
+{
+    VkSubpassContents contents{};
+    switch (CommandBufferLevel)
+    {
+    case VK_COMMAND_BUFFER_LEVEL_PRIMARY:
+        contents = VK_SUBPASS_CONTENTS_INLINE;
+        break;
+    case VK_COMMAND_BUFFER_LEVEL_SECONDARY:
+        contents = VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS;
+        break;
+    case VK_COMMAND_BUFFER_LEVEL_MAX_ENUM:
+        contents = VK_SUBPASS_CONTENTS_MAX_ENUM;
+        break;
+    default:
+        throw std::invalid_argument("Problem detecting correct subpass content.");
+    }
+
+    vkCmdBeginRenderPass(InternalCommandBuffer, &renderPassBeginInfo, contents);
+}
+
+void VulkanCommandBuffer::EndRenderPass()
+{
+    vkCmdEndRenderPass(InternalCommandBuffer);
+}
+
+void VulkanCommandBuffer::BindIndexBuffer(const VulkanIndexBuffer& indexBuffer,
+                                          VkDeviceSize offset)
+{
+    vkCmdBindIndexBuffer(InternalCommandBuffer, indexBuffer.GetRaw(), offset, indexBuffer.GetIndexType());
+}
+
+void
+VulkanCommandBuffer::SetDynamicViewportsAndScissors(const std::vector<VkViewport>& viewports,
+                                                    const std::vector<VkRect2D>& scissors)
+{
+    if (viewports.size() != scissors.size())
+        throw std::invalid_argument("Number of scissors and viewports is not equal!");
+
+    vkCmdSetViewport(InternalCommandBuffer, 0, viewports.size(), viewports.data());
+    vkCmdSetScissor(InternalCommandBuffer, 0, scissors.size(), scissors.data());
+}
+
+void VulkanCommandBuffer::Draw(uint32_t indexCount,
+                               uint32_t instanceCount,
+                               uint32_t firstIndex,
+                               int32_t vertexOffset,
+                               uint32_t firstInstance)
+{
+    vkCmdDrawIndexed(InternalCommandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 }
 
 void VulkanCommandBuffer::CopyBuffer(VulkanBuffer& srcBuffer, VulkanBuffer& dstBuffer, VkDeviceSize bufferSize)

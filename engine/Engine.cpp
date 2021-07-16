@@ -44,6 +44,14 @@ void Engine::Update()
     MainWindow->ResetResized();
 }
 
+void Engine::Finalize()
+{
+    LOG_DEBUG("Finishing systems...");
+
+    for (const auto& system : *Systems)
+        system->Finish();
+}
+
 void Engine::CreateSystems()
 {
     LOG_DEBUG("Creating systems...");

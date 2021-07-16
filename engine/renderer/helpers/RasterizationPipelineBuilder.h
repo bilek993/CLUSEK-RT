@@ -85,7 +85,7 @@ public:
 
     RasterizationPipelineBuilder& SetSubpassIndex(uint32_t index);
 
-    [[nodiscard]] VulkanRasterizationPipeline Build() const;
+    [[nodiscard]] std::shared_ptr<VulkanRasterizationPipeline> Build() const;
 
 private:
     std::shared_ptr<VulkanLogicalDevice> LogicalDevice = nullptr;

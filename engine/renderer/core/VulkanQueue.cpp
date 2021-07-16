@@ -10,6 +10,7 @@
 #include "VulkanCommandBuffer.h"
 #include "VulkanSemaphore.h"
 #include "VulkanFence.h"
+#include "VulkanSwapChain.h"
 
 VulkanQueue::VulkanQueue()
 {
@@ -79,6 +80,31 @@ void VulkanQueue::Submit(const std::vector<VulkanCommandBuffer*>& commandBuffers
     const auto result = vkQueueSubmit(InternalQueue, 1, &submitInfo, vkSignalFence);
     if (result != VK_SUCCESS)
         throw std::runtime_error("Submitting command buffers failed!");
+}
+
+VkResult VulkanQueue::Present(const std::vector<VulkanSemaphore*>& waitSemaphores,
+                              const std::vector<VulkanSwapChain*>& swapchains,
+                              const uint32_t* imageIndex)
+{
+    std::vector<VkSemaphore> vkSemaphores;
+    std::transform(waitSemaphores.begin(), waitSemaphores.end(),
+                   std::back_inserter(vkSemaphores), [](VulkanSemaphore* semaphore)
+                   { return semaphore->GetRaw(); });
+
+    std::vector<VkSwapchainKHR> vkSwapChains;
+    std::transform(swapchains.begin(), swapchains.end(),
+                   std::back_inserter(vkSwapChains), [](VulkanSwapChain* swapChain)
+                   { return swapChain->GetRaw(); });
+
+    VkPresentInfoKHR presentInfo{};
+    presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+    presentInfo.waitSemaphoreCount = vkSemaphores.size();
+    presentInfo.pWaitSemaphores = vkSemaphores.data();
+    presentInfo.swapchainCount = vkSwapChains.size();
+    presentInfo.pSwapchains = vkSwapChains.data();
+    presentInfo.pImageIndices = imageIndex;
+
+    return vkQueuePresentKHR(InternalQueue, &presentInfo);;
 }
 
 VkQueue VulkanQueue::GetRaw() const

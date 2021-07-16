@@ -6,9 +6,11 @@
 #define CLUSEK_RT_VULKANLOGICALDEVICE_H
 
 #include <vulkan/vulkan.h>
+#include <vector>
 
 #include "VulkanQueues.h"
 #include "VulkanPhysicalDevice.h"
+#include "VulkanFence.h"
 
 class VulkanLogicalDevice final
 {
@@ -25,6 +27,7 @@ public:
     VulkanLogicalDevice& operator=(VulkanLogicalDevice&& other) noexcept = delete;
 
     void WaitIdle();
+    void WaitFences(const std::vector<VulkanFence*>& fences, bool waitForAll, uint64_t timeout = UINT64_MAX);
 
     [[nodiscard]] VkDevice GetRaw() const;
 private:
