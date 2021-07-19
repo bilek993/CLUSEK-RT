@@ -4,17 +4,19 @@
 
 #include "VulkanPipelineLayout.h"
 
-VulkanPipelineLayout::VulkanPipelineLayout(std::shared_ptr<VulkanLogicalDevice> logicalDevice)
+VulkanPipelineLayout::VulkanPipelineLayout(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
+                                           const VulkanPushConstantRanges* pushConstantRanges)
 {
     LogicalDevice = std::move(logicalDevice);
 
-    // TODO: Provide proper implementation here
     VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo{};
     pipelineLayoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutCreateInfo.setLayoutCount = 0; // Optional
     pipelineLayoutCreateInfo.pSetLayouts = nullptr; // Optional
-    pipelineLayoutCreateInfo.pushConstantRangeCount = 0; // Optional
-    pipelineLayoutCreateInfo.pPushConstantRanges = nullptr; // Optional
+    pipelineLayoutCreateInfo.pushConstantRangeCount =
+            pushConstantRanges == nullptr ? 0 : pushConstantRanges->GetCount();
+    pipelineLayoutCreateInfo.pPushConstantRanges =
+            pushConstantRanges == nullptr ? nullptr : pushConstantRanges->GetRawPointer();
 
     const auto result = vkCreatePipelineLayout(LogicalDevice->GetRaw(),
                                                &pipelineLayoutCreateInfo,

@@ -9,11 +9,13 @@
 #include <vulkan/vulkan.h>
 
 #include "VulkanLogicalDevice.h"
+#include "VulkanPushConstantRanges.h"
 
 class VulkanPipelineLayout final
 {
 public:
-    VulkanPipelineLayout(std::shared_ptr<VulkanLogicalDevice> logicalDevice);
+    VulkanPipelineLayout(std::shared_ptr<VulkanLogicalDevice> logicalDevice,
+                         const VulkanPushConstantRanges* pushConstantRanges);
     ~VulkanPipelineLayout();
     VulkanPipelineLayout(const VulkanPipelineLayout& other) = delete;
     VulkanPipelineLayout(VulkanPipelineLayout&& other) noexcept = delete;

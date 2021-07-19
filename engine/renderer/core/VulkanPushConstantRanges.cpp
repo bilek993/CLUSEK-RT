@@ -3,3 +3,13 @@
 //
 
 #include "VulkanPushConstantRanges.h"
+
+uint32_t VulkanPushConstantRanges::GetCount() const
+{
+    return InternalRanges.size();
+}
+
+const VkPushConstantRange* VulkanPushConstantRanges::GetRawPointer() const
+{
+    return InternalRanges.data();
+}

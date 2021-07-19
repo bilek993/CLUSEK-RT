@@ -206,7 +206,8 @@ void RenderSystem::OnStart()
                                                                     {{ 0 }, false },
                                                             });
 
-    TrianglePipelineLayout = std::make_shared<VulkanPipelineLayout>(LogicalDevice);
+    TrianglePipelineLayout = std::make_shared<VulkanPipelineLayout>(LogicalDevice,
+                                                                    nullptr);
 
     TrianglePipeline = RasterizationPipelineBuilder()
             .SetLogicalDevice(LogicalDevice)
