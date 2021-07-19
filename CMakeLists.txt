@@ -120,7 +120,7 @@ add_executable(
         engine/renderer/helpers/RasterizationPipelineBuilder.cpp
         engine/renderer/helpers/RasterizationPipelineBuilder.h
         engine/renderer/core/VulkanFrameBuffer.cpp
-        engine/renderer/core/VulkanFrameBuffer.h)
+        engine/renderer/core/VulkanFrameBuffer.h engine/renderer/core/VulkanPushConstantRanges.cpp engine/renderer/core/VulkanPushConstantRanges.h)
 
 #  _      _  _                         _
 # | |    (_)| |                       (_)
